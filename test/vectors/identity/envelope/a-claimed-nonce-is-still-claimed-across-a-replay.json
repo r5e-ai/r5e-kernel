@@ -1,0 +1,48 @@
+{
+  "note": "§2: and the claims that *were* taken survive the restart — otherwise a replay would reopen every envelope the chain has already answered.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "n0",
+      "spec": {
+        "body": "first"
+      },
+      "nonce": "BQUFBQUFBQUFBQUFBQUFBQ=="
+    }
+  ],
+  "replayBeforeInstance": true,
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "nonce": "BQUFBQUFBQUFBQUFBQUFBQ=="
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "nonce replayed",
+    "recorded": true
+  }
+}

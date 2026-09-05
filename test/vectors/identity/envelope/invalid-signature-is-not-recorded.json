@@ -1,0 +1,39 @@
+{
+  "note": "§2/§12: a signature that does not verify is unattributable — nobody is known to have asked. Not an act, not recorded, no nonce claimed.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "tamperSignature": true
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "signature invalid",
+    "recorded": false,
+    "nonceClaimed": false
+  }
+}

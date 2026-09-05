@@ -1,0 +1,78 @@
+{
+  "note": "KS-3: one member satisfies the group.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Guarded",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "The envelope condition and a nested requires group on one Kind.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "parent": {
+          "type": "string"
+        },
+        "self": {
+          "type": "string"
+        },
+        "x": {
+          "type": "string"
+        },
+        "y": {
+          "type": "string"
+        },
+        "z": {
+          "type": "string"
+        }
+      },
+      "requires": [
+        {
+          "when": {
+            "envelope": "authority",
+            "present": true
+          },
+          "then": [
+            "parent"
+          ]
+        },
+        {
+          "when": {
+            "envelope": "authority",
+            "present": false
+          },
+          "then": [
+            "self"
+          ]
+        },
+        {
+          "when": {
+            "present": "x"
+          },
+          "then": [
+            [
+              "y",
+              "z"
+            ]
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "g1",
+    "spec": {
+      "self": "x",
+      "x": "triggered",
+      "z": "present"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "g1"
+  }
+}

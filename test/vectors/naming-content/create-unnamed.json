@@ -1,0 +1,33 @@
+{
+  "note": "§2 content: the kernel names the instance by the canonical hash of the spec.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Contented",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "content"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "spec": {
+      "title": "hello"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "sha256:cf6c63ce25116b04e3b776a2957606e18d8ac798dde21e3ec30882ac2dfbe0cb"
+  }
+}

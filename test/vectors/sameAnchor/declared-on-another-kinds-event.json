@@ -1,0 +1,39 @@
+{
+  "note": "A supersession replaces an earlier instance of the same Kind; sameAnchor pointing at a different Kind's events is not a supersession of anything.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "name": "vectors.r5e.io/v1alpha1/BadAnchor",
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "BadAnchor",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "anchor": {
+            "type": "string"
+          },
+          "supersedes": {
+            "type": "ref",
+            "ref": {
+              "event": "vectors.r5e.io/v1alpha1/Anchor",
+              "outcome": "admitted",
+              "sameAnchor": "anchor"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "the enclosing Kind vectors.r5e.io/v1alpha1/BadAnchor"
+  }
+}

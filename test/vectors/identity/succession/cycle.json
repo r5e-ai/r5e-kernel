@@ -1,0 +1,41 @@
+{
+  "note": "§0: A→B then B→A would make `head` undefined and `pred*` infinite.",
+  "kind": "core.r5e.io/v1/Succession",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Succession",
+    "sign": [
+      2,
+      1
+    ],
+    "spec": {
+      "predecessor": "$key.2",
+      "successor": "$key.1",
+      "successorKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.1.bytes"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "succession cycle"
+  }
+}

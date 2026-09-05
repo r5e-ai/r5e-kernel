@@ -1,0 +1,49 @@
+{
+  "note": "§2: **denials included**. A request refused at `resolve` has still spent its nonce; anything weaker would let a caller retry a refused envelope until the world moved under it.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n2",
+    "spec": {
+      "body": "second"
+    },
+    "nonce": "AQEBAQEBAQEBAQEBAQEBAQ=="
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "nonce replayed",
+    "recorded": true
+  },
+  "setup": [
+    {
+      "name": "n1",
+      "spec": {
+        "body": "first"
+      },
+      "denied": true,
+      "nonce": "AQEBAQEBAQEBAQEBAQEBAQ==",
+      "derivedFrom": "bytes:sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd"
+    }
+  ]
+}

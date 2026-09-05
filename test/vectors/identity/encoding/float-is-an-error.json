@@ -1,0 +1,7 @@
+{
+  "note": "§8: floats have no canonical decimal rendering every implementation agrees on, so they are refused rather than rendered one way here and another way elsewhere.",
+  "canonical": {
+    "rawJson": "{\"n\":1.0}",
+    "error": "is a float"
+  }
+}

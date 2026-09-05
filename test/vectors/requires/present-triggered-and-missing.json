@@ -1,0 +1,67 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Requires",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "outcome"
+      ],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "error"
+          ]
+        },
+        "completion": {
+          "type": "string"
+        },
+        "mediaType": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "requires": [
+        {
+          "when": {
+            "field": "outcome",
+            "equals": "ok"
+          },
+          "then": [
+            "completion"
+          ]
+        },
+        {
+          "when": {
+            "present": "mediaType"
+          },
+          "then": [
+            "ref"
+          ]
+        }
+      ]
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "q5",
+    "spec": {
+      "outcome": "error",
+      "mediaType": "text/plain"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "requires \"ref\""
+  }
+}

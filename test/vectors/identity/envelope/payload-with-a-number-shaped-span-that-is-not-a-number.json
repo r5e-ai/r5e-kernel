@@ -1,0 +1,39 @@
+{
+  "note": "§2: and the number case, for the same reason.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "rawRequest": "{\"a\":1-2}"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "malformed envelope: the payload is not canonical JSON: \"1-2\" is not a number",
+    "recorded": false,
+    "nonceClaimed": false
+  }
+}

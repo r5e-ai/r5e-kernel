@@ -1,0 +1,34 @@
+{
+  "note": "§4/KS-4: `requiresAuthority: true` means every admission of this Kind carries non-empty `authority`. This slice checks non-emptiness only — whether the cited events are effective authority covering this Kind arrives with the walk (2c).",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Requiring",
+    "version": "v1alpha1",
+    "substrate": "event",
+    "naming": {
+      "mode": "content"
+    },
+    "description": "A Kind admitted only under cited authority.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": [],
+    "requiresAuthority": true
+  },
+  "instance": {
+    "spec": {
+      "note": "acting as myself"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "authority required"
+  }
+}

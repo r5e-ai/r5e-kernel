@@ -1,0 +1,91 @@
+{
+  "group": "gateway.r5e.io",
+  "kind": "ToolResult",
+  "version": "v1alpha1",
+  "substrate": "event",
+  "naming": {
+    "mode": "content"
+  },
+  "description": "What the recorded actor reports came back from a tool call: inline (a string, object, or array, possibly empty) or detached at resultRef.",
+  "schema": {
+    "required": [
+      "toolCall",
+      "outcome"
+    ],
+    "properties": {
+      "toolCall": {
+        "type": "ref",
+        "ref": {
+          "event": "gateway.r5e.io/v1alpha1/ToolCall",
+          "outcome": "admitted"
+        }
+      },
+      "outcome": {
+        "type": "string",
+        "enum": [
+          "ok",
+          "error"
+        ]
+      },
+      "result": {
+        "type": [
+          "string",
+          "object",
+          "array"
+        ]
+      },
+      "resultRef": {
+        "type": "ref",
+        "ref": {
+          "bytes": true
+        }
+      },
+      "resultMediaType": {
+        "type": "string"
+      },
+      "durationMs": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "exitCode": {
+        "type": "integer"
+      },
+      "supersedes": {
+        "type": "ref",
+        "ref": {
+          "event": "gateway.r5e.io/v1alpha1/ToolResult",
+          "outcome": "admitted",
+          "sameAnchor": "toolCall"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "exactlyOne": [
+      [
+        "result",
+        "resultRef"
+      ]
+    ],
+    "requires": [
+      {
+        "when": {
+          "present": "resultMediaType"
+        },
+        "then": [
+          "resultRef"
+        ]
+      }
+    ]
+  },
+  "epistemicScope": {
+    "claims": [
+      "the recorded actor reported that the tool call at `toolCall` ended with `outcome` and returned this result"
+    ],
+    "doesNotClaim": [
+      "that the tool produced it",
+      "that it is complete",
+      "that the recorded actor held the key whose fingerprint is recorded — admissions are not yet signed by their actors"
+    ]
+  },
+  "predicates": []
+}

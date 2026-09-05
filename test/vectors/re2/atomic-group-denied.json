@@ -1,0 +1,32 @@
+{
+  "note": "Amendment A11: this kernel matches with Erlang :re, which is PCRE and accepts more than RE2. A pattern only PCRE understands would mean two conformant kernels reading one Kind differently and neither saying so, so the construct is refused where the definition is written.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "name": "vectors.r5e.io/v1alpha1/PatternAtomic",
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "PatternAtomic",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "s": {
+            "type": "string",
+            "pattern": "(?>ab)c"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "an atomic group"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "group": "gateway.r5e.io",
+  "kind": "PolicyBundle",
+  "version": "v1alpha1",
+  "substrate": "resource",
+  "naming": {
+    "mode": "literal",
+    "value": "active"
+  },
+  "description": "The policy text in force, detached at sourceRef with public-record retention. Only the name `active` is admissible; admitting it is the activation, and re-admitting it supersedes the previous bundle on the record (supersededBy on the store entry).",
+  "schema": {
+    "required": [
+      "engine",
+      "sourceRef"
+    ],
+    "properties": {
+      "engine": {
+        "type": "string",
+        "enum": [
+          "cedar"
+        ]
+      },
+      "sourceRef": {
+        "type": "ref",
+        "ref": {
+          "bytes": true,
+          "retention": "public-record"
+        }
+      },
+      "description": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the policy text at `sourceRef` was submitted by the recorded actor and admitted under the name `active` at the recorded position on the chain",
+      "from that position until the next admission under the same name, this was the bundle the engine read for every decision, and each such receipt cites this bundle's address and its source's address"
+    ],
+    "doesNotClaim": [
+      "that the policy is correct, complete, or expresses anyone's intent",
+      "that the actor who admitted it had the authority to set policy — authority Kinds and endorsement chains are not implemented in this slice",
+      "that any decision recorded under it was enforced outside this kernel's admission gate",
+      "that the recorded actor held the key whose fingerprint is recorded — admissions are not yet signed by their actors"
+    ]
+  },
+  "predicates": []
+}

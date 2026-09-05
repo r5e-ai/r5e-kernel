@@ -1,0 +1,47 @@
+{
+  "note": "§0: {} exists, so an empty args satisfies exactlyOne.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "ExactlyOne",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "tool"
+      ],
+      "properties": {
+        "tool": {
+          "type": "string"
+        },
+        "args": {
+          "type": "object"
+        },
+        "argsRef": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "exactlyOne": [
+        [
+          "args",
+          "argsRef"
+        ]
+      ]
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "x1",
+    "spec": {
+      "tool": "bash",
+      "args": {}
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "x1"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "note": "§9, the same chain with somebody else's key pinned: the walk still resolves — `0 cut` — and `R` is zero, because resolving to a root and resolving to a root *the reader trusts* are two different facts and the line reports both.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "signAs": "node",
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "role": "probe",
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "name": "n1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "verify": {
+    "trust": [
+      {
+        "key": "$key.4"
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "lines": {
+        "endorsements": "0 resolved to a pinned root"
+      },
+      "notChecked": [
+        "self-declared"
+      ]
+    }
+  }
+}

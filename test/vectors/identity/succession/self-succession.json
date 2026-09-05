@@ -1,0 +1,24 @@
+{
+  "note": "§0: a key does not succeed itself. §1 lets both signatures come from one key — this is where that case is refused, by name, at `resolve`.",
+  "kind": "core.r5e.io/v1/Succession",
+  "instance": {
+    "kind": "core.r5e.io/v1/Succession",
+    "sign": [
+      1,
+      1
+    ],
+    "spec": {
+      "predecessor": "$key.1",
+      "successor": "$key.1",
+      "successorKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.1.bytes"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "self succession"
+  }
+}

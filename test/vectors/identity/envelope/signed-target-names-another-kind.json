@@ -1,0 +1,45 @@
+{
+  "note": "§1: the route must equal the signed `target.{group,version,kind}`. The name half is pinned beside this; this is the other half — a request signed for one Kind and submitted to another is addressed to something its signer did not sign for.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "requestPatch": {
+      "target": {
+        "group": "vectors.r5e.io",
+        "version": "v1alpha1",
+        "kind": "Other",
+        "name": "n1"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "target mismatch",
+    "recorded": true
+  }
+}

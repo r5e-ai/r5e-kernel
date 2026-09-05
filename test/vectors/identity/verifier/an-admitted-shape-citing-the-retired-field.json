@@ -1,0 +1,60 @@
+{
+  "note": "§11/KS-7: `actor.keyFingerprint` is removed from the envelope-field grammar. A shape *submitted* now is refused where the grammar is enforced; one already **admitted** on a chain written before the removal cannot be un-admitted, so the verifier reports `stale-shape` and the deployment supersedes it. The finding is over §8's five path-valued slots — `action`, `resourceType`, `resourceId`, and each `context` entry's `path` — and not over the whole spec, so a `description` that explains the removal is documentation rather than a use of it.",
+  "kind": {
+    "group": "gateway.r5e.io",
+    "kind": "PolicyShape",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A stand-in for the fold's own PolicyShape, carrying the five path-valued slots §8 defines and nothing else.",
+    "schema": {
+      "required": [
+        "action",
+        "resourceType",
+        "resourceId"
+      ],
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "resourceType": {
+          "type": "string"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "context": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "s1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "action": "admit",
+      "resourceType": "@kind",
+      "resourceId": "@actor.keyFingerprint",
+      "description": "a shape written before spec 011 removed the field"
+    }
+  },
+  "verify": {},
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "findings": [
+        "stale-shape"
+      ]
+    }
+  }
+}

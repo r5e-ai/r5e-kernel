@@ -1,0 +1,56 @@
+{
+  "note": "§2's constraint order is normative, and the two keywords the vectors file names are adjacent in it: `… derives, matchesSigner, ordered, exactlyOne …`. This instance fails **both** — the declared key is not the signer, and the two instants are out of order — and the reason names `matchesSigner`, the earlier one. Adjacency is what makes it a test of the order rather than of any one check: a validator that ran the list in a different sequence would report `ordered` here and pass every other vector.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "OrderProbe",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A key id that must be the signer's, and a pair of instants that must be ordered.",
+    "schema": {
+      "required": [
+        "key",
+        "from",
+        "to"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "matchesSigner": 1
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "ordered": [
+        [
+          "from",
+          "to"
+        ]
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "p1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "key": "$key.2",
+      "from": "2027-01-01T00:00:00Z",
+      "to": "2020-01-01T00:00:00Z"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "matchesSigner"
+  }
+}

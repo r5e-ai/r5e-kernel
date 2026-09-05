@@ -1,0 +1,56 @@
+{
+  "note": "§0: revoking a Succession removes its edge for every seq after the Revocation's and **both** endpoints' slots reopen — the predecessor may name another successor. The verifier prints `contested-succession` where it sees this; the kernel does not refuse it, because a stolen key and its rightful holder both leave a record and the record is what the endorsers read.",
+  "kind": "core.r5e.io/v1/Succession",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Revocation",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "revokes": {
+          "$ref": "$setup.0.eventRef"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Succession",
+    "sign": [
+      1,
+      3
+    ],
+    "spec": {
+      "predecessor": "$key.1",
+      "successor": "$key.3",
+      "successorKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.3.bytes"
+      }
+    }
+  },
+  "verify": {},
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "findings": [
+        "contested-succession"
+      ]
+    }
+  }
+}

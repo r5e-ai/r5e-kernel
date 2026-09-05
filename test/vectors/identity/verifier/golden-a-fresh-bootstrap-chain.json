@@ -1,0 +1,14 @@
+{
+  "note": "§9's first golden report: the ten events a fresh kernel writes before any caller arrives, and nothing else. Every number on it is a fact about §10's bootstrap table. The keys are fixed rather than generated (`fixedKeys`) because a report names key ids, and the clock is fixed because the checkpoint carries a `ts`; those two are the only non-deterministic inputs a report has. The frozen file is the verifier's whole output byte for byte, with the temporary directory the bundle happened to be written to normalized to `<bundle>`.",
+  "fixedKeys": true,
+  "clock": "2026-09-02T00:00:00Z",
+  "report": "reports/bootstrap.txt",
+  "expect": {
+    "verifier": {
+      "noFindings": true,
+      "lines": {
+        "signatures": "10 of 10 admissions signed and verified"
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "note": "§5, amendment C4, the other half: an admitted spec's address is the other thing the kernel wrote, and a CasObject may not claim it either. Denied at validateConstraints with the side named, because 'the partition is broken' is not actionable and 'that address is already an admitted specAddress' is.",
+  "kind": "core.r5e.io/v1/CasObject",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Anchor",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "schema": {
+        "required": [
+          "tag"
+        ],
+        "properties": {
+          "tag": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "setup": [
+    {
+      "kind": "vectors.r5e.io/v1alpha1/Anchor",
+      "spec": {
+        "tag": "one"
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "address": "bytes:$setup.0.specAddress",
+      "size": 1,
+      "class": "raw"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "is already an admitted specAddress on this chain"
+  }
+}

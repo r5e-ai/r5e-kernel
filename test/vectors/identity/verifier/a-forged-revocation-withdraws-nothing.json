@@ -1,0 +1,82 @@
+{
+  "note": "Contract §5 clause 3 and §9: a Revocation by a key that is neither the target's actor of record nor a key that actor succeeded withdraws **nothing**. The kernel refuses one at `resolve: sameActor`, so the only way a bundle carries one is that somebody appended it — which this vector does, unauthenticated, straight onto the exported log. The verifier reports `revocation-actor` and the chain stays effective: `0 cut`. Reporting it rather than acting on it is the point.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "signAs": "node",
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "role": "probe",
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "name": "n1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "verify": {
+    "inject": [
+      {
+        "kind": "core.r5e.io/v1/Revocation",
+        "actor": "$key.3",
+        "name": "injected",
+        "spec": {
+          "revokes": {
+            "$ref": "$setup.0.eventRef"
+          }
+        }
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "findings": [
+        "revocation-actor"
+      ],
+      "lines": {
+        "endorsements": "0 cut"
+      }
+    }
+  }
+}

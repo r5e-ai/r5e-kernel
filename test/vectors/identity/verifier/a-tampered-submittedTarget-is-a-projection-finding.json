@@ -1,0 +1,56 @@
+{
+  "note": "§1's projection invariant, checked by §9: the decoded request inside `signed` and the record beside it must say the same thing. The payload is rewritten in the *bundle*, at the address the chain already names, so the signature still verifies over the request it covers and the record now contradicts it — the case a producer can create and no kernel would write.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "body": "hello"
+    }
+  },
+  "verify": {
+    "editPayload": [
+      {
+        "payloadOf": "instance",
+        "set": {
+          "/submittedTarget/name": "somebody-elses-name"
+        }
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "n1",
+    "verifier": {
+      "findings": [
+        "projection"
+      ],
+      "lines": {
+        "signatures": "admissions signed and verified with the keys on their payloads"
+      }
+    }
+  }
+}

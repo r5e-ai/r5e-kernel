@@ -1,0 +1,66 @@
+{
+  "note": "§5 (r4.3): `ts(s)` is the instant the log writes — the node's clock **truncated to the second** — and terms are compared against that and never against the untruncated clock. Here the clock reads 12:00:00.75 and the endorsement's term begins at 12:00:00.5, so an untruncated comparison would say the authority is live. The event will be stamped 12:00:00Z, and every reader of the finished chain compares the term against that, so the gate must too: `out of term`. The vector pins the recorded `ts` as well as the reason, because the rule is precisely that those two agree.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "clock": "2026-09-02T12:00:00.750000Z",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2026-09-02T12:00:00.500000Z",
+        "notAfter": "2027-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "name": "a1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "authority ineffective: out of term",
+    "eventTs": "2026-09-02T12:00:00Z",
+    "recorded": true
+  }
+}

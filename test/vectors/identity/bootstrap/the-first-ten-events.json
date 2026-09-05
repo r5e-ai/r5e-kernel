@@ -1,0 +1,71 @@
+{
+  "note": "§10: a fresh chain's first ten events, in `order.json`'s order — nine Kind seeds and the node key's endorsement of the retention key. Event 1 alone carries `origin` and `random`, because they are facts about the chain and are recorded once. Every one of them is signed by the node key: there is no exempt path and no exempt actor, and bootstrap enters through the same door as everything else. Event 10's payload carries `depth: 0`: it is a root endorsement, and §5 caps an issuance chain at 16, which is a cap a reader can only check if every link records where it sits.",
+  "expect": {
+    "chain": [
+      {
+        "seq": 1,
+        "kind": "core.r5e.io/v1/KindDefinition",
+        "name": "core.r5e.io/v1/KindDefinition",
+        "actor": "$nodeKey",
+        "identity": "signed",
+        "outcome": "admitted",
+        "hasRandom": true,
+        "hasOrigin": true
+      },
+      {
+        "seq": 2,
+        "name": "core.r5e.io/v1/CasExpired",
+        "actor": "$nodeKey",
+        "hasRandom": false,
+        "hasOrigin": true
+      },
+      {
+        "seq": 3,
+        "name": "core.r5e.io/v1/CasObject",
+        "actor": "$nodeKey",
+        "hasRandom": false
+      },
+      {
+        "seq": 4,
+        "name": "core.r5e.io/v1/Principal",
+        "actor": "$nodeKey"
+      },
+      {
+        "seq": 5,
+        "name": "core.r5e.io/v1/Endorsement",
+        "actor": "$nodeKey"
+      },
+      {
+        "seq": 6,
+        "name": "core.r5e.io/v1/Badge",
+        "actor": "$nodeKey"
+      },
+      {
+        "seq": 7,
+        "name": "core.r5e.io/v1/Succession",
+        "actor": "$nodeKey"
+      },
+      {
+        "seq": 8,
+        "name": "core.r5e.io/v1/Revocation",
+        "actor": "$nodeKey"
+      },
+      {
+        "seq": 9,
+        "name": "core.r5e.io/v1/Deployment",
+        "actor": "$nodeKey"
+      },
+      {
+        "seq": 10,
+        "kind": "core.r5e.io/v1/Endorsement",
+        "actor": "$nodeKey",
+        "identity": "signed",
+        "outcome": "admitted",
+        "signers": [
+          "$nodeKey"
+        ],
+        "depth": 0
+      }
+    ]
+  }
+}

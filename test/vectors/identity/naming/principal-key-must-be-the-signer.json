@@ -1,0 +1,20 @@
+{
+  "note": "KS-3 on a core Kind: `Principal.key` carries `matchesSigner: 1`, so a profile is always a key's account of itself.",
+  "kind": "core.r5e.io/v1/Principal",
+  "instance": {
+    "name": "$key.2",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "key": "$key.2",
+      "kind": "person",
+      "custody": "self"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "matchesSigner"
+  }
+}

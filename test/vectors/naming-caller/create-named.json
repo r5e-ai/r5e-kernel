@@ -1,0 +1,33 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "first-note",
+    "spec": {
+      "title": "t"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "first-note"
+  }
+}

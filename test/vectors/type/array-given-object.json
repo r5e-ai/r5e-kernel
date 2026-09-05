@@ -1,0 +1,47 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Types",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "s": {
+          "type": "string"
+        },
+        "i": {
+          "type": "integer"
+        },
+        "b": {
+          "type": "boolean"
+        },
+        "o": {
+          "type": "object"
+        },
+        "a": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "t6",
+    "spec": {
+      "a": {}
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "must be of type array"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "note": "§2: a countersigned Kind admitted on one signature is a countersignature that never happened.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Countersigned",
+    "version": "v1alpha1",
+    "substrate": "event",
+    "naming": {
+      "mode": "content"
+    },
+    "description": "A countersigned act: the subject proves possession by signing too.",
+    "schema": {
+      "required": [
+        "issuer",
+        "subject"
+      ],
+      "properties": {
+        "issuer": {
+          "type": "string",
+          "matchesSigner": 1
+        },
+        "subject": {
+          "type": "string",
+          "matchesSigner": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": [],
+    "signatures": 2
+  },
+  "instance": {
+    "spec": {
+      "issuer": "$key.1",
+      "subject": "$key.2"
+    },
+    "sign": [
+      1
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "signature count"
+  }
+}

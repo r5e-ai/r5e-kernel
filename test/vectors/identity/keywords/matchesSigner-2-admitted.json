@@ -1,0 +1,49 @@
+{
+  "note": "KS-3: `matchesSigner: 2` is `signatures[1]` — 1-based, as everywhere in the contract. Both signers are named on the record and both signed it.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Countersigned",
+    "version": "v1alpha1",
+    "substrate": "event",
+    "naming": {
+      "mode": "content"
+    },
+    "description": "A countersigned act: the subject proves possession by signing too.",
+    "schema": {
+      "required": [
+        "issuer",
+        "subject"
+      ],
+      "properties": {
+        "issuer": {
+          "type": "string",
+          "matchesSigner": 1
+        },
+        "subject": {
+          "type": "string",
+          "matchesSigner": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": [],
+    "signatures": 2
+  },
+  "instance": {
+    "spec": {
+      "issuer": "$key.1",
+      "subject": "$key.2"
+    },
+    "sign": [
+      1,
+      2
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "signers": [
+      "$key.1",
+      "$key.2"
+    ]
+  }
+}

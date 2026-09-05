@@ -1,0 +1,57 @@
+{
+  "note": "§2 path readmit: deny unless byte-identical.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Pathy",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "path"
+    },
+    "schema": {
+      "required": [
+        "group",
+        "version",
+        "kind"
+      ],
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "spec": {
+        "group": "a.example",
+        "version": "v1",
+        "kind": "Thing"
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "group": "a.example",
+      "version": "v1",
+      "kind": "Thing",
+      "note": "different bytes"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "already admitted with a different spec"
+  }
+}

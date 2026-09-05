@@ -1,0 +1,30 @@
+{
+  "note": "spec/05 §5, the writing half: an engine that wrote a kernel-derived object during `authorize` reports its address on the policy meta, and the kernel copies the list verbatim onto the event payload as `derivedObjects`, beside `policy`, and onto the receipt. The receipt and the record must agree — a list handed to a caller and not recorded would be a claim with no record behind it — and the export lists it, because §5 makes the manifest's `derivedObjects` the union over the payloads.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Governed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": { "mode": "caller" },
+    "description": "A thing whose admission the deriving test engine decides, and writes a record of.",
+    "schema": {
+      "required": ["title"],
+      "properties": { "title": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "policyDerives": ["{\"format\":\"r5e.policy-evaluation/1\",\"decision\":\"allow\"}"],
+  "instance": {
+    "name": "governed",
+    "spec": { "title": "decided, and the decision left an object behind" }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "governed",
+    "derivedObjects": ["$written.0"],
+    "derivedRegistered": "$written.0",
+    "exportDerivedObjects": ["$written.0"],
+    "objectPresent": "$written.0"
+  }
+}

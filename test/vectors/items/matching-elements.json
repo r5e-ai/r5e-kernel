@@ -1,0 +1,44 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Items",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counts": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "i1",
+    "spec": {
+      "tags": [
+        "a",
+        "b"
+      ]
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "i1"
+  }
+}

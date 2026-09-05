@@ -1,0 +1,44 @@
+{
+  "note": "§7: the halt lasts until replay. Rebuilding the derived views from the chain is what makes them agree with the record again, so it is what clears the halt — and the entry the failed write never made is on the store afterwards, because the log had it all along. The next admission is granted normally. (A restart clears it the same way, by starting from the log.)",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Thing",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "substrateFailure": "boom",
+  "setup": [
+    {
+      "name": "boom",
+      "raises": true,
+      "spec": {
+        "label": "the admission whose substrate write fails"
+      }
+    }
+  ],
+  "replayBeforeInstance": true,
+  "instance": {
+    "name": "after",
+    "spec": {
+      "label": "submitted after replay"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "after",
+    "notHalted": true
+  }
+}

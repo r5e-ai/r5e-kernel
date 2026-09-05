@@ -1,0 +1,80 @@
+{
+  "note": "KS-3/§0: key bytes arrive as canonical padded base64 or they do not arrive.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Keyed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "KS-3's three key-shaped keywords on one Kind: matchesSigner, derives, keyBytes.",
+    "schema": {
+      "required": [
+        "key",
+        "subject",
+        "subjectKey"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+          "matchesSigner": 1
+        },
+        "subject": {
+          "type": "string",
+          "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+          "derives": {
+            "keyIdOf": "subjectKey"
+          }
+        },
+        "subjectKey": {
+          "type": "object",
+          "keyBytes": true,
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "enum": [
+                "ed25519"
+              ]
+            },
+            "bytes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "algorithm",
+            "bytes"
+          ],
+          "additionalProperties": false
+        },
+        "label": {
+          "type": "string",
+          "enum": [
+            "a",
+            "b"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "k1",
+    "spec": {
+      "key": "$key.1",
+      "subject": "$key.2",
+      "subjectKey": {
+        "algorithm": "ed25519",
+        "bytes": "not base64 at all"
+      },
+      "label": "a"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "keyBytes: bytes must be canonical padded base64"
+  }
+}

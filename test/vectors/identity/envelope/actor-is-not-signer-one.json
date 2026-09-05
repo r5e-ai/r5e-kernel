@@ -1,0 +1,42 @@
+{
+  "note": "§2: the actor is the request's claim about itself; signer 1 is what the envelope proves. The denial is **recorded** — the signer is known, so the asking is an act — and the nonce is not claimed, because a request naming somebody else has not spent that somebody's nonce.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "requestPatch": {
+      "actor": "$key.2"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "actor mismatch",
+    "recorded": true,
+    "nonceClaimed": false,
+    "identity": "signed"
+  }
+}

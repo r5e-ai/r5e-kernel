@@ -1,0 +1,98 @@
+{
+  "note": "§7: the small-order public keys, copied verbatim from libsodium's ed25519 blacklist table (crypto_sign/ed25519/ref10/open.c, has_small_order) and compared the way libsodium compares it — the first 31 bytes exactly, byte 31 with the sign bit masked off. Seven rows plus that masking cover the eight small-order points (the identity, the point of order 2, both of order 4, all four of order 8) and the non-canonical encodings p and p+1 besides. Every one of them is refused as a public key, whatever signature accompanies it.",
+  "libsodiumBlacklist": [
+    {
+      "note": "0 (order 4)",
+      "publicKey": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "note": "1 (order 1)",
+      "publicKey": "0100000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "note": "2707385501144840649318225287225658788936804267575313519463743609750303402022 (order 8)",
+      "publicKey": "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05"
+    },
+    {
+      "note": "55188659117513257062467267217118295137698188065244968500265048394206261417927 (order 8)",
+      "publicKey": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a"
+    },
+    {
+      "note": "p-1 (order 2)",
+      "publicKey": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f"
+    },
+    {
+      "note": "p (order 4)",
+      "publicKey": "edffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f"
+    },
+    {
+      "note": "p+1 (order 1)",
+      "publicKey": "eeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f"
+    }
+  ],
+  "ed25519": [
+    {
+      "note": "small-order key: 0 (order 4)",
+      "publicKey": "0000000000000000000000000000000000000000000000000000000000000000",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "small-order key: 1 (order 1)",
+      "publicKey": "0100000000000000000000000000000000000000000000000000000000000000",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "small-order key: 2707385501144840649318225287225658788936804267575313519463743609750303402022 (order 8)",
+      "publicKey": "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "small-order key: 55188659117513257062467267217118295137698188065244968500265048394206261417927 (order 8)",
+      "publicKey": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "small-order key: p-1 (order 2)",
+      "publicKey": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "small-order key: p (order 4)",
+      "publicKey": "edffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "small-order key: p+1 (order 1)",
+      "publicKey": "eeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "the same rows with the sign bit of byte 31 set are the other four order-8 points",
+      "publicKey": "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc85",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    },
+    {
+      "note": "and its partner",
+      "publicKey": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    }
+  ]
+}

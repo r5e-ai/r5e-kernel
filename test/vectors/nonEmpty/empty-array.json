@@ -1,0 +1,45 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "NonEmpty",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "object",
+            "array"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "nonEmpty": [
+        "title",
+        "note"
+      ]
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n4",
+    "spec": {
+      "title": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "is declared nonEmpty but is empty"
+  }
+}

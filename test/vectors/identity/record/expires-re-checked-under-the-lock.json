@@ -1,0 +1,40 @@
+{
+  "note": "§6: `expires` is re-checked under the append lock against the clock the kernel is about to write with. A request that was fresh at `authenticate` and is stale by `record` is denied terminally — it is not retried, because time does not move back.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "expires": "auto"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "record",
+    "reasonIncludes": "expired",
+    "recorded": true
+  },
+  "clock": "2026-09-02T00:00:00Z",
+  "clockAtRecord": "2026-09-02T03:00:00Z"
+}

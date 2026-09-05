@@ -1,0 +1,21 @@
+{
+  "note": "§8: a surrogate half is not a character. Either half alone, or a high half followed by anything but a low one, is refused rather than encoded as replacement bytes.",
+  "canonical": [
+    {
+      "rawJson": "{\"a\":\"\\ud83d\"}",
+      "error": "not followed by a low surrogate"
+    },
+    {
+      "rawJson": "{\"a\":\"\\udc00\"}",
+      "error": "unpaired low surrogate"
+    },
+    {
+      "rawJson": "{\"a\":\"\\ud83d\\u0041\"}",
+      "error": "not followed by a low surrogate"
+    },
+    {
+      "rawJson": "{\"a\":\"\\ud83d\\ude00\"}",
+      "bytes": "{\"a\":\"😀\"}"
+    }
+  ]
+}

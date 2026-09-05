@@ -1,0 +1,68 @@
+{
+  "note": "retention: \"public-record\" on the declaring ref (§4, §5) is not a fact that may later go away: it says this object is never to be expired. The refusal is reported as the stronger of the two, and names the citing seq. Contract 011 §10: CasExpired declares requiresAuthority, so the sweeper signs with the retention key and cites the Endorsement the node key gave it at event 10.",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Cites",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "description": "Cites raw bytes, once plainly and once as a public record.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "blob": {
+            "type": "ref",
+            "ref": {
+              "bytes": true
+            }
+          },
+          "archived": {
+            "type": "ref",
+            "ref": {
+              "bytes": true,
+              "retention": "public-record"
+            }
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "kind": "core.r5e.io/v1/CasExpired",
+  "cas": [
+    "the public record"
+  ],
+  "setup": [
+    {
+      "kind": "vectors.r5e.io/v1alpha1/Cites",
+      "name": "c",
+      "spec": {
+        "archived": {
+          "$ref": "$cas.0"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "address": "$cas.0"
+    },
+    "signAs": "retention",
+    "authority": [
+      "$retentionEndorsement"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "cited with retention \"public-record\"",
+    "objectPresent": "$cas.0"
+  }
+}

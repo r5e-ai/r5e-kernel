@@ -1,0 +1,30 @@
+{
+  "note": "§1: description is a string; newlines are allowed.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "K",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "a": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": [],
+      "description": "line one\nline two"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "vectors.r5e.io/v1alpha1/K"
+  }
+}

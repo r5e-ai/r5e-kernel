@@ -1,0 +1,38 @@
+{
+  "note": "§2: `*` is legal so the fallback shape cedar.* can be named.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Shape",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "derived",
+      "derive": "{engine}.{kind}"
+    },
+    "schema": {
+      "required": [
+        "engine"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "spec": {
+      "engine": "cedar",
+      "kind": "*"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "cedar.*"
+  }
+}

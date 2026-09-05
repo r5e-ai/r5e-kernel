@@ -1,0 +1,14 @@
+{
+  "note": "§1: the label is omitted when no header arrived. \"No label\" and \"an empty label\" are different claims, and the record makes only the one that is true.",
+  "kind": "core.r5e.io/v1/CasObject",
+  "instance": {
+    "door": "cas",
+    "body": "unlabelled bytes"
+  },
+  "expect": {
+    "outcome": "admitted",
+    "payloadSpec": {
+      "class": "raw"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "note": "§9: the trust file's schema is closed — `key`, and optionally `label`, `kinds`, `notBefore`, `notAfter`. A reader who wrote a key nobody implemented believes something the tool does not do, and is told so rather than having it ignored.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "body": "hello"
+    }
+  },
+  "verify": {
+    "trustFile": [
+      {
+        "key": "$nodeKey",
+        "colour": "blue"
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "error": "undeclared key"
+    }
+  }
+}

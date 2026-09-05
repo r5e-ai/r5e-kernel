@@ -1,0 +1,55 @@
+{
+  "note": "§0: an explicit null is not-exists, here as everywhere.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Termed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A term and a pair of alternatives: `ordered` and `atMostOne` on one Kind.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "notBefore": {
+          "type": "string"
+        },
+        "notAfter": {
+          "type": "string"
+        },
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "string"
+        }
+      },
+      "ordered": [
+        [
+          "notBefore",
+          "notAfter"
+        ]
+      ],
+      "atMostOne": [
+        [
+          "a",
+          "b"
+        ]
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "t1",
+    "spec": {
+      "notBefore": null,
+      "notAfter": "2036-01-01T00:00:00Z"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "t1"
+  }
+}

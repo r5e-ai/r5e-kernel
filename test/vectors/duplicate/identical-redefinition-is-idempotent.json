@@ -1,0 +1,56 @@
+{
+  "note": "§1: a second definition with the same identity is denied unless byte-identical.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "setup": [
+    {
+      "spec": {
+        "group": "vectors.r5e.io",
+        "kind": "Dup",
+        "version": "v1alpha1",
+        "substrate": "resource",
+        "naming": {
+          "mode": "caller"
+        },
+        "schema": {
+          "required": [
+            "a"
+          ],
+          "properties": {
+            "a": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "predicates": []
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "Dup",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [
+          "a"
+        ],
+        "properties": {
+          "a": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "vectors.r5e.io/v1alpha1/Dup"
+  }
+}

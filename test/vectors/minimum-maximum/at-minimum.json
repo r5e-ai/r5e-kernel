@@ -1,0 +1,33 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Bounds",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "b2",
+    "spec": {
+      "status": 100
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "b2"
+  }
+}

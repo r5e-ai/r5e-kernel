@@ -1,0 +1,35 @@
+{
+  "note": "§1: a scope missing doesNotClaim is malformed, not absent — denied at validateStructure by the kernel's own check, before the meta-Kind's nested `required` would have caught it at validateConstraints.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "K",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "a": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": [],
+      "epistemicScope": {
+        "claims": [
+          "only half a scope"
+        ]
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "epistemicScope must be"
+  }
+}

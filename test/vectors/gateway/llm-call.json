@@ -1,0 +1,105 @@
+{
+  "group": "gateway.r5e.io",
+  "kind": "LlmCall",
+  "version": "v1alpha1",
+  "substrate": "event",
+  "naming": {
+    "mode": "content"
+  },
+  "description": "One request to a model: who asked, which model, with which prompt. Parameter values are strings, integers, or booleans; a floating-point parameter such as a temperature is recorded as its decimal string.",
+  "schema": {
+    "required": [
+      "model",
+      "prompt"
+    ],
+    "properties": {
+      "model": {
+        "type": "string"
+      },
+      "prompt": {
+        "type": "ref",
+        "ref": {
+          "kind": "gateway.r5e.io/v1alpha1/Prompt"
+        }
+      },
+      "provider": {
+        "type": "string"
+      },
+      "upstreamHost": {
+        "type": "string"
+      },
+      "transport": {
+        "type": "string",
+        "enum": [
+          "https",
+          "https-sse",
+          "wss"
+        ]
+      },
+      "apiFormat": {
+        "type": "string"
+      },
+      "requestPath": {
+        "type": "string"
+      },
+      "session": {
+        "type": "ref",
+        "ref": {
+          "kind": "gateway.r5e.io/v1alpha1/AgentSession"
+        }
+      },
+      "sourceIds": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string"
+          },
+          "run": {
+            "type": "string"
+          },
+          "turn": {
+            "type": "string"
+          },
+          "step": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "startedAt": {
+        "type": "string"
+      },
+      "tools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "parameters": {
+        "type": "object",
+        "values": {
+          "type": [
+            "string",
+            "integer",
+            "boolean"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "nonEmpty": [
+      "model"
+    ]
+  },
+  "epistemicScope": {
+    "claims": [
+      "the recorded actor asked model `model` to complete the prompt at `prompt`, at the recorded position on the chain"
+    ],
+    "doesNotClaim": [
+      "that the provider received it",
+      "that a response occurred (see LlmResponse)",
+      "that the recorded actor held the key whose fingerprint is recorded — admissions are not yet signed by their actors"
+    ]
+  },
+  "predicates": []
+}

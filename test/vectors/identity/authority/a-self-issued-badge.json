@@ -1,0 +1,33 @@
+{
+  "note": "§1/§5: issuer and subject may be the same key — both signatures from one key. A self-issued Badge is a real act: it is how a key says which of its acts are done in which capacity, and the record shows the issuer and the subject are one.",
+  "kind": "core.r5e.io/v1/Badge",
+  "instance": {
+    "kind": "core.r5e.io/v1/Badge",
+    "sign": [
+      1,
+      1
+    ],
+    "spec": {
+      "subject": "$key.1",
+      "subjectKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.1.bytes"
+      },
+      "kinds": [
+        "vectors.r5e.io/v1alpha1/Note"
+      ],
+      "mayIssue": false,
+      "notBefore": "2020-01-01T00:00:00Z",
+      "notAfter": "2099-01-01T00:00:00Z",
+      "subjectKind": "agent"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "signers": [
+      "$key.1",
+      "$key.1"
+    ],
+    "recorded": true
+  }
+}

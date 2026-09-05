@@ -1,0 +1,41 @@
+{
+  "note": "§2: a byte-identical re-admission is a new event; the store entry is unchanged.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Contented",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "content"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "spec": {
+        "title": "hello"
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "title": "hello"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "sha256:cf6c63ce25116b04e3b776a2957606e18d8ac798dde21e3ec30882ac2dfbe0cb",
+    "entryUnchanged": true
+  }
+}

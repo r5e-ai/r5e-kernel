@@ -1,0 +1,7 @@
+{
+  "note": "§8: `\\/` is legal input and decodes to `/`; the encoder never writes it back, because `/` is never escaped.",
+  "canonical": {
+    "rawJson": "{\"p\":\"a\\/b\"}",
+    "bytes": "{\"p\":\"a/b\"}"
+  }
+}

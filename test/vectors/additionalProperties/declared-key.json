@@ -1,0 +1,31 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Closed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "c1",
+    "spec": {
+      "a": "x"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "c1"
+  }
+}

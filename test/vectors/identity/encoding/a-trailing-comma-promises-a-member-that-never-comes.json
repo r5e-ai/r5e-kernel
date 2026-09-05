@@ -1,0 +1,13 @@
+{
+  "note": "§8: a comma promises another member. Reading `[1,2,]` as `[1,2]` would make two different documents hash the same, which is the collision the canonical form exists to refuse.",
+  "canonical": [
+    {
+      "rawJson": "[1,2,]",
+      "error": "a trailing comma"
+    },
+    {
+      "rawJson": "{\"a\":1,}",
+      "error": "a trailing comma"
+    }
+  ]
+}

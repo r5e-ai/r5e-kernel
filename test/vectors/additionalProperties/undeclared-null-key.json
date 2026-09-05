@@ -1,0 +1,33 @@
+{
+  "note": "§0's null rule is about declared properties; an undeclared key is still a key.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Closed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "c3",
+    "spec": {
+      "z": null
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "undeclared key \"z\""
+  }
+}

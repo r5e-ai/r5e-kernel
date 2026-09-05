@@ -1,0 +1,39 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Pattern",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "animal": {
+          "type": "string",
+          "pattern": "(cat|dog)"
+        },
+        "loose": {
+          "type": [
+            "string",
+            "integer"
+          ],
+          "pattern": "[a-z]+"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "p1",
+    "spec": {
+      "animal": "cat"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "p1"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "note": "§2 lists `requiresAuthority` *before* the base checks; this kernel runs both after them, because naming reads spec fields the base checks establish and `requiresAuthority` is asked beside naming. The two orders disagree only on a request that is both misshapen and unauthorised, and this vector pins which reason such a request gets here. See spec-011-implementation-notes.md §2.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "RequiringShaped",
+    "version": "v1alpha1",
+    "substrate": "event",
+    "naming": {
+      "mode": "content"
+    },
+    "description": "A Kind admitted only under cited authority, with a closed schema.",
+    "schema": {
+      "required": [
+        "note"
+      ],
+      "properties": {
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": [],
+    "requiresAuthority": true
+  },
+  "instance": {
+    "spec": {
+      "note": "shaped wrong",
+      "undeclared": true
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "undeclared key \"undeclared\""
+  }
+}

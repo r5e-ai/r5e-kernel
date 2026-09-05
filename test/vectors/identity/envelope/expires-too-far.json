@@ -1,0 +1,40 @@
+{
+  "note": "§2: 24 hours of reach ahead, and no more — an envelope good for a year is a bearer token.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "expires": "2026-09-04T00:00:00Z"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "expires too far",
+    "recorded": true,
+    "nonceClaimed": true
+  },
+  "clock": "2026-09-02T00:00:00Z"
+}

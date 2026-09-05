@@ -1,0 +1,72 @@
+{
+  "note": "§9, the other half: the same chain under `--posture house` prints the count and reports nothing. The posture is the reader's; the deployment's own `Deployment` declaration is printed beside it and decides nothing.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Badge",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": false,
+        "subjectKind": "person",
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "name": "n1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "under a badge"
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "verify": {
+    "posture": "house"
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "noFindings": true,
+      "lines": {
+        "identities": "reader posture: house"
+      }
+    }
+  }
+}

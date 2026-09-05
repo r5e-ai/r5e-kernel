@@ -1,0 +1,50 @@
+{
+  "note": "Contract r4.2: `Principal` declares `readmitBy: actorOfRecord`. A successor does not re-admit its predecessor's profile — the Succession event **is** the record of the key change, and the successor publishes its own profile under its own key. So the two claims stay separable: what the old key said about itself, and what the new key says about itself, each signed by the key it describes.",
+  "kind": "core.r5e.io/v1/Principal",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Principal",
+      "name": "$key.1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "key": "$key.1",
+        "kind": "person",
+        "custody": "self"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Principal",
+    "name": "$key.1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "key": "$key.1",
+      "kind": "person",
+      "custody": "kms"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "readmitBy: actorOfRecord"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "note": "§1/§4: an envelope carries one or two signatures, so a Kind asking for three is asking for something the envelope cannot express. §1's meta-check on a submitted definition names the rule before the meta-Kind v3's own `maximum: 2` would.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "ThreeSignatures",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "description": "A countersigned act: the subject proves possession by signing too.",
+      "schema": {
+        "required": [
+          "issuer",
+          "subject"
+        ],
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "matchesSigner": 1
+          },
+          "subject": {
+            "type": "string",
+            "matchesSigner": 2
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": [],
+      "signatures": 3
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "signatures must be 1 or 2"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "note": "§2 server: the name is the admission event's own hash, so target.name is omitted at record.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Session",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "server"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "harness": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "spec": {
+      "harness": "claude-code"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "nameMatches": "^event:sha256:[0-9a-f]{64}$",
+    "targetNameOmitted": true
+  }
+}

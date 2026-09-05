@@ -1,0 +1,47 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Pathy",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "path"
+    },
+    "schema": {
+      "required": [
+        "group",
+        "version",
+        "kind"
+      ],
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "elsewhere",
+    "spec": {
+      "group": "a.example",
+      "version": "v1",
+      "kind": "Thing"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "names this instance"
+  }
+}

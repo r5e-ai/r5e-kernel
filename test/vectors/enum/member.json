@@ -1,0 +1,37 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Enum",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "outcome"
+      ],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "error"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "e1",
+    "spec": {
+      "outcome": "ok"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "e1"
+  }
+}

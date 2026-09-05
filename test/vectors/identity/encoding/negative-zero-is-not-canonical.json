@@ -1,0 +1,7 @@
+{
+  "note": "§8: `-0` is not canonical. It is a second spelling of zero, and a canonical form that admits two spellings of one value is not one.",
+  "canonical": {
+    "rawJson": "{\"n\":-0}",
+    "error": "-0 is not canonical"
+  }
+}

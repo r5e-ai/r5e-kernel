@@ -1,0 +1,55 @@
+{
+  "note": "KS-3: `ordered` compares two instants after normalization; notBefore is before notAfter.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Termed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A term and a pair of alternatives: `ordered` and `atMostOne` on one Kind.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "notBefore": {
+          "type": "string"
+        },
+        "notAfter": {
+          "type": "string"
+        },
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "string"
+        }
+      },
+      "ordered": [
+        [
+          "notBefore",
+          "notAfter"
+        ]
+      ],
+      "atMostOne": [
+        [
+          "a",
+          "b"
+        ]
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "t1",
+    "spec": {
+      "notBefore": "2026-01-01T00:00:00Z",
+      "notAfter": "2036-01-01T00:00:00Z"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "t1"
+  }
+}

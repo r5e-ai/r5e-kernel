@@ -1,0 +1,10 @@
+{
+  "note": "§10: origin = sha256(uvarint(32) || random || uvarint(32) || nodePublicKey). `random` is on the record at event 1, so a reader with the node public key re-derives this and checks that the deployment did not simply pick one.",
+  "derivations": {
+    "origin": {
+      "random": "eC2FFgKZPW1oo4FHGJsAT3MAwCRKr+anaxahIuUsHg0=",
+      "nodePublicKey": "RO01xf2gKgJOWvpusCWmpqyABMNLitgha0udwiEvWYo=",
+      "origin": "sha256:e36676d58f24fe0f9af782a6676e664912b6e55ea33c1c265e2fccd217cd467e"
+    }
+  }
+}

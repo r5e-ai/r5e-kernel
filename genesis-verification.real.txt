@@ -1,0 +1,29 @@
+r5e verifier -- bundle: /Users/thomas/Documents/repos/r5e-kernel/.r5e/exports/bundle-1788321140
+
+checked:
+  chain: intact -- 3 events, seq contiguous, every hash recomputed from canonical encoding, every prev link verified
+  checkpoint signature: verified (ed25519 over DSSE PAE) against bundled key sha256:d087e43fdf3a... -- proves log integrity as attested by that key, NOT the key holder's identity
+  STH: signed chain head matches the last event hash (seq 3)
+  merkle: root rebuilt from 3 event hashes matches the signed STH root; inclusion proofs generated and verified for all 3 events
+  payloads: 3/3 event payloads present in bundle CAS and matching their address
+  claims: 3 admissions, 0 denials, by 2 actor(s) (system:bootstrap, person:thomas) -- actor identity is a recorded fingerprint, NOT a verified signature
+
+epistemic scope of Kinds involved:
+  core.r5e.io/v1 Charter
+    claims: this content is the charter text the recorded actor admitted at this version, at the recorded position on the chain; the signing statement travels with the charter whose signature it scopes
+    does NOT claim: finality -- principle 4 governs supersession, in public, never silently; soundness of the principles themselves -- a signature proves who stood behind the words and when, never that the words are right
+  core.r5e.io/v1 KindDefinition
+    claims: a Kind with this identity, substrate and schema was submitted by the recorded actor and admitted at the recorded position on the chain; subsequent instances of the defined Kind were validated against this schema at admission
+    does NOT claim: the defined Kind's schema is meaningful, complete, or fit for any purpose; instances of the defined Kind are correct, or that their content is sound
+
+findings:
+  none -- every check above passed on this bundle's contents
+
+not checked (state this wherever the output is quoted):
+  key-to-identity binding: the checkpoint key is self-declared -- no endorsement chain ties it to a person, office, or deployment (spec/03)
+  actor signatures on admissions: actor key fingerprints are asserted at admission, not proven by signature
+  endorsement chains (spec/03 -- not implemented in this slice)
+  equivocation/split-view: consistency is proven only between the checkpoints presented to this run; detecting a forked log served to different audiences requires independent witnesses gossiping STHs
+  completeness attestations (none present; absence of events from the world is never provable)
+  consistency with an earlier checkpoint: no prior export presented (pass --prior PATH_TO_EARLIER_BUNDLE)
+

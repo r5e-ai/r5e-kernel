@@ -1,0 +1,105 @@
+{
+  "note": "sameAnchor: same anchor, same actor, and the target is the head over admitted events for that anchor. The observed head is recorded on the manifest entry, and §7's record re-checks it under the append lock; here nothing moves in between, so the head that resolve saw is the head that committed.",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Target",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "label": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Reply",
+    "version": "v1alpha1",
+    "substrate": "event",
+    "naming": {
+      "mode": "content"
+    },
+    "description": "An event that may supersede an earlier one anchored on the same thing.",
+    "schema": {
+      "required": [
+        "anchor"
+      ],
+      "properties": {
+        "anchor": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Target"
+          }
+        },
+        "body": {
+          "type": "string"
+        },
+        "supersedes": {
+          "type": "ref",
+          "ref": {
+            "event": "vectors.r5e.io/v1alpha1/Reply",
+            "outcome": "admitted",
+            "sameAnchor": "anchor"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "vectors.r5e.io/v1alpha1/Target",
+      "name": "t1",
+      "spec": {
+        "label": "one"
+      }
+    },
+    {
+      "spec": {
+        "anchor": {
+          "$ref": "vectors.r5e.io/v1alpha1/Target/t1"
+        },
+        "body": "first"
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "anchor": {
+        "$ref": "vectors.r5e.io/v1alpha1/Target/t1"
+      },
+      "body": "second",
+      "supersedes": {
+        "$ref": "$setup.1.eventRef"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "resolvedRefs": [
+      {
+        "path": "/anchor",
+        "class": "kind",
+        "value": "vectors.r5e.io/v1alpha1/Target/t1"
+      },
+      {
+        "path": "/supersedes",
+        "class": "event",
+        "value": "$setup.1.eventRef",
+        "anchorField": "anchor",
+        "head": "$setup.1.eventRef"
+      }
+    ]
+  }
+}

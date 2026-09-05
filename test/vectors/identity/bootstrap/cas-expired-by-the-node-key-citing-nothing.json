@@ -1,0 +1,19 @@
+{
+  "note": "§10: the node key holds no standing permission to delete bytes. `CasExpired` declares `requiresAuthority`, and an act citing nothing is refused whoever signed it — which is the point of giving the sweeper a key of its own.",
+  "kind": "core.r5e.io/v1/CasExpired",
+  "cas": [
+    "ephemeral bytes"
+  ],
+  "instance": {
+    "signAs": "node",
+    "spec": {
+      "address": "$cas.0"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "authority required",
+    "objectPresent": "$cas.0"
+  }
+}

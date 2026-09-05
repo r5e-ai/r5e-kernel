@@ -1,0 +1,32 @@
+{
+  "note": "§0: the key id is sha256(uvarint(len(tag)) || tag || publicKeyBytes), hex, prefixed `key:<alg>:sha256:`. The tag is inside the hash, so the same 32 bytes under a future algorithm are a different key id.",
+  "derivations": {
+    "keyIds": [
+      {
+        "algorithm": "ed25519",
+        "bytes": "RO01xf2gKgJOWvpusCWmpqyABMNLitgha0udwiEvWYo=",
+        "id": "key:ed25519:sha256:6c0f50379aacdf03d3494acddcae5b1ea801a5361bb2c54963eb2c2e4d13a7b3"
+      },
+      {
+        "algorithm": "ed25519",
+        "bytes": "reCbOBymrlZodO2x3E7HkWoSFhcLn25WEbRQTJW8/+k=",
+        "id": "key:ed25519:sha256:786bc8440809a13153c56315289fbc4125fe440137313bb7370600dfd9f80c5a"
+      },
+      {
+        "algorithm": "ed25519",
+        "bytes": "48yyGgfG1rWcDwLgaKnsc4wWXhoIbCA48Cv2riRWinQ=",
+        "id": "key:ed25519:sha256:b33ee67071cfa1de1ccfcf46f1e0bc09db2c2ccbeb02159e690e4300e898905e"
+      },
+      {
+        "algorithm": "ed25519",
+        "bytes": "RO01xf2gKgJOWvpusCWmpqyABMNLitgha0udwiEvWQ==",
+        "error": "is 32 bytes, got 31"
+      },
+      {
+        "algorithm": "ed448",
+        "bytes": "RO01xf2gKgJOWvpusCWmpqyABMNLitgha0udwiEvWYo=",
+        "error": "unknown algorithm"
+      }
+    ]
+  }
+}

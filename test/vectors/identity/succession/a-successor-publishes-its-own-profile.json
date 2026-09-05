@@ -1,0 +1,49 @@
+{
+  "note": "Contract r4.2, the other half: the successor is not shut out, it is named separately. Its profile is a `Principal` under its own key, signed by it — which is what `matchesSigner: 1` on `key` was always asking for.",
+  "kind": "core.r5e.io/v1/Principal",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Principal",
+      "name": "$key.1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "key": "$key.1",
+        "kind": "person",
+        "custody": "self"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Principal",
+    "name": "$key.2",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "key": "$key.2",
+      "kind": "person",
+      "custody": "kms"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "$key.2"
+  }
+}

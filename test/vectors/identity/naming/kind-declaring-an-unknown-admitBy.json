@@ -1,0 +1,32 @@
+{
+  "note": "§4/KS-4: `nodeKey` is the only value `admitBy` takes.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "AdmitByUnknown",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller",
+        "admitBy": "anyone"
+      },
+      "description": "For the readmitBy placement rule.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "body": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "admitBy takes only \"nodeKey\""
+  }
+}

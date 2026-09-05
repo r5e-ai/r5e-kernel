@@ -1,0 +1,61 @@
+{
+  "note": "The one class of object that legitimately has no CasObject admission (§5): bytes the kernel wrote inside an admission. It resolves, its manifest entry records derived: true beside a null casObjectEvent, and the export lists it under derivedObjects so a verifier does not read the null as a gap.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Cites",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "Cites raw bytes, once plainly and once as a public record.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "archived": {
+          "type": "ref",
+          "ref": {
+            "bytes": true,
+            "retention": "public-record"
+          }
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "derivedObjects": [
+    "{\"format\":\"r5e.policy-evaluation/1\"}"
+  ],
+  "instance": {
+    "name": "c",
+    "spec": {
+      "blob": {
+        "$ref": "$derived.0"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "c",
+    "resolvedRefs": [
+      {
+        "path": "/blob",
+        "class": "bytes",
+        "value": "$derived.0",
+        "size": 36,
+        "casObjectEvent": null,
+        "derived": true
+      }
+    ]
+  }
+}

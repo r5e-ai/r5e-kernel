@@ -1,0 +1,7 @@
+{
+  "note": "§8: integers are decimal with an optional leading `-` and no leading zeros.",
+  "canonical": {
+    "rawJson": "{\"n\":-5}",
+    "bytes": "{\"n\":-5}"
+  }
+}

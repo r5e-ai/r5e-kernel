@@ -1,0 +1,71 @@
+{
+  "note": "Root object is depth 1; the deepest container here sits at 16.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Limits",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "deep": {
+          "type": "object"
+        },
+        "bag": {
+          "type": "object"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "l1",
+    "spec": {
+      "deep": {
+        "x": {
+          "x": {
+            "x": {
+              "x": {
+                "x": {
+                  "x": {
+                    "x": {
+                      "x": {
+                        "x": {
+                          "x": {
+                            "x": {
+                              "x": {
+                                "x": {
+                                  "x": {
+                                    "x": 1
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "l1"
+  }
+}

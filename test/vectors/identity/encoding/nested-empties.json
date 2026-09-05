@@ -1,0 +1,7 @@
+{
+  "note": "§8: separators are `,` and `:` and nothing else, at every depth, empty containers included.",
+  "canonical": {
+    "rawJson": "{ \"a\" : { } , \"b\" : [ ] , \"c\" : [ { } , [ ] ] }",
+    "bytes": "{\"a\":{},\"b\":[],\"c\":[{},[]]}"
+  }
+}

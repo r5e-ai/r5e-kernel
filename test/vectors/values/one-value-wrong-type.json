@@ -1,0 +1,53 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Values",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "parameters": {
+          "type": "object",
+          "values": {
+            "type": [
+              "string",
+              "integer",
+              "boolean"
+            ]
+          }
+        },
+        "labels": {
+          "type": "object",
+          "values": {
+            "type": "string",
+            "enum": [
+              "a",
+              "b"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "v4",
+    "spec": {
+      "parameters": {
+        "tools": [
+          "a"
+        ]
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "/parameters/tools"
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "note": "§9's second golden report: a **working** chain — a Principal, an Endorsement chain of depth 2, a self-issued Badge, a Succession, a Revocation, a denial, a CasObject and the CasExpired the sweeper writes for it, and a Deployment. Every number on the report is a fact about those acts, and the report is read line by line in the implementation notes. Keys and clock are fixed for the same reason as the bootstrap report.",
+  "fixedKeys": true,
+  "clock": "2026-09-02T00:00:00Z",
+  "clockAtInstance": "2026-09-05T00:00:00Z",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a working chain has something ordinary to admit under authority.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "cas": [
+    {
+      "bytes": "an object nobody ends up citing",
+      "mediaType": "text/plain"
+    }
+  ],
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Principal",
+      "name": "$key.1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "key": "$key.1",
+        "kind": "person",
+        "custody": "self",
+        "displayName": "the vector's first key"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "signAs": "node",
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "role": "issuer",
+        "kinds": [
+          "core.r5e.io/v1/Endorsement",
+          "vectors.r5e.io/v1alpha1/Note"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        2
+      ],
+      "authority": [
+        "$setup.1.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.3",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.3.bytes"
+        },
+        "role": "writer",
+        "kinds": [
+          "vectors.r5e.io/v1alpha1/Note"
+        ],
+        "mayIssue": false,
+        "parent": {
+          "$ref": "$setup.1.eventRef"
+        },
+        "notBefore": "2021-01-01T00:00:00Z",
+        "notAfter": "2098-01-01T00:00:00Z"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Badge",
+      "sign": [
+        4,
+        4
+      ],
+      "spec": {
+        "subject": "$key.4",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.4.bytes"
+        },
+        "kinds": [
+          "vectors.r5e.io/v1alpha1/Note"
+        ],
+        "mayIssue": false,
+        "subjectKind": "agent",
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        5,
+        6
+      ],
+      "spec": {
+        "predecessor": "$key.5",
+        "successor": "$key.6",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.6.bytes"
+        },
+        "reason": "planned rotation"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Revocation",
+      "sign": [
+        4
+      ],
+      "spec": {
+        "revokes": {
+          "$ref": "$setup.3.eventRef"
+        },
+        "reason": "no longer needed"
+      }
+    },
+    {
+      "name": "denied-note",
+      "sign": [
+        7
+      ],
+      "denied": true,
+      "authority": [
+        "$setup.1.eventRef"
+      ],
+      "spec": {
+        "body": "not mine to cite"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Deployment",
+      "name": "deployment",
+      "signAs": "node",
+      "spec": {
+        "commons": false,
+        "declaredBy": "$nodeKey",
+        "statement": "a house: its own agents, its own fence"
+      }
+    }
+  ],
+  "instance": {
+    "name": "n1",
+    "sign": [
+      3
+    ],
+    "authority": [
+      "$setup.2.eventRef"
+    ],
+    "spec": {
+      "body": "written under a chain of two endorsements"
+    }
+  },
+  "sweep": {
+    "ttlSeconds": 86400
+  },
+  "verify": {
+    "posture": "house",
+    "trust": [
+      {
+        "key": "$nodeKey",
+        "label": "the node"
+      }
+    ]
+  },
+  "report": "reports/working-chain.txt",
+  "expect": {
+    "outcome": "admitted",
+    "name": "n1",
+    "authorityRoots": [
+      "$nodeKey"
+    ],
+    "verifier": {
+      "noFindings": true,
+      "lines": {
+        "signatures": "0 legacy unsigned",
+        "endorsements": "3 chains cited across 3 admissions; 3 resolved to a pinned root; 0 cut",
+        "identities": "reader posture: house"
+      }
+    }
+  }
+}

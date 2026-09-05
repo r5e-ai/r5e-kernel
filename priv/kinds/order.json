@@ -1,0 +1,14 @@
+{
+  "format": "r5e.seed-order/1",
+  "files": [
+    "kind-definition.v3.json",
+    "cas-expired.v2.json",
+    "cas-object.v1.json",
+    "principal.json",
+    "endorsement.json",
+    "badge.json",
+    "succession.json",
+    "revocation.json",
+    "deployment.json"
+  ]
+}

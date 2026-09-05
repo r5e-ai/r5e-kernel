@@ -1,0 +1,102 @@
+{
+  "note": "verify-3 §4 (a), verbatim: root→A→B; A revoked at seq r after B was issued at b; B cited by an act at c > r. `effective(B, c)`: clauses 2–6 pass, clause 7 passes (immutable facts), clause 8 recurses into A whose clause 3 finds the Revocation → `(false, \"parent: revoked at r\")`. The kernel's string is `resolve: authority ineffective: parent: revoked at r`, and §6 re-derives the same denial at record. Reachable on a chain only as a denial or a forged event.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "role": "root"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        2
+      ],
+      "spec": {
+        "subject": "$key.3",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.3.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": false,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "role": "B",
+        "parent": {
+          "$ref": "$setup.0.eventRef"
+        }
+      },
+      "authority": [
+        "$setup.0.eventRef"
+      ]
+    },
+    {
+      "kind": "core.r5e.io/v1/Revocation",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "revokes": {
+          "$ref": "$setup.0.eventRef"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "name": "c",
+    "sign": [
+      3
+    ],
+    "spec": {
+      "body": "cited after the revocation"
+    },
+    "authority": [
+      "$setup.1.eventRef"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "authority ineffective: parent: revoked at $setup.2.seq",
+    "recorded": true
+  }
+}

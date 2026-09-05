@@ -1,0 +1,41 @@
+{
+  "note": "§3: whole-string match. An alternation must not full-match only its first branch.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Pattern",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "animal": {
+          "type": "string",
+          "pattern": "(cat|dog)"
+        },
+        "loose": {
+          "type": [
+            "string",
+            "integer"
+          ],
+          "pattern": "[a-z]+"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "p2",
+    "spec": {
+      "animal": "catfish"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "does not match pattern"
+  }
+}

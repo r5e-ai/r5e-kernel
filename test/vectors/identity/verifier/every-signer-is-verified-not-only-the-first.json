@@ -1,0 +1,50 @@
+{
+  "note": "§9: **every** signature on every `identity: signed` payload is verified, with the `publicKeys` recorded on that same payload — offline, with no key lookup anywhere. A countersigned act whose *second* signature is altered inside the bundle is caught, which is the half a check that only looked at signer 1 would miss. The kernel admitted this Succession with both signatures good; the bundle is what changed.",
+  "kind": "core.r5e.io/v1/Principal",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "name": "$key.3",
+    "sign": [
+      3
+    ],
+    "spec": {
+      "key": "$key.3",
+      "kind": "person",
+      "custody": "self"
+    }
+  },
+  "verify": {
+    "editPayload": [
+      {
+        "payloadOf": 0,
+        "tamper": {
+          "signature": 2
+        }
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "findings": [
+        "signature"
+      ]
+    }
+  }
+}

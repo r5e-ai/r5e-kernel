@@ -1,0 +1,41 @@
+{
+  "note": "§0: and at most one incoming edge per successor — two principals cannot converge on one continuation.",
+  "kind": "core.r5e.io/v1/Succession",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Succession",
+    "sign": [
+      3,
+      2
+    ],
+    "spec": {
+      "predecessor": "$key.3",
+      "successor": "$key.2",
+      "successorKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.2.bytes"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "successor already succeeded"
+  }
+}

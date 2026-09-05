@@ -1,0 +1,35 @@
+{
+  "note": "§2: {{ and }} escape braces, so this template renders \"{lit}-x\" — which is then charset-checked, and { } are not legal name characters. The escape is legal; the name it produces is not.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Escaped",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "derived",
+      "derive": "{{lit}}-{a}"
+    },
+    "schema": {
+      "required": [
+        "a"
+      ],
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "spec": {
+      "a": "x"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "is not a legal name"
+  }
+}

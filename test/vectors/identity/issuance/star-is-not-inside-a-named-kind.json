@@ -1,0 +1,56 @@
+{
+  "note": "§5: `[\"*\"] ⊆ [\"x/v1/Y\"]` is false — top is not inside anything but top. The parent here covers `Endorsement` and `Note`, so the issuing act passes the citing Kind test and the *issuance* test is what refuses it.",
+  "kind": "core.r5e.io/v1/Endorsement",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "core.r5e.io/v1/Endorsement",
+          "vectors.r5e.io/v1alpha1/Note"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Endorsement",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "subject": "$key.3",
+      "subjectKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.3.bytes"
+      },
+      "kinds": [
+        "*"
+      ],
+      "mayIssue": true,
+      "notBefore": "2020-01-01T00:00:00Z",
+      "notAfter": "2099-01-01T00:00:00Z",
+      "parent": {
+        "$ref": "$setup.0.eventRef"
+      }
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "kinds exceed parent"
+  }
+}

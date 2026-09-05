@@ -1,0 +1,47 @@
+{
+  "note": "§1/§2: the ordinary case. One signature, the actor is signer 1, and the record carries the whole of what the signature covered — the signers, the envelope verbatim, the submitted target, the nonce and the expiry.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "n1",
+    "recorded": true,
+    "identity": "signed",
+    "signers": [
+      "$key.1"
+    ],
+    "nonceClaimed": true,
+    "submittedTarget": {
+      "group": "vectors.r5e.io",
+      "version": "v1alpha1",
+      "kind": "Note",
+      "name": "n1"
+    }
+  }
+}

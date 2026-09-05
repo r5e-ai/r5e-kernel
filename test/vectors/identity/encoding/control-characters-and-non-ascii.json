@@ -1,0 +1,7 @@
+{
+  "note": "§8: U+0000–U+001F become the six-character lowercase \\u00xx form and nothing else — no \\b, no \\n, no \\t. U+007F and above are raw UTF-8.",
+  "canonical": {
+    "rawJson": "{\"s\":\"a\\bb\\nc\\u001fd\\u007fe\\u00e9f\\ud83d\\ude00\"}",
+    "bytes": "{\"s\":\"a\\u0008b\\u000ac\\u001fdeéf😀\"}"
+  }
+}

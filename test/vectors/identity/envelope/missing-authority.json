@@ -1,0 +1,41 @@
+{
+  "note": "§1: all eight keys are present, always — a nullable one carries `null`. A missing `authority` is a form error, not a defaulted field: a signature over a varying shape is a signature over an unknown set of claims.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "requestDrop": [
+      "authority"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "malformed envelope: the request object is missing the key \"authority\"",
+    "recorded": false,
+    "nonceClaimed": false
+  }
+}

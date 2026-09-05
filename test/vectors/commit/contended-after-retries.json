@@ -1,0 +1,83 @@
+{
+  "note": "§7's other end. The same race, except the bundle is superseded before every record attempt, so no pass can commit what it read. After the retry budget (commitRetries: 2 here, config default 3) the admission is denied at stage record with reason `contended: <what moved>` — and that denial is itself recorded, because a refusal caused by contention is still an act. It carries no captured generations, so it appends unconditionally and cannot in turn be contended. Three record attempts: the first and two retries.",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Bundle",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "literal",
+        "value": "active"
+      },
+      "schema": {
+        "required": [
+          "rule"
+        ],
+        "properties": {
+          "rule": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Governed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "vectors.r5e.io/v1alpha1/Bundle",
+      "name": "active",
+      "spec": {
+        "rule": "first"
+      }
+    }
+  ],
+  "policyReads": [
+    "vectors.r5e.io/v1alpha1/Bundle/active"
+  ],
+  "commitRetries": 2,
+  "interleave": {
+    "before": "record",
+    "repeat": 99,
+    "kind": "vectors.r5e.io/v1alpha1/Bundle",
+    "admit": {
+      "name": "active",
+      "spec": {
+        "rule": "again"
+      }
+    }
+  },
+  "instance": {
+    "name": "g",
+    "spec": {
+      "label": "governed"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "record",
+    "reasonIncludes": "contended: the policy engine read vectors.r5e.io/v1alpha1/Bundle/active at generation",
+    "recordAttempts": 3,
+    "notHalted": true
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "note": "§0/§4: the node key is *the terminal successor of the key that signed event 1*, not the key this process happens to hold. A deployment that has rotated its node key must keep being able to admit its own `Deployment`, so `admitBy: nodeKey` asks `head/2` — and the answer here is `$key.2`, which never signed event 1. Debt #40 is the entry this closes; the vector is what stops it reopening.",
+  "kind": "core.r5e.io/v1/Deployment",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        "node",
+        2
+      ],
+      "spec": {
+        "predecessor": "$nodeKey",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "name": "deployment",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "commons": false,
+      "declaredBy": "$key.2"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "deployment"
+  }
+}

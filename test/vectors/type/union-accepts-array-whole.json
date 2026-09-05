@@ -1,0 +1,41 @@
+{
+  "note": "§3: a union containing array passes arrays whole — no items.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Union",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "u": {
+          "type": [
+            "string",
+            "integer",
+            "array"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "u3",
+    "spec": {
+      "u": [
+        1,
+        {
+          "z": 2
+        }
+      ]
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "u3"
+  }
+}

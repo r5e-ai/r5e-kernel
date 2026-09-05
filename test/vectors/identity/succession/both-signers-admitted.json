@@ -1,0 +1,26 @@
+{
+  "note": "§0: the predecessor names the successor and the successor proves possession by signing. Two signatures, and the record shows both.",
+  "kind": "core.r5e.io/v1/Succession",
+  "instance": {
+    "kind": "core.r5e.io/v1/Succession",
+    "sign": [
+      1,
+      2
+    ],
+    "spec": {
+      "predecessor": "$key.1",
+      "successor": "$key.2",
+      "successorKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.2.bytes"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "signers": [
+      "$key.1",
+      "$key.2"
+    ]
+  }
+}

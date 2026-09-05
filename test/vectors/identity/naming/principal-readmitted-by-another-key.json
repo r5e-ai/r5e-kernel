@@ -1,0 +1,33 @@
+{
+  "note": "§4/KS-4 with contract r4.2: `Principal` is one profile per key, superseded by that key alone. Another key's account of somebody is a claim, not a replacement of theirs — and a successor's is a claim about a different key, published under that key.",
+  "kind": "core.r5e.io/v1/Principal",
+  "setup": [
+    {
+      "name": "$key.1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "key": "$key.1",
+        "kind": "person",
+        "custody": "self"
+      }
+    }
+  ],
+  "instance": {
+    "name": "$key.1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "key": "$key.1",
+      "kind": "agent",
+      "custody": "self"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "readmitBy: actorOfRecord"
+  }
+}

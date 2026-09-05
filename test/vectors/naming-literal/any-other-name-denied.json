@@ -1,0 +1,35 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Bundle",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "literal",
+      "value": "active"
+    },
+    "schema": {
+      "required": [
+        "engine"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "staging",
+    "spec": {
+      "engine": "cedar"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "names this instance"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "group": "core.r5e.io",
+  "kind": "Deployment",
+  "version": "v1",
+  "substrate": "resource",
+  "naming": {
+    "mode": "literal",
+    "value": "deployment",
+    "admitBy": "nodeKey",
+    "readmitBy": "none"
+  },
+  "description": "The deployment's own declaration of what it is: a house (its own agents, its own fence) or a commons (a system governing people's participation in the world). Admitted once, by the node key, never superseded; printed beside the identities line on every verifier run, where the reader's own posture — not this declaration — decides whether badge-only persons are a finding.",
+  "schema": {
+    "required": [
+      "commons",
+      "declaredBy"
+    ],
+    "properties": {
+      "commons": {
+        "type": "boolean"
+      },
+      "declaredBy": {
+        "type": "string",
+        "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+        "matchesSigner": 1
+      },
+      "statement": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the node key declared, at the recorded position, whether this deployment governs people's participation in the world"
+    ],
+    "doesNotClaim": [
+      "that the declaration is true — the identities line printed beside it is the evidence, and the reader's posture decides what it means"
+    ]
+  },
+  "predicates": []
+}

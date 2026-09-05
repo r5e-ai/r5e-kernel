@@ -1,0 +1,52 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Shape",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "derived",
+      "derive": "{engine}.{kind}"
+    },
+    "schema": {
+      "required": [
+        "engine"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "spec": {
+        "engine": "cedar",
+        "kind": "gateway.r5e.io/v1alpha1/ToolCall",
+        "description": "first"
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "engine": "cedar",
+      "kind": "gateway.r5e.io/v1alpha1/ToolCall",
+      "description": "second"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "cedar.gateway.r5e.io/v1alpha1/ToolCall",
+    "supersededBy": 0
+  },
+  "note": "§2 derived readmit: supersede, as literal."
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "K",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "a": {
+            "type": "integer",
+            "pattern": "[0-9]+"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "declares pattern without \"string\" in type"
+  }
+}

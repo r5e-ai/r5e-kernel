@@ -1,0 +1,46 @@
+{
+  "note": "§0/§1: a keyid is a derivation anyone repeats, not a label the submitter chose.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "envelopePatch": {
+      "publicKeys": [
+        {
+          "keyid": "$key.1",
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      ]
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "is not the key id of the bytes beside it",
+    "recorded": false
+  }
+}

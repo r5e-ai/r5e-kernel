@@ -1,0 +1,104 @@
+{
+  "note": "Two supersessions of one anchor: the second must supersede the first's replacement, not the first. Checked here at resolve, on a head that was already stale when the request arrived. The other half — a head that moves between resolve and record — is commit/sameAnchor-head-moved-under-the-lock.json.",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Target",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "label": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Reply",
+    "version": "v1alpha1",
+    "substrate": "event",
+    "naming": {
+      "mode": "content"
+    },
+    "description": "An event that may supersede an earlier one anchored on the same thing.",
+    "schema": {
+      "required": [
+        "anchor"
+      ],
+      "properties": {
+        "anchor": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Target"
+          }
+        },
+        "body": {
+          "type": "string"
+        },
+        "supersedes": {
+          "type": "ref",
+          "ref": {
+            "event": "vectors.r5e.io/v1alpha1/Reply",
+            "outcome": "admitted",
+            "sameAnchor": "anchor"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "vectors.r5e.io/v1alpha1/Target",
+      "name": "t1",
+      "spec": {
+        "label": "one"
+      }
+    },
+    {
+      "spec": {
+        "anchor": {
+          "$ref": "vectors.r5e.io/v1alpha1/Target/t1"
+        },
+        "body": "first"
+      }
+    },
+    {
+      "spec": {
+        "anchor": {
+          "$ref": "vectors.r5e.io/v1alpha1/Target/t1"
+        },
+        "body": "second",
+        "supersedes": {
+          "$ref": "$setup.1.eventRef"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "anchor": {
+        "$ref": "vectors.r5e.io/v1alpha1/Target/t1"
+      },
+      "body": "third",
+      "supersedes": {
+        "$ref": "$setup.1.eventRef"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "is not the current head for that anchor"
+  }
+}

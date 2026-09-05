@@ -1,0 +1,50 @@
+{
+  "note": "The classes do not substitute for one another: a bytes address is not a resource path.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Refs",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "target": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Refs"
+          }
+        },
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "open": {
+          "type": "object"
+        },
+        "plain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "g",
+    "spec": {
+      "target": {
+        "$ref": "bytes:sha256:abababababababababababababababababababababababababababababababab"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "must be group/version/Kind/name"
+  }
+}

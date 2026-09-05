@@ -1,0 +1,18 @@
+{
+  "note": "The CasExpired schema pins the address form (§5). A bare sha256: address names the same tree but a different act, and is not what this Kind expires. Contract 011 §10: CasExpired declares requiresAuthority, so the sweeper signs with the retention key and cites the Endorsement the node key gave it at event 10.",
+  "kind": "core.r5e.io/v1/CasExpired",
+  "instance": {
+    "spec": {
+      "address": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd"
+    },
+    "signAs": "retention",
+    "authority": [
+      "$retentionEndorsement"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "pattern"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "note": "§8: two spellings of the same object encode to the same bytes. That is the whole point of a canonical form, and it is what every hash on the chain rests on.",
+  "canonical": [
+    {
+      "rawJson": "{\"b\":1,\"a\":{\"d\":2,\"c\":[3,4]}}",
+      "sameAs": "{\"a\":{\"c\":[3,4],\"d\":2},\"b\":1}"
+    },
+    {
+      "rawJson": "{\"b\":1,\"a\":{\"d\":2,\"c\":[3,4]}}",
+      "bytes": "{\"a\":{\"c\":[3,4],\"d\":2},\"b\":1}"
+    }
+  ]
+}

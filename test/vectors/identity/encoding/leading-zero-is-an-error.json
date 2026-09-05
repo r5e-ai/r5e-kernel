@@ -1,0 +1,7 @@
+{
+  "note": "§8: no leading zeros — another second spelling.",
+  "canonical": {
+    "rawJson": "{\"n\":01}",
+    "error": "leading zero"
+  }
+}

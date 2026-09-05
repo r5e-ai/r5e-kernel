@@ -1,0 +1,79 @@
+{
+  "note": "§6: the authority walk runs at `resolve`, and a Revocation can land while policy is still deciding. The append lock re-checks the revocation state of **every event the walk visited**, so a grant never says an authority was effective at a seq where the chain says it was not. Terminal, and recorded — retrying cannot make a revocation un-happen.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "interleave": {
+    "kind": "core.r5e.io/v1/Revocation",
+    "repeat": 1,
+    "admit": {
+      "kind": "core.r5e.io/v1/Revocation",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "revokes": {
+          "$ref": "$setup.0.eventRef"
+        }
+      }
+    }
+  },
+  "instance": {
+    "name": "a1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "record",
+    "reasonIncludes": "authority revoked at",
+    "recorded": true
+  }
+}

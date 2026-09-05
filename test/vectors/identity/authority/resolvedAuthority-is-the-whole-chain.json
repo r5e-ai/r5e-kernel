@@ -1,0 +1,138 @@
+{
+  "note": "§5: `resolvedAuthority` carries the derivation, not a verdict — every link from the cited event to the root, with the thirteen fields §5 lists. Policy receives it whole and needs no fetch; an engine that had to reach back into the chain would be reading a different record from the one the receipt shows.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "role": "steward",
+        "scope": {
+          "team": "platform"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        2
+      ],
+      "spec": {
+        "subject": "$key.3",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.3.bytes"
+        },
+        "kinds": [
+          "vectors.r5e.io/v1alpha1/Note"
+        ],
+        "mayIssue": false,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "role": "worker",
+        "parent": {
+          "$ref": "$setup.0.eventRef"
+        }
+      },
+      "authority": [
+        "$setup.0.eventRef"
+      ]
+    }
+  ],
+  "instance": {
+    "name": "a1",
+    "sign": [
+      3
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.1.eventRef"
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "authorityRoots": [
+      "$key.1"
+    ],
+    "resolvedAuthority": [
+      {
+        "index": 0,
+        "value": "$setup.1.eventRef",
+        "chain": [
+          {
+            "value": "$setup.1.eventRef",
+            "kind": "core.r5e.io/v1/Endorsement",
+            "seq": "$setup.1.seq",
+            "actor": "$key.2",
+            "subject": "$key.3",
+            "role": "worker",
+            "scope": null,
+            "kinds": [
+              "vectors.r5e.io/v1alpha1/Note"
+            ],
+            "mayIssue": false,
+            "notBefore": "2020-01-01T00:00:00Z",
+            "notAfter": "2099-01-01T00:00:00Z",
+            "parent": "$setup.0.eventRef",
+            "depth": 1
+          },
+          {
+            "value": "$setup.0.eventRef",
+            "kind": "core.r5e.io/v1/Endorsement",
+            "seq": "$setup.0.seq",
+            "actor": "$key.1",
+            "subject": "$key.2",
+            "role": "steward",
+            "scope": {
+              "team": "platform"
+            },
+            "kinds": [
+              "*"
+            ],
+            "mayIssue": true,
+            "notBefore": "2020-01-01T00:00:00Z",
+            "notAfter": "2099-01-01T00:00:00Z",
+            "parent": null,
+            "depth": 0
+          }
+        ]
+      }
+    ]
+  }
+}

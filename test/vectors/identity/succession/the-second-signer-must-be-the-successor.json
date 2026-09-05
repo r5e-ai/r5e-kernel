@@ -1,0 +1,24 @@
+{
+  "note": "KS-3: `matchesSigner: 2` on `successor`. A Succession the successor did not sign is a claim about somebody else's key.",
+  "kind": "core.r5e.io/v1/Succession",
+  "instance": {
+    "kind": "core.r5e.io/v1/Succession",
+    "sign": [
+      1,
+      3
+    ],
+    "spec": {
+      "predecessor": "$key.1",
+      "successor": "$key.2",
+      "successorKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.2.bytes"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "matchesSigner"
+  }
+}

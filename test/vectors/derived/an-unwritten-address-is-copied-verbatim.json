@@ -1,0 +1,36 @@
+{
+  "note": "Amendment C6, and the line the kernel draws. The engine reports a well-formed address it never wrote. The kernel copies the list verbatim — it checks the form and nothing else, because deciding whether an engine really wrote what it says it wrote is not a thing a gate can do without becoming the engine — so the admission is granted and the record says what was claimed. The claim is not thereby true: the object is not in the CAS, the export lists it under `derivedObjects` and under `missingObjects` both, and the verifier is what falsifies it. A bundle that states its gaps is the point; a kernel that silently dropped the entry would leave the receipt citing nothing.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Governed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": { "mode": "caller" },
+    "description": "A thing whose admission the deriving test engine decides, and writes a record of.",
+    "schema": {
+      "required": ["title"],
+      "properties": { "title": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "policyReports": [
+    "bytes:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
+  "instance": {
+    "name": "claimed",
+    "spec": { "title": "the kernel records the claim; the verifier judges it" }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "claimed",
+    "derivedObjects": [
+      "bytes:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "derivedRegistered": "bytes:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "exportDerivedObjects": [
+      "bytes:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "objectGone": "bytes:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  }
+}

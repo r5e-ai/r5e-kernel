@@ -1,0 +1,32 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Closed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "c2",
+    "spec": {
+      "z": "x"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "undeclared key \"z\""
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "note": "Anchored with \\A/\\z, not ^/$: a trailing newline is not a full match.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Pattern",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "animal": {
+          "type": "string",
+          "pattern": "(cat|dog)"
+        },
+        "loose": {
+          "type": [
+            "string",
+            "integer"
+          ],
+          "pattern": "[a-z]+"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "p4",
+    "spec": {
+      "animal": "cat\n"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "does not match pattern"
+  }
+}

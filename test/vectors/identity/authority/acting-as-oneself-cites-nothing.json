@@ -1,0 +1,39 @@
+{
+  "note": "§5: empty `authority` is the ordinary case — the actor acts as itself, and **no Kind test applies**. Authority is a property of the act, not a class of key.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "a1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "body": "as myself"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "a1",
+    "resolvedAuthority": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "note": "§1: `mediaType` is `String.trim/1` of the `content-type` header, so a trailing space in transit does not become part of the label on the record.",
+  "kind": "core.r5e.io/v1/CasObject",
+  "instance": {
+    "door": "cas",
+    "body": "labelled bytes",
+    "headers": {
+      "content-type": "text/plain "
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "payloadSpec": {
+      "mediaType": "text/plain"
+    }
+  }
+}

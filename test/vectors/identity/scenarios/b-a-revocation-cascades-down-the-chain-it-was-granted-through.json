@@ -1,0 +1,113 @@
+{
+  "note": "Walk scenario (b), and spec/03's sentence made checkable. A three-link chain: Root → Alice → Carol. Carol acts, and it resolves. Root revokes the link it granted, and the same act by Carol — citing the same unchanged Endorsement — stops resolving, because clause 8 asks the parent and the parent is revoked. Nothing about Carol's Endorsement changed; what changed is the chain it hangs from, which is exactly what \"cascades by sequence\" means.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "role": "root"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        2
+      ],
+      "spec": {
+        "subject": "$key.3",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.3.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": false,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "role": "worker",
+        "parent": {
+          "$ref": "$setup.0.eventRef"
+        }
+      },
+      "authority": [
+        "$setup.0.eventRef"
+      ]
+    },
+    {
+      "name": "before",
+      "sign": [
+        3
+      ],
+      "spec": {
+        "body": "under authority"
+      },
+      "authority": [
+        "$setup.1.eventRef"
+      ]
+    },
+    {
+      "kind": "core.r5e.io/v1/Revocation",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "revokes": {
+          "$ref": "$setup.0.eventRef"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "name": "after",
+    "sign": [
+      3
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.1.eventRef"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "authority ineffective: parent: revoked at"
+  }
+}

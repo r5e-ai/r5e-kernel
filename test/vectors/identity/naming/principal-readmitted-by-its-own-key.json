@@ -1,0 +1,34 @@
+{
+  "note": "§4/KS-4: and the key that published the profile may supersede it.",
+  "kind": "core.r5e.io/v1/Principal",
+  "setup": [
+    {
+      "name": "$key.1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "key": "$key.1",
+        "kind": "person",
+        "custody": "self"
+      }
+    }
+  ],
+  "instance": {
+    "name": "$key.1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "key": "$key.1",
+      "kind": "person",
+      "custody": "kms",
+      "displayName": "renamed"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "$key.1",
+    "supersededBy": 0
+  }
+}

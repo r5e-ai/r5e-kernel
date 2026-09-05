@@ -1,0 +1,93 @@
+{
+  "note": "verify-3 §4 (b), verbatim: A's term ends after B's issuance but before B's citation at c. Issuance enforced `term(B) ⊆ term(A)`, so `B.notAfter < ts(c)`: **clause 4 fires on B itself** → `out of term`, not `parent: out of term`. That is the reason precedence doing its job — the numbering is the order, so the nearest true statement is the one recorded, and a reader is not sent up a chain to find a fact about the link in front of them.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "clock": "2026-06-01T00:00:00Z",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2026-01-01T00:00:00Z",
+        "notAfter": "2026-07-01T00:00:00Z",
+        "role": "A"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        2
+      ],
+      "spec": {
+        "subject": "$key.3",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.3.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": false,
+        "notBefore": "2026-01-01T00:00:00Z",
+        "notAfter": "2026-07-01T00:00:00Z",
+        "role": "B",
+        "parent": {
+          "$ref": "$setup.0.eventRef"
+        }
+      },
+      "authority": [
+        "$setup.0.eventRef"
+      ]
+    }
+  ],
+  "clockAtInstance": "2026-08-01T00:00:00Z",
+  "instance": {
+    "name": "c",
+    "sign": [
+      3
+    ],
+    "spec": {
+      "body": "cited after both terms ended"
+    },
+    "authority": [
+      "$setup.1.eventRef"
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "authority ineffective: out of term",
+    "recorded": true
+  }
+}

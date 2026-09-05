@@ -1,0 +1,39 @@
+{
+  "note": "§0: an explicit null on a declared property is not-exists.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Req",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "object",
+            "array"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "r3",
+    "spec": {
+      "title": null
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "required field \"title\" does not exist"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "note": "§2, the consequence that matters: because an invalid signature claims nothing, a caller whose envelope was mangled in transit may sign the same request — the same nonce — again.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "nonce": "AgICAgICAgICAgICAgICAg=="
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "n1",
+    "nonceClaimed": true
+  },
+  "setup": [
+    {
+      "name": "n1",
+      "spec": {
+        "body": "hello"
+      },
+      "denied": true,
+      "tamperSignature": true,
+      "nonce": "AgICAgICAgICAgICAgICAg=="
+    }
+  ]
+}

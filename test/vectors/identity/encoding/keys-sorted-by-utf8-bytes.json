@@ -1,0 +1,7 @@
+{
+  "note": "§8: object keys sort by UTF-8 byte order, so a non-BMP key sorts after a Latin-1 one — the bytes decide, never the code point's name.",
+  "canonical": {
+    "rawJson": "{\"😀\":1,\"é\":2,\"a\":3}",
+    "bytes": "{\"a\":3,\"é\":2,\"😀\":1}"
+  }
+}

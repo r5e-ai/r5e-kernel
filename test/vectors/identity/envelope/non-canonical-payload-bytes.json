@@ -1,0 +1,38 @@
+{
+  "note": "§8/§1: the payload bytes must *be* the canonical encoding of their content. A pretty-printed spelling of the same eight keys hashes differently while claiming the same thing.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "rawRequest": "{ \"actor\": \"x\" }"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "not the canonical encoding",
+    "recorded": false
+  }
+}

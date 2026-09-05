@@ -1,0 +1,47 @@
+{
+  "note": "§5, amendment C4. Until now §4's partition was enforced only where a ref cited an address: bytes that were really an event payload were refused at resolve. It is enforced at the other end too. A CasObject whose address is already an event payload address is denied at validateConstraints — before there is a record of it — so the partition cannot be broken by admitting one side onto the other and citing it afterwards. The address is the hash of the body, so reaching this denial means somebody submitted bytes identical to a canonical payload, which is not a collision but a claim.",
+  "kind": "core.r5e.io/v1/CasObject",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Anchor",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "schema": {
+        "required": [
+          "tag"
+        ],
+        "properties": {
+          "tag": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "setup": [
+    {
+      "kind": "vectors.r5e.io/v1alpha1/Anchor",
+      "spec": {
+        "tag": "one"
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "address": "bytes:$setup.0.payloadAddress",
+      "size": 1,
+      "class": "raw"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "is already an event payload address on this chain"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "note": "A9: a $ref inside an open object would be hydrated, swept, never resolved.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Refs",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "target": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Refs"
+          }
+        },
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "open": {
+          "type": "object"
+        },
+        "plain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "g4",
+    "spec": {
+      "open": {
+        "nested": {
+          "$ref": "x"
+        }
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "admissible only where the declared type"
+  }
+}

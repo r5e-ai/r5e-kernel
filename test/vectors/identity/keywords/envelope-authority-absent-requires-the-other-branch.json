@@ -1,0 +1,77 @@
+{
+  "note": "KS-3: `present: false` is the other half — a Kind may require one thing of an act done under authority and another of an act done as oneself.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Guarded",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "The envelope condition and a nested requires group on one Kind.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "parent": {
+          "type": "string"
+        },
+        "self": {
+          "type": "string"
+        },
+        "x": {
+          "type": "string"
+        },
+        "y": {
+          "type": "string"
+        },
+        "z": {
+          "type": "string"
+        }
+      },
+      "requires": [
+        {
+          "when": {
+            "envelope": "authority",
+            "present": true
+          },
+          "then": [
+            "parent"
+          ]
+        },
+        {
+          "when": {
+            "envelope": "authority",
+            "present": false
+          },
+          "then": [
+            "self"
+          ]
+        },
+        {
+          "when": {
+            "present": "x"
+          },
+          "then": [
+            [
+              "y",
+              "z"
+            ]
+          ]
+        }
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "g1",
+    "spec": {
+      "parent": "$retentionEndorsement"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "an act exercising no authority requires \"self\""
+  }
+}

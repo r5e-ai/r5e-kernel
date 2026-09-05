@@ -1,0 +1,64 @@
+{
+  "note": "Putting bytes that are already present is a new CasObject admission and no rewrite (§2 content naming, §5): a second act by a second actor is a second event. What a citation names is the admission that put the object there — the first — because that is the act the object's existence is owed to.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Cites",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "Cites raw bytes, once plainly and once as a public record.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "archived": {
+          "type": "ref",
+          "ref": {
+            "bytes": true,
+            "retention": "public-record"
+          }
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "cas": [
+    "twice over",
+    {
+      "bytes": "twice over"
+    }
+  ],
+  "instance": {
+    "name": "c",
+    "spec": {
+      "blob": {
+        "$ref": "$cas.1"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "c",
+    "objectPresent": "$cas.0",
+    "resolvedRefs": [
+      {
+        "path": "/blob",
+        "class": "bytes",
+        "value": "$cas.0",
+        "size": 10,
+        "casObjectEvent": "$casEvent.0"
+      }
+    ]
+  }
+}

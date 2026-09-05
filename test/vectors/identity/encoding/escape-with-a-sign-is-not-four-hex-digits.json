@@ -1,0 +1,17 @@
+{
+  "note": "§8: a `\\u` escape is four hex digits. `Integer.parse/2` accepts a sign, so `\\u-001` parsed as a number under the first cut of this parser and raised out of the gate on a stranger's bytes — which is why the parser is total and why this case is a vector rather than a comment.",
+  "canonical": [
+    {
+      "rawJson": "{\"a\":\"\\u-001\"}",
+      "error": "four hex digits are required"
+    },
+    {
+      "rawJson": "{\"a\":\"\\u+041\"}",
+      "error": "four hex digits are required"
+    },
+    {
+      "rawJson": "{\"a\":\"\\uZZZZ\"}",
+      "error": "four hex digits are required"
+    }
+  ]
+}

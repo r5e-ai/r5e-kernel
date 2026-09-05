@@ -1,0 +1,71 @@
+{
+  "note": "§1: nothing a KindDefinition declares is accepted-but-ignored. A Kind admitted on one signature that declares `matchesSigner: 2` declares a check that can never run.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "BadkinddeclaringmatchesSigner2withonesignature",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "description": "KS-3's three key-shaped keywords on one Kind: matchesSigner, derives, keyBytes.",
+      "schema": {
+        "required": [
+          "key",
+          "subject",
+          "subjectKey"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+            "matchesSigner": 2
+          },
+          "subject": {
+            "type": "string",
+            "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+            "derives": {
+              "keyIdOf": "subjectKey"
+            }
+          },
+          "subjectKey": {
+            "type": "object",
+            "keyBytes": true,
+            "properties": {
+              "algorithm": {
+                "type": "string",
+                "enum": [
+                  "ed25519"
+                ]
+              },
+              "bytes": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "algorithm",
+              "bytes"
+            ],
+            "additionalProperties": false
+          },
+          "label": {
+            "type": "string",
+            "enum": [
+              "a",
+              "b"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "matchesSigner 2, but this Kind is admitted on 1 signature"
+  }
+}

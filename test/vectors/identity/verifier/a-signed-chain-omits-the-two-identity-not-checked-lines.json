@@ -1,0 +1,19 @@
+{
+  "note": "§9, the counterpart: on a chain where every admission is signed the two legacy lines would be **false**, and a not-checked block that lists checks the run did perform is worth as little as one that omits checks it did not. They are absent, and `U` is zero.",
+  "expect": {
+    "verifier": {
+      "lines": {
+        "signatures": "0 legacy unsigned"
+      },
+      "absentFromNotChecked": [
+        "admissions are not signed: this bundle carries payloads with no identity member (legacy unsigned)",
+        "actor fingerprints are asserted at admission"
+      ],
+      "notChecked": [
+        "wall-clock validity is not",
+        "self-declared"
+      ],
+      "noFindings": true
+    }
+  }
+}

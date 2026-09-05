@@ -1,0 +1,63 @@
+{
+  "note": "§11/KS-7, the other half: the same Kind carrying only fields the grammar still has is not a finding — and neither is a **description** that names the retired field in order to explain it. A check that fired on any mention would make the honest documentation of a removal indistinguishable from a use of it.",
+  "kind": {
+    "group": "gateway.r5e.io",
+    "kind": "PolicyShape",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A stand-in for the fold's own PolicyShape, carrying the five path-valued slots §8 defines and nothing else.",
+    "schema": {
+      "required": [
+        "action",
+        "resourceType",
+        "resourceId"
+      ],
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "resourceType": {
+          "type": "string"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "context": {
+          "type": "object"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "s1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "action": "admit",
+      "resourceType": "@kind",
+      "resourceId": "@actor.id",
+      "context": {
+        "identity": {
+          "path": "@actor.identity"
+        }
+      },
+      "description": "spec 011 §11 removed @actor.keyFingerprint; this shape reads @actor.id instead"
+    }
+  },
+  "verify": {},
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "noFindings": true
+    }
+  }
+}

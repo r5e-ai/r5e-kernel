@@ -1,0 +1,53 @@
+{
+  "group": "core.r5e.io",
+  "version": "v1",
+  "kind": "PolicyBundle",
+  "substrate": "resource",
+  "naming": {
+    "mode": "literal",
+    "value": "active",
+    "admitBy": "nodeKey",
+    "readmitBy": "nodeKey"
+  },
+  "description": "The Cedar policy in force for kernel admission. Its source is detached at sourceRef and retained with the public record. Only the node key can create or supersede the active bundle.",
+  "schema": {
+    "required": ["engine", "governs", "sourceRef"],
+    "properties": {
+      "engine": {
+        "type": "string",
+        "enum": ["cedar"]
+      },
+      "governs": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["core.r5e.io"]
+        }
+      },
+      "sourceRef": {
+        "type": "ref",
+        "ref": {
+          "bytes": true,
+          "retention": "public-record"
+        }
+      },
+      "description": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the detached Cedar source was admitted as a public-record object and this active resource cites it",
+      "only the effective node key can create or supersede this active kernel policy bundle",
+      "each evaluated admission records the bundle generation and exact Cedar request and entities"
+    ],
+    "doesNotClaim": [
+      "that the policy is correct or complete",
+      "that the measured engine artifacts came from any particular published source tree",
+      "that another system enforced this kernel decision outside the kernel"
+    ]
+  },
+  "predicates": []
+}

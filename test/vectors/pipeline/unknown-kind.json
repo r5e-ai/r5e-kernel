@@ -1,0 +1,13 @@
+{
+  "note": "§4: an unknown Kind is denied at validateStructure.",
+  "kind": "vectors.r5e.io/v1alpha1/NeverDefined",
+  "instance": {
+    "name": "x",
+    "spec": {}
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "unknown Kind"
+  }
+}

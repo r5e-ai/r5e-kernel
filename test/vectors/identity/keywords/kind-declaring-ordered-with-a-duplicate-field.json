@@ -1,0 +1,52 @@
+{
+  "note": "§1: a pair is two **distinct** fields. A pair naming one field twice is a claim that an instant is before itself.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "OrderedDuplicate",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "description": "A term and a pair of alternatives: `ordered` and `atMostOne` on one Kind.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "notBefore": {
+            "type": "string"
+          },
+          "notAfter": {
+            "type": "string"
+          },
+          "a": {
+            "type": "string"
+          },
+          "b": {
+            "type": "string"
+          }
+        },
+        "ordered": [
+          [
+            "notBefore",
+            "notBefore"
+          ]
+        ],
+        "atMostOne": [
+          [
+            "a",
+            "b"
+          ]
+        ],
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "ordered pair names \"notBefore\" twice"
+  }
+}

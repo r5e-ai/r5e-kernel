@@ -1,0 +1,129 @@
+{
+  "group": "core.r5e.io",
+  "kind": "Badge",
+  "version": "v1",
+  "substrate": "event",
+  "naming": {
+    "mode": "content"
+  },
+  "description": "An issued credential, SSH-certificate or SVID shaped: the issuer (first signer) mints authority for `subject` — a key it may itself hold — scoped to Kinds and a term; the subject countersigns (second signer), so a key enters badge status only by its own act. A badge is exercised by citing it; a self may hold badges and still act as itself. Acts citing a badge are attributed to the badge key and were done in the issuer's name.",
+  "schema": {
+    "required": [
+      "subject",
+      "subjectKey",
+      "kinds",
+      "mayIssue",
+      "notBefore",
+      "notAfter",
+      "subjectKind"
+    ],
+    "nonEmpty": [
+      "kinds"
+    ],
+    "properties": {
+      "subject": {
+        "type": "string",
+        "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+        "derives": {
+          "keyIdOf": "subjectKey"
+        },
+        "matchesSigner": 2
+      },
+      "subjectKey": {
+        "type": "object",
+        "keyBytes": true,
+        "properties": {
+          "algorithm": {
+            "type": "string",
+            "enum": [
+              "ed25519"
+            ]
+          },
+          "bytes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "algorithm",
+          "bytes"
+        ],
+        "additionalProperties": false
+      },
+      "scope": {
+        "type": "object"
+      },
+      "role": {
+        "type": "string"
+      },
+      "kinds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "([a-z0-9.-]+/v[0-9a-z]+/[A-Za-z0-9]+|\\*)"
+        }
+      },
+      "mayIssue": {
+        "type": "boolean"
+      },
+      "notBefore": {
+        "type": "string",
+        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?(Z|[+-][0-9]{2}:[0-9]{2})"
+      },
+      "notAfter": {
+        "type": "string",
+        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?(Z|[+-][0-9]{2}:[0-9]{2})"
+      },
+      "parent": {
+        "type": "ref",
+        "ref": {
+          "event": [
+            "core.r5e.io/v1/Endorsement",
+            "core.r5e.io/v1/Badge"
+          ],
+          "outcome": "admitted"
+        }
+      },
+      "subjectKind": {
+        "type": "string",
+        "enum": [
+          "person",
+          "agent",
+          "org",
+          "instrument",
+          "service"
+        ]
+      }
+    },
+    "ordered": [
+      [
+        "notBefore",
+        "notAfter"
+      ]
+    ],
+    "requires": [
+      {
+        "when": {
+          "envelope": "authority",
+          "present": true
+        },
+        "then": [
+          "parent"
+        ]
+      }
+    ],
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the issuer issued this credential for the subject key at the recorded position, for these Kinds, in this term, and the subject key countersigned it",
+      "acts citing this badge were done in the issuer's name, by the badge key"
+    ],
+    "doesNotClaim": [
+      "that the issuer does not hold the subject key",
+      "that the subject is any particular person or agent — subjectKind is the issuer's claim",
+      "that the recorded actor is any particular person, organization, or agent beyond the key that signed — a name is a claim; a key id is the identity"
+    ]
+  },
+  "predicates": [],
+  "signatures": 2
+}

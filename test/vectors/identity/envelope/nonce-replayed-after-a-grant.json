@@ -1,0 +1,47 @@
+{
+  "note": "§2: the claim stands. Re-submitting a granted envelope's nonce is a replay, and the earlier claim is the one that stands.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n2",
+    "spec": {
+      "body": "second"
+    },
+    "nonce": "AAAAAAAAAAAAAAAAAAAAAA=="
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "nonce replayed",
+    "recorded": true
+  },
+  "setup": [
+    {
+      "name": "n1",
+      "spec": {
+        "body": "first"
+      },
+      "nonce": "AAAAAAAAAAAAAAAAAAAAAA=="
+    }
+  ]
+}

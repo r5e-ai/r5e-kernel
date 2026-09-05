@@ -1,0 +1,20 @@
+# Per-Dockerfile ignore (BuildKit picks this up because it sits next to
+# r5e-kernel/Dockerfile). Paths are relative to the build context — the
+# parent directory holding both repos. Everything is excluded except the
+# two source trees the build needs, minus their local build artifacts,
+# state, and VCS metadata.
+
+*
+!r5e-kernel
+!r5e-core/verifier
+
+r5e-kernel/_build
+r5e-kernel/deps
+r5e-kernel/.r5e
+r5e-kernel/.git
+r5e-kernel/.jj
+r5e-kernel/erl_crash.dump
+r5e-core/verifier/_build
+r5e-core/verifier/deps
+r5e-core/verifier/recurse_verify
+r5e-core/verifier/erl_crash.dump

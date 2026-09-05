@@ -1,0 +1,38 @@
+{
+  "note": "§0 exists: an own key whose value is not null.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Req",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "object",
+            "array"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "r1",
+    "spec": {
+      "title": "t"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "r1"
+  }
+}

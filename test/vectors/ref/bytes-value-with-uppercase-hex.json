@@ -1,0 +1,50 @@
+{
+  "note": "<hex> is exactly 64 lowercase hex digits (§4).",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Refs",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "target": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Refs"
+          }
+        },
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "open": {
+          "type": "object"
+        },
+        "plain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "g",
+    "spec": {
+      "blob": {
+        "$ref": "bytes:sha256:ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "must be bytes:sha256:<64 lowercase hex>"
+  }
+}

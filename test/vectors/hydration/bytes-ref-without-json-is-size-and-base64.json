@@ -1,0 +1,139 @@
+{
+  "note": "No `json` declared: the object comes back as itself, with the mediaType its CasObject admission recorded (§6, amendment B8).",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Anchor",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "description": "An event Kind whose admissions other vectors cite.",
+      "schema": {
+        "required": [
+          "tag"
+        ],
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    },
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Target",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "label": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Cites",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "Cites one of each ref class, so one Kind exercises all three.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "call": {
+          "type": "ref",
+          "ref": {
+            "event": "vectors.r5e.io/v1alpha1/Anchor",
+            "outcome": "admitted"
+          }
+        },
+        "anyCall": {
+          "type": "ref",
+          "ref": {
+            "event": "vectors.r5e.io/v1alpha1/Anchor",
+            "outcome": "any"
+          }
+        },
+        "calls": {
+          "type": "array",
+          "items": {
+            "type": "ref",
+            "ref": {
+              "event": "vectors.r5e.io/v1alpha1/Anchor",
+              "outcome": "any"
+            }
+          }
+        },
+        "target": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Target"
+          }
+        },
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "doc": {
+          "type": "ref",
+          "ref": {
+            "bytes": true,
+            "json": {
+              "type": "object"
+            }
+          }
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "cas": [
+    {
+      "bytes": "hello bytes",
+      "mediaType": "text/plain"
+    }
+  ],
+  "instance": {
+    "name": "c",
+    "spec": {
+      "blob": {
+        "$ref": "$cas.0"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "c",
+    "hydrated": {
+      "/blob": {
+        "size": 11,
+        "base64": "aGVsbG8gYnl0ZXM=",
+        "mediaType": "text/plain"
+      }
+    }
+  }
+}

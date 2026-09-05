@@ -1,0 +1,49 @@
+{
+  "note": "§4/KS-4, the positive half of `readmitBy: nodeKey`: creation is open, supersession is the node's. `admitBy` and `readmitBy` gate two different acts and a Kind may declare either alone — this one declares only the second, so anybody may put a record here and only the deployment may change one.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "NodeHeld",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller",
+      "readmitBy": "nodeKey"
+    },
+    "description": "A caller-named resource anybody may create and only the node key may supersede.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "r1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "body": "first, by anybody"
+      }
+    }
+  ],
+  "instance": {
+    "name": "r1",
+    "signAs": "node",
+    "spec": {
+      "body": "second, by the node"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "r1",
+    "supersededBy": 0
+  }
+}

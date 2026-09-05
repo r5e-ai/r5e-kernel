@@ -1,0 +1,48 @@
+{
+  "note": "§2 server readmit: replace, and the entry keeps its name.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Session",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "server"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "harness": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "actor": {
+        "id": "test:alice",
+        "keyFingerprint": "sha256:test-alice"
+      },
+      "spec": {
+        "harness": "first"
+      }
+    }
+  ],
+  "instance": {
+    "name": "$setup.0.name",
+    "actor": {
+      "id": "test:alice",
+      "keyFingerprint": "sha256:test-alice"
+    },
+    "spec": {
+      "harness": "later"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "$setup.0.name",
+    "supersededBy": 0
+  }
+}

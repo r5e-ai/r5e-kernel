@@ -1,0 +1,51 @@
+{
+  "note": "§2, the same rule from the other side and the reason it matters: the named signer's nonce is still theirs to spend after the node restarts. A replay that claimed on every recorded payload would refuse this admission.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "n0",
+      "spec": {
+        "body": "first"
+      },
+      "denied": true,
+      "nonce": "BAQEBAQEBAQEBAQEBAQEBA==",
+      "requestPatch": {
+        "actor": "$key.2"
+      }
+    }
+  ],
+  "replayBeforeInstance": true,
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "nonce": "BAQEBAQEBAQEBAQEBAQEBA=="
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "n1",
+    "nonceClaimed": true
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "note": "§2: a KindDefinition is named by naming mode `path` — its own API path.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "MetaOk",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [
+          "a"
+        ],
+        "properties": {
+          "a": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "vectors.r5e.io/v1alpha1/MetaOk"
+  }
+}

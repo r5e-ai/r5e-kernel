@@ -1,0 +1,17 @@
+{
+  "note": "§1: `PUT /cas` is an admission of a CasObject whose spec the kernel builds from the body. The caller signs that spec's address, so the bytes and the envelope are bound together with no private door.",
+  "kind": "core.r5e.io/v1/CasObject",
+  "instance": {
+    "door": "cas",
+    "body": "raw bytes through the signed door"
+  },
+  "expect": {
+    "outcome": "admitted",
+    "identity": "signed",
+    "recorded": true,
+    "payloadSpec": {
+      "class": "raw",
+      "size": 33
+    }
+  }
+}

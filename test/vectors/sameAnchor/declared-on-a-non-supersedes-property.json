@@ -1,0 +1,39 @@
+{
+  "note": "sameAnchor is legal only on a property named supersedes: anywhere else the kernel would have no supersession to check it against, and an unenforceable keyword is one v2 does not admit.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "name": "vectors.r5e.io/v1alpha1/BadAnchor",
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "BadAnchor",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "anchor": {
+            "type": "string"
+          },
+          "replaces": {
+            "type": "ref",
+            "ref": {
+              "event": "vectors.r5e.io/v1alpha1/BadAnchor",
+              "outcome": "admitted",
+              "sameAnchor": "anchor"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "legal only on a top-level property named \"supersedes\""
+  }
+}

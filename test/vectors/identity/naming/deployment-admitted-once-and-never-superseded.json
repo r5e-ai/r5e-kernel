@@ -1,0 +1,27 @@
+{
+  "note": "§4/KS-4: the node key declares once. `readmitBy: none` means the record of what this deployment said it was cannot be quietly rewritten later.",
+  "kind": "core.r5e.io/v1/Deployment",
+  "setup": [
+    {
+      "name": "deployment",
+      "signAs": "node",
+      "spec": {
+        "commons": false,
+        "declaredBy": "$nodeKey"
+      }
+    }
+  ],
+  "instance": {
+    "name": "deployment",
+    "signAs": "node",
+    "spec": {
+      "commons": true,
+      "declaredBy": "$nodeKey"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "readmitBy: none"
+  }
+}

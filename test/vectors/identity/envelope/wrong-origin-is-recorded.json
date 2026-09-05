@@ -1,0 +1,39 @@
+{
+  "note": "§2: the origin is inside the signature, so an envelope admitted on one chain cannot be replayed onto another. The refusal is recorded and the nonce **is** claimed — the claim is taken before this check and stands through every later outcome.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "origin": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "wrong origin",
+    "recorded": true,
+    "nonceClaimed": true
+  }
+}

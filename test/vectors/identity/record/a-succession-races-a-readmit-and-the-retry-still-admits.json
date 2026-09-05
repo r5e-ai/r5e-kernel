@@ -1,0 +1,86 @@
+{
+  "note": "§6 (r4.3): the succession-graph version is captured at the **first** succession-dependent read, and that read may be `readmitBy` at `validateStructure` — the stage that settles the instance's *name*. Here key 2 supersedes a resource it inherited from key 1, so `readmitBy: actorOfRecordOrSuccessor` reads the relation at `validateStructure`; an unrelated Succession then lands between authorize and record, the version no longer matches, and the retry starts again from `validateStructure` rather than from `resolve`, because a name decided against a relation that has moved has to be decided again. The retry reaches the same answer here — the interleaved edge is between two other keys — and the act is admitted on the second attempt. The companion vector `a-revoked-edge-lands-between-authorize-and-record.json` is the case where the answer changes, and is what pins the *stage* the retry starts from.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Succeedable",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller",
+      "readmitBy": "actorOfRecordOrSuccessor"
+    },
+    "description": "A caller-named resource only its actor of record, or a successor, may supersede.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "r1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "body": "first"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "interleave": {
+    "kind": "core.r5e.io/v1/Succession",
+    "repeat": 1,
+    "admit": {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        3,
+        4
+      ],
+      "spec": {
+        "predecessor": "$key.3",
+        "successor": "$key.4",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.4.bytes"
+        }
+      }
+    }
+  },
+  "instance": {
+    "name": "r1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "second"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "r1",
+    "recordAttempts": 2,
+    "supersededBy": 0
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Limits",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "deep": {
+          "type": "object"
+        },
+        "bag": {
+          "type": "object"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "l2",
+    "spec": {
+      "deep": {
+        "x": {
+          "x": {
+            "x": {
+              "x": {
+                "x": {
+                  "x": {
+                    "x": {
+                      "x": {
+                        "x": {
+                          "x": {
+                            "x": {
+                              "x": {
+                                "x": {
+                                  "x": {
+                                    "x": {
+                                      "x": 1
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "depth limit exceeded"
+  }
+}

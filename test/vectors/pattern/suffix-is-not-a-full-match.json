@@ -1,0 +1,40 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Pattern",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "animal": {
+          "type": "string",
+          "pattern": "(cat|dog)"
+        },
+        "loose": {
+          "type": [
+            "string",
+            "integer"
+          ],
+          "pattern": "[a-z]+"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "p3",
+    "spec": {
+      "animal": "hotdog"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "does not match pattern"
+  }
+}

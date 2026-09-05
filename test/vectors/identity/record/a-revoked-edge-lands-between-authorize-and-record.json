@@ -1,0 +1,83 @@
+{
+  "note": "§6 (r4.3), the case that pins the stage: `readmitBy: actorOfRecordOrSuccessor` settles the instance's **name** at `validateStructure` by reading the succession relation, and the relation then moves — the edge that made key 2 a successor is revoked between authorize and record. A retry from `resolve` would keep the naming decision the first pass made and supersede a resource on the strength of an edge the chain no longer has; the retry starts from `validateStructure` instead, asks `readmitBy` again, and denies. This is why §6 says the version is captured at the first succession-dependent read and the retry runs from *that* stage.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Succeedable",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller",
+      "readmitBy": "actorOfRecordOrSuccessor"
+    },
+    "description": "A caller-named resource only its actor of record, or a successor, may supersede.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "r1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "body": "first"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "interleave": {
+    "kind": "core.r5e.io/v1/Revocation",
+    "repeat": 1,
+    "admit": {
+      "kind": "core.r5e.io/v1/Revocation",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "revokes": {
+          "$ref": "$setup.1.eventRef"
+        }
+      }
+    }
+  },
+  "instance": {
+    "name": "r1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "second"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "readmitBy: actorOfRecordOrSuccessor",
+    "recordAttempts": 1,
+    "recorded": true
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "group": "core.r5e.io",
+  "kind": "Endorsement",
+  "version": "v1",
+  "substrate": "event",
+  "naming": {
+    "mode": "content"
+  },
+  "description": "A self vouching for a key someone else holds: the actor of record attests that `subject` may admit the listed Kinds between `notBefore` and `notAfter`, with or without the right to issue further authority, optionally in a named role. Effective only while every link to a root is effective; withdrawn by a Revocation from the same actor or its successor.",
+  "schema": {
+    "required": [
+      "subject",
+      "subjectKey",
+      "kinds",
+      "mayIssue",
+      "notBefore",
+      "notAfter"
+    ],
+    "nonEmpty": [
+      "kinds"
+    ],
+    "properties": {
+      "subject": {
+        "type": "string",
+        "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+        "derives": {
+          "keyIdOf": "subjectKey"
+        }
+      },
+      "subjectKey": {
+        "type": "object",
+        "keyBytes": true,
+        "properties": {
+          "algorithm": {
+            "type": "string",
+            "enum": [
+              "ed25519"
+            ]
+          },
+          "bytes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "algorithm",
+          "bytes"
+        ],
+        "additionalProperties": false
+      },
+      "scope": {
+        "type": "object"
+      },
+      "role": {
+        "type": "string"
+      },
+      "kinds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "([a-z0-9.-]+/v[0-9a-z]+/[A-Za-z0-9]+|\\*)"
+        }
+      },
+      "mayIssue": {
+        "type": "boolean"
+      },
+      "notBefore": {
+        "type": "string",
+        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?(Z|[+-][0-9]{2}:[0-9]{2})"
+      },
+      "notAfter": {
+        "type": "string",
+        "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{1,9})?(Z|[+-][0-9]{2}:[0-9]{2})"
+      },
+      "parent": {
+        "type": "ref",
+        "ref": {
+          "event": [
+            "core.r5e.io/v1/Endorsement",
+            "core.r5e.io/v1/Badge"
+          ],
+          "outcome": "admitted"
+        }
+      }
+    },
+    "ordered": [
+      [
+        "notBefore",
+        "notAfter"
+      ]
+    ],
+    "requires": [
+      {
+        "when": {
+          "envelope": "authority",
+          "present": true
+        },
+        "then": [
+          "parent"
+        ]
+      }
+    ],
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the actor of record vouched, at the recorded position, that the subject key may admit these Kinds in this term, with or without the right to issue",
+      "when a parent is cited, the actor exercised that parent's authority at this position and the parent covered it"
+    ],
+    "doesNotClaim": [
+      "that the subject holds the key — custody is the subject's own claim",
+      "that the free-form scope is within the parent's — only issuance, Kinds, and term narrow by rule",
+      "that the recorded actor is any particular person, organization, or agent beyond the key that signed — a name is a claim; a key id is the identity"
+    ]
+  },
+  "predicates": []
+}

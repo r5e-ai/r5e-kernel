@@ -1,0 +1,109 @@
+{
+  "group": "gateway.r5e.io",
+  "kind": "ToolCall",
+  "version": "v1alpha1",
+  "substrate": "event",
+  "naming": {
+    "mode": "content"
+  },
+  "description": "The recorded actor asked to invoke a tool with these arguments (inline, possibly empty, or detached at argsRef); policy decided at admission, and a denial is as fully recorded as an admission.",
+  "schema": {
+    "required": [
+      "tool"
+    ],
+    "properties": {
+      "tool": {
+        "type": "string"
+      },
+      "args": {
+        "type": "object"
+      },
+      "argsRef": {
+        "type": "ref",
+        "ref": {
+          "bytes": true,
+          "json": {
+            "type": "object"
+          }
+        }
+      },
+      "argsMediaType": {
+        "type": "string"
+      },
+      "llmCall": {
+        "type": "ref",
+        "ref": {
+          "event": "gateway.r5e.io/v1alpha1/LlmCall",
+          "outcome": "admitted"
+        }
+      },
+      "index": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "responsePrefixRef": {
+        "type": "ref",
+        "ref": {
+          "bytes": true
+        }
+      },
+      "callId": {
+        "type": "string"
+      },
+      "session": {
+        "type": "ref",
+        "ref": {
+          "kind": "gateway.r5e.io/v1alpha1/AgentSession"
+        }
+      },
+      "purpose": {
+        "type": "string"
+      },
+      "extractedAt": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "nonEmpty": [
+      "tool"
+    ],
+    "exactlyOne": [
+      [
+        "args",
+        "argsRef"
+      ]
+    ],
+    "requires": [
+      {
+        "when": {
+          "present": "llmCall"
+        },
+        "then": [
+          "index"
+        ]
+      },
+      {
+        "when": {
+          "present": "argsMediaType"
+        },
+        "then": [
+          "argsRef"
+        ]
+      }
+    ]
+  },
+  "epistemicScope": {
+    "claims": [
+      "the recorded actor asked to invoke `tool` with these arguments, at the recorded position on the chain",
+      "the policy bundle, source, and evaluation record cited on this receipt — and the shape when one was in force — produced the recorded outcome at admission, before any substrate write",
+      "a denial is as fully recorded as an admission — asking is itself an act"
+    ],
+    "doesNotClaim": [
+      "that the tool ran",
+      "that the tool ran with these arguments, or produced any particular result",
+      "that the recorded actor held the key whose fingerprint is recorded — admissions are not yet signed by their actors",
+      "that anything outside this kernel honored the recorded decision"
+    ]
+  },
+  "predicates": []
+}

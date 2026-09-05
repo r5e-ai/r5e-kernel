@@ -1,0 +1,49 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Refs",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "target": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Refs"
+          }
+        },
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "open": {
+          "type": "object"
+        },
+        "plain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "g7",
+    "spec": {
+      "blob": {
+        "$ref": 7
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "$ref must be a string"
+  }
+}

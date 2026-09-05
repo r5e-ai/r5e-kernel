@@ -1,0 +1,76 @@
+{
+  "note": "§9, the trust file's working half: the same pin through `--trust-file` rather than `--trust`, so the door a reader actually uses is the door a vector exercises.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "signAs": "node",
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "role": "probe",
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "name": "n1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "verify": {
+    "trustFile": [
+      {
+        "key": "$nodeKey",
+        "label": "the node",
+        "kinds": [
+          "vectors.r5e.io/v1alpha1/Note"
+        ]
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "lines": {
+        "endorsements": "1 resolved to a pinned root"
+      }
+    }
+  }
+}

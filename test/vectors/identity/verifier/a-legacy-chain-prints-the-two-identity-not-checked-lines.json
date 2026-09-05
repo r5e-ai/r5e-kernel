@@ -1,0 +1,17 @@
+{
+  "note": "§9/§10: `U` counts payloads carrying **no `identity` field at all** — the legacy definition, and the only one. This chain boots over a pre-011 log, so its first two events are unsigned, `U > 0`, and the two identity not-checked lines print. Everything the transition itself wrote is signed, which is why `S` is below `T` rather than zero.",
+  "legacyLog": true,
+  "expect": {
+    "verifier": {
+      "lines": {
+        "signatures": "2 legacy unsigned"
+      },
+      "notChecked": [
+        "admissions are not signed: this bundle carries payloads with no identity member (legacy unsigned)",
+        "absence does not establish whether these records predate signatures or omitted them",
+        "actor fingerprints are asserted at admission"
+      ],
+      "noFindings": true
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Floats",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "n": {
+          "type": "integer"
+        },
+        "open": {
+          "type": "object"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "f2",
+    "spec": {
+      "n": 1.5
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "floats are not admissible"
+  }
+}

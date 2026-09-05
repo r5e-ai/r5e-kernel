@@ -1,0 +1,47 @@
+{
+  "note": "KS-3: swap the two signers and the same spec is refused — which is what makes `matchesSigner` a check about *which* key signed rather than about whether one did.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Countersigned",
+    "version": "v1alpha1",
+    "substrate": "event",
+    "naming": {
+      "mode": "content"
+    },
+    "description": "A countersigned act: the subject proves possession by signing too.",
+    "schema": {
+      "required": [
+        "issuer",
+        "subject"
+      ],
+      "properties": {
+        "issuer": {
+          "type": "string",
+          "matchesSigner": 1
+        },
+        "subject": {
+          "type": "string",
+          "matchesSigner": 2
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": [],
+    "signatures": 2
+  },
+  "instance": {
+    "spec": {
+      "issuer": "$key.1",
+      "subject": "$key.2"
+    },
+    "sign": [
+      2,
+      1
+    ]
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "matchesSigner"
+  }
+}

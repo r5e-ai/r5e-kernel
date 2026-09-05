@@ -1,0 +1,33 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "gateway.r5e.io/v1alpha1/ToolCall",
+    "spec": {
+      "title": "t"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "gateway.r5e.io/v1alpha1/ToolCall"
+  }
+}

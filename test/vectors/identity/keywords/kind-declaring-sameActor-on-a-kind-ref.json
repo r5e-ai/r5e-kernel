@@ -1,0 +1,35 @@
+{
+  "note": "§5/KS-5: `sameActor` is a rule about who may cite an **event**; on a `kind` ref it names no act to compare an actor against.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "SameActorOnKind",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "description": "An event citation, for the refdecl meta-checks.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "cites": {
+            "type": "ref",
+            "ref": {
+              "kind": "vectors.r5e.io/v1alpha1/Referring",
+              "sameActor": true
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "undeclared schema.properties.cites.ref keyword \"sameActor\""
+  }
+}

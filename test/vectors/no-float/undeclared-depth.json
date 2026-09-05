@@ -1,0 +1,48 @@
+{
+  "note": "§3: no JSON float anywhere in a spec, at any depth, declared or not.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Floats",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "n": {
+          "type": "integer"
+        },
+        "open": {
+          "type": "object"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "f3",
+    "spec": {
+      "open": {
+        "a": {
+          "b": {
+            "c": 0.25
+          }
+        }
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "/open/a/b/c"
+  }
+}

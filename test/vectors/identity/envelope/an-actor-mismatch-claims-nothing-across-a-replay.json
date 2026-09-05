@@ -1,0 +1,43 @@
+{
+  "note": "§2: `actor mismatch` is decided **before** the claim, so it spends nobody's nonce — and a replay has to rebuild the index the live node held rather than a generous reading of the log. Replay after the denial, and the nonce is still unclaimed.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "nonce": "AwMDAwMDAwMDAwMDAwMDAw==",
+    "requestPatch": {
+      "actor": "$key.2"
+    }
+  },
+  "replayAfterInstance": true,
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "actor mismatch",
+    "recorded": true,
+    "nonceClaimed": false
+  }
+}

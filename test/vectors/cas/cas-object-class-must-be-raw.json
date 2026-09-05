@@ -1,0 +1,16 @@
+{
+  "note": "The CasObject schema is closed and its class enum has one member (§5): a caller cannot invent a class for bytes the kernel is asked to record.",
+  "kind": "core.r5e.io/v1/CasObject",
+  "instance": {
+    "spec": {
+      "address": "bytes:sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+      "size": 4,
+      "class": "cooked"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "/class: \"cooked\" is not one of [\"raw\"]"
+  }
+}

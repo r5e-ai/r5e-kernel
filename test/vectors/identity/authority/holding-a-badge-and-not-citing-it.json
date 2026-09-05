@@ -1,0 +1,63 @@
+{
+  "note": "§5: a key that holds a Badge may still act as itself. There is no class of badge keys, so holding one is not a state a key is in — exercising one is something an act does, and the record says which acts did.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "kinds": [],
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Badge",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "vectors.r5e.io/v1alpha1/Note"
+        ],
+        "mayIssue": false,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "subjectKind": "agent"
+      }
+    }
+  ],
+  "instance": {
+    "name": "a1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "as myself"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "a1",
+    "resolvedAuthority": []
+  }
+}

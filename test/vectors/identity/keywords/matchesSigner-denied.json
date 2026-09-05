@@ -1,0 +1,80 @@
+{
+  "note": "KS-3: `matchesSigner: 1` means signer 1 — `signatures[0]`, 1-based as everywhere in the contract. A key that is not the one that signed is refused.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Keyed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "KS-3's three key-shaped keywords on one Kind: matchesSigner, derives, keyBytes.",
+    "schema": {
+      "required": [
+        "key",
+        "subject",
+        "subjectKey"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+          "matchesSigner": 1
+        },
+        "subject": {
+          "type": "string",
+          "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+          "derives": {
+            "keyIdOf": "subjectKey"
+          }
+        },
+        "subjectKey": {
+          "type": "object",
+          "keyBytes": true,
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "enum": [
+                "ed25519"
+              ]
+            },
+            "bytes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "algorithm",
+            "bytes"
+          ],
+          "additionalProperties": false
+        },
+        "label": {
+          "type": "string",
+          "enum": [
+            "a",
+            "b"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "k1",
+    "spec": {
+      "key": "$key.2",
+      "subject": "$key.2",
+      "subjectKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.2.bytes"
+      },
+      "label": "a"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "matchesSigner"
+  }
+}

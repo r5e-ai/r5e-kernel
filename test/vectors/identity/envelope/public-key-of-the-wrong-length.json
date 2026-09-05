@@ -1,0 +1,46 @@
+{
+  "note": "§0: the registry states the length, and a key of another length is not an ed25519 key.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "envelopePatch": {
+      "publicKeys": [
+        {
+          "keyid": "$key.1",
+          "algorithm": "ed25519",
+          "bytes": "RO01xf2gKgJOWvpusCWmpqyABMNLitgha0udwiEvWQ=="
+        }
+      ]
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "public key is 32 bytes, got 31",
+    "recorded": false
+  }
+}

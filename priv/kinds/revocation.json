@@ -1,0 +1,43 @@
+{
+  "group": "core.r5e.io",
+  "kind": "Revocation",
+  "version": "v1",
+  "substrate": "event",
+  "naming": {
+    "mode": "content"
+  },
+  "description": "Withdrawal of an Endorsement, Badge, or Succession by the actor that made it or that actor's current successor. Effective from its own sequence; nothing earlier changes; revoking a Succession removes its edge and reopens the predecessor's slot.",
+  "schema": {
+    "required": [
+      "revokes"
+    ],
+    "properties": {
+      "revokes": {
+        "type": "ref",
+        "ref": {
+          "event": [
+            "core.r5e.io/v1/Endorsement",
+            "core.r5e.io/v1/Badge",
+            "core.r5e.io/v1/Succession"
+          ],
+          "outcome": "admitted",
+          "sameActor": true
+        }
+      },
+      "reason": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the actor of record — the target's endorser, issuer, or predecessor, or that actor's current successor — withdrew the target at the recorded position"
+    ],
+    "doesNotClaim": [
+      "that acts admitted under the target before this position were wrong — they were valid when admitted",
+      "that the recorded actor is any particular person, organization, or agent beyond the key that signed — a name is a claim; a key id is the identity"
+    ]
+  },
+  "predicates": []
+}

@@ -1,0 +1,48 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "ExactlyOne",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "tool"
+      ],
+      "properties": {
+        "tool": {
+          "type": "string"
+        },
+        "args": {
+          "type": "object"
+        },
+        "argsRef": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "exactlyOne": [
+        [
+          "args",
+          "argsRef"
+        ]
+      ]
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "x4",
+    "spec": {
+      "tool": "bash",
+      "args": {},
+      "argsRef": "a"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "exactly one of"
+  }
+}

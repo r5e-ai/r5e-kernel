@@ -1,0 +1,7 @@
+{
+  "note": "§8: the only two literal escapes.",
+  "canonical": {
+    "rawJson": "{\"s\":\"he said \\\"\\\\\\\"\"}",
+    "bytes": "{\"s\":\"he said \\\"\\\\\\\"\"}"
+  }
+}

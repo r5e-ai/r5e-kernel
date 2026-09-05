@@ -1,0 +1,19 @@
+{
+  "note": "§7: `S >= L` is refused. A signature whose scalar half is at or above the group order is malleable — a second encoding of the same signature — and a record whose signatures have two spellings is a record with two hashes for one act.",
+  "ed25519": [
+    {
+      "note": "the honest signature",
+      "publicKey": "44ed35c5fda02a024e5afa6eb025a6a6ac8004c34b8ad8216b4b9dc2212f598a",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b145982cf0baa1e9a8f76c481a3561c244d7bc67d1bc7724c5a3bd2c39fafdf007",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": true
+    },
+    {
+      "note": "S set to L exactly",
+      "publicKey": "44ed35c5fda02a024e5afa6eb025a6a6ac8004c34b8ad8216b4b9dc2212f598a",
+      "signature": "f54513c0382f95e0849ddc5fa306506c571e09e2ee69df3d8847f9ead852d0b1edd3f55c1a631258d69cf7a2def9de1400000000000000000000000000000010",
+      "message": "6964656e746974792066697874757265206d657373616765",
+      "valid": false
+    }
+  ]
+}

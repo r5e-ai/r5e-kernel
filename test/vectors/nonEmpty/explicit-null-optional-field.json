@@ -1,0 +1,46 @@
+{
+  "note": "An explicit null is not-exists, so nonEmpty does not fire on it.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "NonEmpty",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "object",
+            "array"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "nonEmpty": [
+        "title",
+        "note"
+      ]
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n6",
+    "spec": {
+      "title": "t",
+      "note": null
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "n6"
+  }
+}

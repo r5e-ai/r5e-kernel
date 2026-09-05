@@ -1,0 +1,34 @@
+{
+  "note": "§5, amendment C8: a KindDefinition's derivedFrom envelope is a bytes: citation, and a citation is backed or it is nothing. Here it is — the document was admitted as a CasObject first, so the address names an act.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "cas": [
+    "# Backed\n\nThe reviewed document this KindDefinition was derived from.\n"
+  ],
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "BackedByADocument",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "a": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    },
+    "derivedFrom": "$cas.0"
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "vectors.r5e.io/v1alpha1/BackedByADocument",
+    "derivedFrom": "$cas.0"
+  }
+}

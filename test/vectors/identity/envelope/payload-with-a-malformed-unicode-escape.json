@@ -1,0 +1,39 @@
+{
+  "note": "§2: the same bytes arriving at the door. A request whose payload will not parse is a form error — `malformed envelope`, unattributable, not recorded — and never an unhandled failure with no answer for the caller.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "spec": {
+      "body": "hello"
+    },
+    "rawRequest": "{\"a\":\"\\u-001\"}"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "malformed envelope: the payload is not canonical JSON: invalid \\u escape",
+    "recorded": false,
+    "nonceClaimed": false
+  }
+}

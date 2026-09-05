@@ -1,0 +1,66 @@
+{
+  "note": "§3/KS-3, `derives` on its own: the declared string equals `keyId(<the named keyBytes property>)`. The admitted case matters as much as the denial — a keyword that only ever refuses proves nothing about what it lets through, and this is the shape every identity Kind uses to bind a key id to the key it names.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Derived",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A key id and the key it is derived from, and nothing else.",
+    "schema": {
+      "required": [
+        "subject",
+        "subjectKey"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "derives": {
+            "keyIdOf": "subjectKey"
+          }
+        },
+        "subjectKey": {
+          "type": "object",
+          "keyBytes": true,
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "enum": [
+                "ed25519"
+              ]
+            },
+            "bytes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "algorithm",
+            "bytes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "d1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "subject": "$key.2",
+      "subjectKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.2.bytes"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "d1"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "note": "§4/KS-4: the four values are the whole enum.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "ReadmitByUnknown",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller",
+        "readmitBy": "whoever"
+      },
+      "description": "For the readmitBy placement rule.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "body": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "readmitBy must be one of"
+  }
+}

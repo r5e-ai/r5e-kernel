@@ -1,0 +1,32 @@
+{
+  "note": "§4/KS-4: a `content`-named instance's name **is** its spec, so a re-admission of the same name is the same document and there is nothing for a readmit rule to gate.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "ReadmitOnContent",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "content",
+        "readmitBy": "actorOfRecord"
+      },
+      "description": "For the readmitBy placement rule.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "body": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "not admissible on naming mode \"content\""
+  }
+}

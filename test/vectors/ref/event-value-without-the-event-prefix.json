@@ -1,0 +1,65 @@
+{
+  "note": "An event ref carries an event hash in address form; a bare sha256 address is a different form and names a different thing (§6).",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Anchor",
+      "version": "v1alpha1",
+      "substrate": "event",
+      "naming": {
+        "mode": "content"
+      },
+      "schema": {
+        "required": [
+          "tag"
+        ],
+        "properties": {
+          "tag": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Cites",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "call": {
+          "type": "ref",
+          "ref": {
+            "event": "vectors.r5e.io/v1alpha1/Anchor",
+            "outcome": "admitted"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "g",
+    "spec": {
+      "call": {
+        "$ref": "sha256:abababababababababababababababababababababababababababababababab"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "must be event:sha256:<64 lowercase hex>"
+  }
+}

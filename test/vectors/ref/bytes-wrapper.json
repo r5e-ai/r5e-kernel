@@ -1,0 +1,60 @@
+{
+  "note": "A bytes ref resolves against the CasObject admission that put the object on the record (§5): the manifest entry's casObjectEvent is that admission's event ref, not a null standing in for one.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Refs",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "target": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Refs"
+          }
+        },
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "open": {
+          "type": "object"
+        },
+        "plain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "cas": [
+    "the referenced bytes"
+  ],
+  "instance": {
+    "name": "g2",
+    "spec": {
+      "blob": {
+        "$ref": "$cas.0"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "g2",
+    "resolvedRefs": [
+      {
+        "path": "/blob",
+        "class": "bytes",
+        "size": 20,
+        "casObjectEvent": "$casEvent.0"
+      }
+    ]
+  }
+}

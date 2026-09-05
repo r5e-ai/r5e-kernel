@@ -1,0 +1,56 @@
+{
+  "note": "KS-3: `ordered` is strict. A term whose ends are the same moment covers nothing, and a rule that admitted it would be a rule about text rather than about time.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Termed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A term and a pair of alternatives: `ordered` and `atMostOne` on one Kind.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "notBefore": {
+          "type": "string"
+        },
+        "notAfter": {
+          "type": "string"
+        },
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "string"
+        }
+      },
+      "ordered": [
+        [
+          "notBefore",
+          "notAfter"
+        ]
+      ],
+      "atMostOne": [
+        [
+          "a",
+          "b"
+        ]
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "t1",
+    "spec": {
+      "notBefore": "2026-01-01T00:00:00Z",
+      "notAfter": "2026-01-01T00:00:00Z"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "ordered: notBefore must be before notAfter"
+  }
+}

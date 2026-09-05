@@ -1,0 +1,89 @@
+{
+  "note": "§7, the policy half. The engine reads Bundle/active and reports the generation it read it at; between authorize and record another actor supersedes the bundle. The re-check under the append lock sees the generation move, nothing is appended, and the admission re-runs from resolve. The second pass asks the policy again — which is the point: the decision that lands is the decision the current bundle produced. Two record attempts, and the receipt's policy block cites the new generation, not the one the first pass read.",
+  "kinds": [
+    {
+      "group": "vectors.r5e.io",
+      "kind": "Bundle",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "literal",
+        "value": "active"
+      },
+      "description": "A PolicyBundle-shaped resource: one name, superseded in place.",
+      "schema": {
+        "required": [
+          "rule"
+        ],
+        "properties": {
+          "rule": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  ],
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Governed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "An instance whose admission the bundle governs.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "vectors.r5e.io/v1alpha1/Bundle",
+      "name": "active",
+      "spec": {
+        "rule": "first"
+      }
+    }
+  ],
+  "policyReads": [
+    "vectors.r5e.io/v1alpha1/Bundle/active"
+  ],
+  "interleave": {
+    "before": "record",
+    "repeat": 1,
+    "kind": "vectors.r5e.io/v1alpha1/Bundle",
+    "admit": {
+      "name": "active",
+      "spec": {
+        "rule": "second"
+      }
+    }
+  },
+  "instance": {
+    "name": "g",
+    "spec": {
+      "label": "governed"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "g",
+    "recordAttempts": 2,
+    "notHalted": true,
+    "policy": {
+      "engine": "vector-reading",
+      "generations": {
+        "vectors.r5e.io/v1alpha1/Bundle/active": "$interleaved.0.seq"
+      }
+    }
+  }
+}

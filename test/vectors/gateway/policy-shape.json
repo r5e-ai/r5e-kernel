@@ -1,0 +1,84 @@
+{
+  "group": "gateway.r5e.io",
+  "kind": "PolicyShape",
+  "version": "v1alpha1",
+  "substrate": "resource",
+  "naming": {
+    "mode": "derived",
+    "derive": "{engine}.{kind}"
+  },
+  "description": "How instances of one Kind are presented to a policy engine: an action, a resource, and context, each a path into the instance or a literal (grammar in schema-lite-v2 §8). Presentation, not authority. Named `<engine>.<target Kind path>`, or `<engine>.*` for the fallback.",
+  "schema": {
+    "required": [
+      "kind",
+      "engine",
+      "action",
+      "resourceType",
+      "resourceId"
+    ],
+    "properties": {
+      "kind": {
+        "type": "string",
+        "pattern": "([a-z0-9.-]+/v[0-9a-z]+/[A-Za-z0-9]+|\\*)"
+      },
+      "engine": {
+        "type": "string",
+        "enum": [
+          "cedar"
+        ]
+      },
+      "action": {
+        "type": "string"
+      },
+      "resourceType": {
+        "type": "string"
+      },
+      "resourceId": {
+        "type": "string"
+      },
+      "context": {
+        "type": "object",
+        "values": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "whenAbsent": {
+              "type": "string",
+              "enum": [
+                "absent",
+                "deny"
+              ]
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "description": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "nonEmpty": [
+      "action",
+      "resourceType",
+      "resourceId"
+    ]
+  },
+  "epistemicScope": {
+    "claims": [
+      "this presentation for the named Kind and engine was submitted by the recorded actor and admitted at the recorded position on the chain",
+      "from that position until the next admission under the same name, receipts for that Kind cite this shape's address, and their evaluation records were built from it"
+    ],
+    "doesNotClaim": [
+      "that the engine is correct",
+      "that the shape expresses anyone's intent",
+      "that the recorded actor held the key whose fingerprint is recorded — admissions are not yet signed by their actors"
+    ]
+  },
+  "predicates": []
+}

@@ -1,0 +1,41 @@
+{
+  "note": "Anyone may say an endorsement should not stand; only the endorser can make it so. The kernel refuses at `resolve: sameActor`; a Revocation forged into a bundle is the verifier's `revocation-actor` finding, and the chain stays effective.",
+  "kind": "core.r5e.io/v1/Revocation",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Revocation",
+    "sign": [
+      3
+    ],
+    "spec": {
+      "revokes": {
+        "$ref": "$setup.0.eventRef"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "resolve",
+    "reasonIncludes": "resolve: sameActor: "
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "K",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [],
+        "properties": {
+          "a": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": [],
+      "extra": "not a declared key"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "undeclared key \"extra\""
+  },
+  "note": "§1: undeclared top-level keys deny. The meta-Kind's own additionalProperties: false is what catches it — the meta-check in the kernel is the second line, for definitions parsed outside admission."
+}

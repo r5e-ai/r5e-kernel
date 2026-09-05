@@ -1,0 +1,44 @@
+{
+  "note": "§7's halt. The setup step named `boom` has its substrate write fail after its event is on the chain — the legible gap: the record says an admission was granted and the store has no entry for it. The caller of that admission gets the failure, not a receipt, because a denial receipt would contradict the record. From then on the node denies every granted admission at stage `record` with reason `halted:`, and records the denial: refusing to admit is not refusing to answer.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Thing",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "substrateFailure": "boom",
+  "setup": [
+    {
+      "name": "boom",
+      "raises": true,
+      "spec": {
+        "label": "the admission whose substrate write fails"
+      }
+    }
+  ],
+  "instance": {
+    "name": "after",
+    "spec": {
+      "label": "submitted while halted"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "record",
+    "reasonIncludes": "halted: the substrate write for the granted admission at seq",
+    "haltedAfter": true
+  }
+}

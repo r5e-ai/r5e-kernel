@@ -1,0 +1,56 @@
+{
+  "note": "§0/KS-3: and the other way round is denied, which is what makes the digits load-bearing rather than decorative.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Termed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A term and a pair of alternatives: `ordered` and `atMostOne` on one Kind.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "notBefore": {
+          "type": "string"
+        },
+        "notAfter": {
+          "type": "string"
+        },
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "string"
+        }
+      },
+      "ordered": [
+        [
+          "notBefore",
+          "notAfter"
+        ]
+      ],
+      "atMostOne": [
+        [
+          "a",
+          "b"
+        ]
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "t1",
+    "spec": {
+      "notBefore": "2026-01-01T00:00:00.000000002Z",
+      "notAfter": "2026-01-01T00:00:00.000000001Z"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateConstraints",
+    "reasonIncludes": "ordered: notBefore must be before notAfter"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "Derived",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "schema": {
+        "required": [
+          "a"
+        ],
+        "properties": {
+          "a": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    },
+    "derivedFrom": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "authenticate",
+    "reasonIncludes": "derivedFrom must be bytes:sha256:",
+    "recorded": false,
+    "nonceClaimed": false
+  },
+  "note": "Contract 011 §1: derivedFrom is a signed request field, so its form is settled at authenticate. A malformed one is a form error: unattributable, not an act, not recorded."
+}

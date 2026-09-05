@@ -1,0 +1,50 @@
+{
+  "note": "§9: every signature on every `identity: signed` payload is verified with the `publicKeys` recorded on that same payload. One flipped bit inside the bundle, and the count on the `signatures:` line drops below the number of admissions — which is the number that says what was checked.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "body": "hello"
+    }
+  },
+  "verify": {
+    "editPayload": [
+      {
+        "payloadOf": "instance",
+        "tamper": "signature"
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "findings": [
+        "signature"
+      ]
+    }
+  }
+}

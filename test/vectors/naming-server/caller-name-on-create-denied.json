@@ -1,0 +1,32 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Session",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "server"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "harness": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "event:sha256:abababababababababababababababababababababababababababababababab",
+    "spec": {
+      "harness": "x"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "is not an admitted instance to replace"
+  }
+}

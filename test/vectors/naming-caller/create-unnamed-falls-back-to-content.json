@@ -1,0 +1,33 @@
+{
+  "note": "The v1 kernel's behaviour, preserved: an unnamed caller-mode instance is named by content.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "spec": {
+      "title": "t"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "sha256:fd32f01954a82d8192431bf0c8d2fe22d8c10a9d62a1f4aad96228b065e6cc65"
+  }
+}

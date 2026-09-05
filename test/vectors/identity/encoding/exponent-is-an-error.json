@@ -1,0 +1,7 @@
+{
+  "note": "§8: an exponent is a second spelling of an integer. Same reason as `-0`.",
+  "canonical": {
+    "rawJson": "{\"n\":1e3}",
+    "error": "carries an exponent"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Union",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "u": {
+          "type": [
+            "string",
+            "integer",
+            "array"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "u2",
+    "spec": {
+      "u": 7
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "u2"
+  }
+}

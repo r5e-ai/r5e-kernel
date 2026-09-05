@@ -1,0 +1,39 @@
+{
+  "note": "§2: unlike `content`, `derived` accepts a caller name equal to the rendered one.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Shape",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "derived",
+      "derive": "{engine}.{kind}"
+    },
+    "schema": {
+      "required": [
+        "engine"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "cedar.gateway.r5e.io/v1alpha1/ToolCall",
+    "spec": {
+      "engine": "cedar",
+      "kind": "gateway.r5e.io/v1alpha1/ToolCall"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "cedar.gateway.r5e.io/v1alpha1/ToolCall"
+  }
+}

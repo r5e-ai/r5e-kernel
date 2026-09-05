@@ -1,0 +1,17 @@
+{
+  "note": "§8: the number span is greedy over `-+.eE` so a float or an exponent is seen and named rather than truncated to its integer prefix. The cost is spans like `1-2`, which are not numbers at all and are refused before anything tries to convert them.",
+  "canonical": [
+    {
+      "rawJson": "{\"a\":1-2}",
+      "error": "is not a number"
+    },
+    {
+      "rawJson": "{\"a\":1+2}",
+      "error": "is not a number"
+    },
+    {
+      "rawJson": "{\"a\":--1}",
+      "error": "is not a number"
+    }
+  ]
+}

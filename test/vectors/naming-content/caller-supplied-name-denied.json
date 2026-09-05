@@ -1,0 +1,34 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Contented",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "content"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "mine",
+    "spec": {
+      "title": "hello"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "a caller-supplied name is not admissible"
+  }
+}

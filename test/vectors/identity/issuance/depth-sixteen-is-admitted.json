@@ -1,0 +1,429 @@
+{
+  "note": "§5: `parent.depth + 1 ≤ 16`. The sixteenth link is the last one admissible, and its recorded `depth` is what makes the cap checkable by a reader rather than only by the kernel that enforced it.",
+  "kind": "core.r5e.io/v1/Endorsement",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        2
+      ],
+      "authority": [
+        "$setup.0.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.3",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.3.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.0.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        3
+      ],
+      "authority": [
+        "$setup.1.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.4",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.4.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.1.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        4
+      ],
+      "authority": [
+        "$setup.2.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.5",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.5.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.2.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        5
+      ],
+      "authority": [
+        "$setup.3.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.6",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.6.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.3.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        6
+      ],
+      "authority": [
+        "$setup.4.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.7",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.7.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.4.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        7
+      ],
+      "authority": [
+        "$setup.5.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.8",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.8.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.5.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        8
+      ],
+      "authority": [
+        "$setup.6.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.9",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.9.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.6.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        9
+      ],
+      "authority": [
+        "$setup.7.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.10",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.10.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.7.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        10
+      ],
+      "authority": [
+        "$setup.8.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.11",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.11.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.8.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        11
+      ],
+      "authority": [
+        "$setup.9.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.12",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.12.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.9.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        12
+      ],
+      "authority": [
+        "$setup.10.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.13",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.13.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.10.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        13
+      ],
+      "authority": [
+        "$setup.11.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.14",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.14.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.11.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        14
+      ],
+      "authority": [
+        "$setup.12.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.15",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.15.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.12.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        15
+      ],
+      "authority": [
+        "$setup.13.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.16",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.16.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.13.eventRef"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        16
+      ],
+      "authority": [
+        "$setup.14.eventRef"
+      ],
+      "spec": {
+        "subject": "$key.17",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.17.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z",
+        "parent": {
+          "$ref": "$setup.14.eventRef"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Endorsement",
+    "sign": [
+      17
+    ],
+    "authority": [
+      "$setup.15.eventRef"
+    ],
+    "spec": {
+      "subject": "$key.18",
+      "subjectKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.18.bytes"
+      },
+      "kinds": [
+        "*"
+      ],
+      "mayIssue": true,
+      "notBefore": "2020-01-01T00:00:00Z",
+      "notAfter": "2099-01-01T00:00:00Z",
+      "parent": {
+        "$ref": "$setup.15.eventRef"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "depth": 16
+  }
+}

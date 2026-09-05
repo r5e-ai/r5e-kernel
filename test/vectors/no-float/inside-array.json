@@ -1,0 +1,48 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Floats",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "n": {
+          "type": "integer"
+        },
+        "open": {
+          "type": "object"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "f4",
+    "spec": {
+      "list": [
+        {
+          "x": 1
+        },
+        {
+          "y": 2.0
+        }
+      ]
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "/list/1/y"
+  }
+}

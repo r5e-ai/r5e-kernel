@@ -1,0 +1,38 @@
+{
+  "note": "§4/KS-4: a `path`-named one is settled by §1's duplicate rule and the §11 transition.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "ReadmitOnPath",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "path",
+        "readmitBy": "nodeKey"
+      },
+      "description": "For the readmitBy placement rule.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "group": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "not admissible on naming mode \"path\""
+  }
+}

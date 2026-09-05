@@ -1,0 +1,42 @@
+{
+  "note": "§2 literal readmit: supersede — the displaced entry records supersededBy.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Bundle",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "literal",
+      "value": "active"
+    },
+    "schema": {
+      "required": [
+        "engine"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "spec": {
+        "engine": "cedar"
+      }
+    }
+  ],
+  "instance": {
+    "spec": {
+      "engine": "cedar2"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "active",
+    "supersededBy": 0
+  }
+}

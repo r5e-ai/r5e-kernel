@@ -1,0 +1,60 @@
+{
+  "group": "core.r5e.io",
+  "kind": "Principal",
+  "version": "v1",
+  "substrate": "resource",
+  "naming": {
+    "mode": "derived",
+    "derive": "{key}",
+    "readmitBy": "actorOfRecord"
+  },
+  "description": "An optional profile a key publishes about itself. The key is the principal whether or not a profile exists; the profile adds claims (kind, custody, a display name). One profile per key, superseded only by that key or its successor. A successor does not re-admit a predecessor's profile: the Succession event is the record of the key change, and the successor admits its own Principal under its own key.",
+  "schema": {
+    "required": [
+      "key",
+      "kind",
+      "custody"
+    ],
+    "properties": {
+      "key": {
+        "type": "string",
+        "pattern": "key:ed25519:sha256:[0-9a-f]{64}",
+        "matchesSigner": 1
+      },
+      "kind": {
+        "type": "string",
+        "enum": [
+          "person",
+          "agent",
+          "org",
+          "instrument",
+          "service"
+        ]
+      },
+      "custody": {
+        "type": "string",
+        "enum": [
+          "self",
+          "host",
+          "kms"
+        ]
+      },
+      "displayName": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the key that signed this admission published this profile of itself at the recorded position on the chain",
+      "the profile was superseded, if ever, only by that key or by its recorded successor"
+    ],
+    "doesNotClaim": [
+      "that the custody declaration is true beyond the key's own word — a runtime holding a key can be compromised and an operator owning the runtime can read it; this sentence is printed wherever custody is printed",
+      "that the recorded actor is any particular person, organization, or agent beyond the key that signed — a name is a claim; a key id is the identity",
+      "that a display name is unique, or is anyone's legal name"
+    ]
+  },
+  "predicates": []
+}

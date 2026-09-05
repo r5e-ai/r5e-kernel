@@ -1,0 +1,55 @@
+{
+  "note": "§0: up to nine fractional digits, compared at the precision they were written at. `DateTime` resolves to microseconds, so a comparison that stopped there would read these two as the same moment and admit a term whose ends are equal — the difference is real and it decides the answer.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Termed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A term and a pair of alternatives: `ordered` and `atMostOne` on one Kind.",
+    "schema": {
+      "required": [],
+      "properties": {
+        "notBefore": {
+          "type": "string"
+        },
+        "notAfter": {
+          "type": "string"
+        },
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "string"
+        }
+      },
+      "ordered": [
+        [
+          "notBefore",
+          "notAfter"
+        ]
+      ],
+      "atMostOne": [
+        [
+          "a",
+          "b"
+        ]
+      ],
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "t1",
+    "spec": {
+      "notBefore": "2026-01-01T00:00:00.000000001Z",
+      "notAfter": "2026-01-01T00:00:00.000000002Z"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "t1"
+  }
+}

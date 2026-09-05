@@ -1,0 +1,39 @@
+{
+  "note": "The actor of record withdraws what it made. `sameActor: true` on the `revokes` refdecl is the rule, and it is what makes a Revocation a withdrawal rather than an opinion.",
+  "kind": "core.r5e.io/v1/Revocation",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Revocation",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "revokes": {
+        "$ref": "$setup.0.eventRef"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted"
+  }
+}

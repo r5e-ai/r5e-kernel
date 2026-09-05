@@ -1,0 +1,77 @@
+{
+  "note": "§0: revoking a Succession takes the edge out of the relation for every seq after the Revocation's, and `matches/3` is what `readmitBy: actorOfRecordOrSuccessor` asks. So the key that was a successor stops being one, and the resource stays with the actor of record. This is the half of the contract that makes a Revocation of a Succession worth admitting at all: without it the successor keeps everything it inherited.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Succeedable",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller",
+      "readmitBy": "actorOfRecordOrSuccessor"
+    },
+    "description": "A caller-named resource only its actor of record, or a successor, may supersede.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "r1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "body": "first"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Revocation",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "revokes": {
+          "$ref": "$setup.1.eventRef"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "name": "r1",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "body": "second"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "readmitBy: actorOfRecordOrSuccessor"
+  }
+}

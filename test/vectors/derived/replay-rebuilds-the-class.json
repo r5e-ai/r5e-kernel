@@ -1,0 +1,31 @@
+{
+  "note": "The defect this key exists to fix, made falsifiable. `R5e.Bootstrap.replay/0` resets the reference index and rebuilds it from the chain alone, which is what a restart does; an object registered only by `RefIndex.register_derived/2` is gone afterwards, and the export that follows lists none of them while every citation of one stays on the log (fold v2: 24 verifier findings on the demo chain). Registered from the payload's `derivedObjects`, it survives — and the export taken after the replay lists exactly what the export taken before it listed.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Governed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": { "mode": "caller" },
+    "description": "A thing whose admission the deriving test engine decides, and writes a record of.",
+    "schema": {
+      "required": ["title"],
+      "properties": { "title": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "policyDerives": ["{\"format\":\"r5e.policy-evaluation/1\",\"decision\":\"allow\",\"n\":2}"],
+  "instance": {
+    "name": "survives-a-restart",
+    "spec": { "title": "the class is a view of the log, not of this process" }
+  },
+  "replayAfterInstance": true,
+  "expect": {
+    "outcome": "admitted",
+    "name": "survives-a-restart",
+    "derivedObjects": ["$written.0"],
+    "derivedRegistered": "$written.0",
+    "exportDerivedObjects": ["$written.0"],
+    "objectPresent": "$written.0"
+  }
+}

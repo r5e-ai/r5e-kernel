@@ -1,0 +1,66 @@
+{
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Requires",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "outcome"
+      ],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "error"
+          ]
+        },
+        "completion": {
+          "type": "string"
+        },
+        "mediaType": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "requires": [
+        {
+          "when": {
+            "field": "outcome",
+            "equals": "ok"
+          },
+          "then": [
+            "completion"
+          ]
+        },
+        {
+          "when": {
+            "present": "mediaType"
+          },
+          "then": [
+            "ref"
+          ]
+        }
+      ]
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "q1",
+    "spec": {
+      "outcome": "ok",
+      "completion": "c"
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "q1"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "note": "A ref value where the declaration says so, resolving to an admitted instance.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Refs",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [],
+      "properties": {
+        "target": {
+          "type": "ref",
+          "ref": {
+            "kind": "vectors.r5e.io/v1alpha1/Refs"
+          }
+        },
+        "blob": {
+          "type": "ref",
+          "ref": {
+            "bytes": true
+          }
+        },
+        "open": {
+          "type": "object"
+        },
+        "plain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "other",
+      "spec": {
+        "plain": "the target"
+      }
+    }
+  ],
+  "instance": {
+    "name": "g1",
+    "spec": {
+      "target": {
+        "$ref": "vectors.r5e.io/v1alpha1/Refs/other"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "g1",
+    "resolvedRefs": [
+      {
+        "path": "/target",
+        "class": "kind",
+        "value": "vectors.r5e.io/v1alpha1/Refs/other",
+        "specAddress": "$setup.0.specAddress",
+        "admissionEvent": "$setup.0.eventRef"
+      }
+    ]
+  }
+}

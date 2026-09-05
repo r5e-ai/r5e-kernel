@@ -1,0 +1,38 @@
+{
+  "note": "§0: \"\" is a value, not an absence.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Req",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "schema": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "object",
+            "array"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "r4",
+    "spec": {
+      "title": ""
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "r4"
+  }
+}

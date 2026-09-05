@@ -1,0 +1,99 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# GitLab CI/CD pipeline for r5e-kernel.
+#
+# Two gates, and nothing else yet. `r5e-enterprise/.gitlab-ci.yml` is the
+# authoritative gate set for the release as a whole; this file gates the
+# kernel repository on its own.
+#
+# Runner selection is a variable so the same pipeline runs on the project's
+# self-hosted runners (the default) or, for a staging mirror, on GitLab's
+# shared runners — set R5E_RUNNER_TAG_CI to a shared-runner tag such as
+# saas-linux-medium-amd64. Same convention as the enterprise pipeline.
+variables:
+  R5E_RUNNER_TAG_CI: ci
+  # The kernel consumes r5e-core's verifier as a path dependency
+  # (`mix.exs`: `{:recurse_verify, path: "../r5e-core/verifier"}`), so the
+  # test job needs r5e-core beside this checkout.
+  R5E_CORE_REPO: https://gitlab.com/r5e-group/r5e-core.git
+  R5E_CORE_REF: main
+
+stages:
+  - check
+
+# The first gate of every merge-request pipeline: provenance before anything
+# else is spent on the change. DCO on every commit in the range, and — because
+# this repository is AGPL and r5e Inc. also licenses it commercially — the CLA
+# on the author's account. The script prints the rule that failed and the one
+# command that fixes it.
+contribution:signing:
+  stage: check
+  image: hexpm/elixir:1.19.5-erlang-28.5-debian-bookworm-20260421
+  tags:
+    - $R5E_RUNNER_TAG_CI
+  timeout: 5m
+  interruptible: true
+  needs: []
+  variables:
+    # The check walks the whole merge-request range, so a shallow clone would
+    # make it pass by seeing nothing.
+    GIT_DEPTH: 0
+    R5E_REQUIRE_CLA: "1"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - when: never
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq --no-install-recommends git perl ca-certificates
+  script:
+    - test/check-contribution-signing_test.sh
+    - scripts/check-contribution-signing.sh
+
+test:
+  stage: check
+  image: hexpm/elixir:1.19.5-erlang-28.5-debian-bookworm-20260421
+  tags:
+    - $R5E_RUNNER_TAG_CI
+  timeout: 45m
+  interruptible: true
+  needs: []
+  variables:
+    # Every mix command in this repository runs with MIX_ENV=test. The dev
+    # data directory is a live chain; the test env gets a throwaway one.
+    MIX_ENV: test
+    MIX_HOME: "$CI_PROJECT_DIR/.cache/mix"
+    HEX_HOME: "$CI_PROJECT_DIR/.cache/hex"
+    REBAR_CACHE_DIR: "$CI_PROJECT_DIR/.cache/rebar3"
+    RUSTUP_HOME: "$CI_PROJECT_DIR/.cache/rustup"
+    CARGO_HOME: "$CI_PROJECT_DIR/.cache/cargo"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "api"'
+    - when: never
+  cache:
+    key: "kernel-${CI_RUNNER_EXECUTABLE_ARCH}-otp28-elixir1.19-rust1.92"
+    paths:
+      - .cache/
+      - deps/
+      - _build/
+      - native/r5e_cedar/target/
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq --no-install-recommends build-essential curl git pkg-config libssl-dev ca-certificates
+    - mkdir -p "$MIX_HOME" "$HEX_HOME" "$REBAR_CACHE_DIR" "$RUSTUP_HOME" "$CARGO_HOME"
+    - export PATH="$CARGO_HOME/bin:$PATH"
+    - |
+      if ! command -v rustup >/dev/null 2>&1; then
+        curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | \
+          sh -s -- --default-toolchain 1.92.0 --profile minimal -y
+      fi
+    - rustup default 1.92.0
+    - |
+      if [ ! -d "$CI_PROJECT_DIR/../r5e-core" ]; then
+        git clone --depth 1 --branch "$R5E_CORE_REF" "$R5E_CORE_REPO" "$CI_PROJECT_DIR/../r5e-core"
+      fi
+    - mix local.hex --force
+    - mix local.rebar --force
+  script:
+    - export PATH="$CARGO_HOME/bin:$PATH"
+    - MIX_ENV=test mix deps.get
+    - MIX_ENV=test mix test

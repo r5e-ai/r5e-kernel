@@ -1,0 +1,41 @@
+{
+  "group": "gateway.r5e.io",
+  "kind": "Completion",
+  "version": "v1alpha1",
+  "substrate": "artifact",
+  "naming": {
+    "mode": "content"
+  },
+  "description": "A model's response as submitted to the record. The bytes are a detached object at contentRef; identical bytes are one object, and this artifact's name is the hash of this spec.",
+  "schema": {
+    "required": [
+      "contentRef"
+    ],
+    "properties": {
+      "contentRef": {
+        "type": "ref",
+        "ref": {
+          "bytes": true
+        }
+      },
+      "mediaType": {
+        "type": "string"
+      },
+      "observedAt": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "epistemicScope": {
+    "claims": [
+      "the bytes at contentRef were submitted as a model's response by the recorded actor at the recorded position on the chain"
+    ],
+    "doesNotClaim": [
+      "which call produced them (see LlmResponse)",
+      "that any tool call inside them ran",
+      "that the recorded actor held the key whose fingerprint is recorded — admissions are not yet signed by their actors"
+    ]
+  },
+  "predicates": []
+}

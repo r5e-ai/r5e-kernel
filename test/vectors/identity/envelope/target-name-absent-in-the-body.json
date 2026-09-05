@@ -1,0 +1,44 @@
+{
+  "note": "§1: the body `name` must equal the signed `target.name` — absent means null. A request signed for a name and submitted without one is addressed to something else.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an envelope vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "spec": {
+      "body": "hello"
+    },
+    "requestPatch": {
+      "target": {
+        "group": "vectors.r5e.io",
+        "version": "v1alpha1",
+        "kind": "Note",
+        "name": "n1"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "target mismatch",
+    "recorded": true
+  }
+}

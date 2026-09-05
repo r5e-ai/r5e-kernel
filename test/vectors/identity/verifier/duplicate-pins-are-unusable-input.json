@@ -1,0 +1,46 @@
+{
+  "note": "§9: two pins for one key is a reader who has not decided, and the tool refuses rather than merging them — exit 2, unusable input, before any bundle is read.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so a verifier vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "n1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "body": "hello"
+    }
+  },
+  "verify": {
+    "trustKeys": [
+      "key:ed25519:sha256:aa",
+      "key:ed25519:sha256:aa=labelled"
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "verifier": {
+      "error": "pinned twice"
+    }
+  }
+}

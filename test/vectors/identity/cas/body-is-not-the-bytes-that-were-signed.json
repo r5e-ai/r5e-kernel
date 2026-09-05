@@ -1,0 +1,14 @@
+{
+  "note": "§1: the signed `specAddress` is the hash of the body. Swap the body and the binding breaks — which is the whole point of signing the address rather than the request.",
+  "kind": "core.r5e.io/v1/CasObject",
+  "instance": {
+    "door": "cas",
+    "body": "what was submitted",
+    "signBody": "what was signed"
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "spec address mismatch"
+  }
+}

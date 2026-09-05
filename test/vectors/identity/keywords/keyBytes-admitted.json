@@ -1,0 +1,58 @@
+{
+  "note": "§3/KS-3, `keyBytes` on its own: an object with exactly `algorithm` (inside the registry) and `bytes` (canonical base64 decoding to the registry's length for that algorithm). No `derives` beside it, so what is pinned here is the key object itself rather than the id derived from it.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "KeyHolder",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A bare key object, so `keyBytes` can be exercised without anything else.",
+    "schema": {
+      "required": [
+        "publicKey"
+      ],
+      "properties": {
+        "publicKey": {
+          "type": "object",
+          "keyBytes": true,
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "enum": [
+                "ed25519"
+              ]
+            },
+            "bytes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "algorithm",
+            "bytes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "instance": {
+    "name": "k1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "publicKey": {
+        "algorithm": "ed25519",
+        "bytes": "$key.3.bytes"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "k1"
+  }
+}

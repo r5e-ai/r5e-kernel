@@ -1,0 +1,90 @@
+{
+  "note": "§0's `matches(a, b, s)`: authority granted to a key is exercisable by the key that succeeded it. This is the whole point of the relation — a principal's authority survives a key change without anybody re-issuing anything. The verifier agrees, offline, from the bundle alone: it re-walks the citation at the citing event's own seq and reports `0 cut`, and `1 resolved to a pinned root` when the reader has pinned the endorser — which is the half a kernel test cannot show.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Note",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller"
+    },
+    "description": "A one-field resource, so an authority vector has something harmless to admit.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Endorsement",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "subject": "$key.2",
+        "subjectKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        },
+        "kinds": [
+          "*"
+        ],
+        "mayIssue": true,
+        "notBefore": "2020-01-01T00:00:00Z",
+        "notAfter": "2099-01-01T00:00:00Z"
+      }
+    },
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        2,
+        3
+      ],
+      "spec": {
+        "predecessor": "$key.2",
+        "successor": "$key.3",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.3.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "name": "a1",
+    "sign": [
+      3
+    ],
+    "spec": {
+      "body": "under authority"
+    },
+    "authority": [
+      "$setup.0.eventRef"
+    ]
+  },
+  "verify": {
+    "trust": [
+      {
+        "key": "$key.1"
+      }
+    ]
+  },
+  "expect": {
+    "outcome": "admitted",
+    "name": "a1",
+    "verifier": {
+      "noFindings": true,
+      "lines": {
+        "endorsements": "1 chains cited across 1 admissions; 1 resolved to a pinned root; 0 cut"
+      }
+    }
+  }
+}

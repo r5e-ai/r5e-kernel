@@ -1,0 +1,35 @@
+{
+  "note": "§0, stated as a consequence in the contract: a successor may revoke its own Succession, because `matches(predecessor, successor)` holds. The record shows it and the slot reopens.",
+  "kind": "core.r5e.io/v1/Revocation",
+  "setup": [
+    {
+      "kind": "core.r5e.io/v1/Succession",
+      "sign": [
+        1,
+        2
+      ],
+      "spec": {
+        "predecessor": "$key.1",
+        "successor": "$key.2",
+        "successorKey": {
+          "algorithm": "ed25519",
+          "bytes": "$key.2.bytes"
+        }
+      }
+    }
+  ],
+  "instance": {
+    "kind": "core.r5e.io/v1/Revocation",
+    "sign": [
+      2
+    ],
+    "spec": {
+      "revokes": {
+        "$ref": "$setup.0.eventRef"
+      }
+    }
+  },
+  "expect": {
+    "outcome": "admitted"
+  }
+}

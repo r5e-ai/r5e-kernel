@@ -1,0 +1,17 @@
+{
+  "assurance": "observed",
+  "epistemicScope": {
+    "claims": [
+      "this content is the charter text the recorded actor admitted at this version, at the recorded position on the chain",
+      "the signing statement travels with the charter whose signature it scopes"
+    ],
+    "doesNotClaim": [
+      "finality -- principle 4 governs supersession, in public, never silently",
+      "soundness of the principles themselves -- a signature proves who stood behind the words and when, never that the words are right"
+    ]
+  },
+  "event": "sha256:77c854d75be21f0bc7b9565daa22e3b4e0164037545a77b6e37bf6a66a5ef00e",
+  "outcome": "admitted",
+  "scopeDefaulted": false,
+  "seq": 3
+}

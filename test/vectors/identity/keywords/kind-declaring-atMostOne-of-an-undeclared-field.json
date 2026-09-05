@@ -1,0 +1,52 @@
+{
+  "note": "§1: same rule, same reason.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "AtMostOneUndeclared",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "description": "A term and a pair of alternatives: `ordered` and `atMostOne` on one Kind.",
+      "schema": {
+        "required": [],
+        "properties": {
+          "notBefore": {
+            "type": "string"
+          },
+          "notAfter": {
+            "type": "string"
+          },
+          "a": {
+            "type": "string"
+          },
+          "b": {
+            "type": "string"
+          }
+        },
+        "ordered": [
+          [
+            "notBefore",
+            "notAfter"
+          ]
+        ],
+        "atMostOne": [
+          [
+            "a",
+            "nope"
+          ]
+        ],
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "atMostOne names \"nope\""
+  }
+}

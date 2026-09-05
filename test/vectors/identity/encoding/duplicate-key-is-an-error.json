@@ -1,0 +1,7 @@
+{
+  "note": "§8: duplicate keys in raw input are an error. A decoder that silently keeps the last one turns two different documents into one hash, which is the collision this rule exists to refuse.",
+  "canonical": {
+    "rawJson": "{\"a\":1,\"a\":2}",
+    "error": "duplicate object key"
+  }
+}

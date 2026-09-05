@@ -1,0 +1,33 @@
+{
+  "note": "A refused decision's evaluation record is evidence of the refusal, so the key is copied onto a denial's payload too, and replay registers it from there. The asymmetry §5 does draw is elsewhere — an *admitted spec's* inline citations count and a denial's do not, because a denial stored no spec — and it has nothing to say about bytes the engine itself wrote: those exist because the act happened, and the act is on the chain whatever it decided.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "Governed",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": { "mode": "caller" },
+    "description": "A thing whose admission the deriving test engine decides, and writes a record of.",
+    "schema": {
+      "required": ["title"],
+      "properties": { "title": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "policyDerives": ["{\"format\":\"r5e.policy-evaluation/1\",\"decision\":\"deny\"}"],
+  "policyDenies": "the test engine refused this one",
+  "instance": {
+    "name": "refused",
+    "spec": { "title": "and the refusal wrote down what it was asked" }
+  },
+  "replayAfterInstance": true,
+  "expect": {
+    "outcome": "denied",
+    "stage": "authorize",
+    "reasonIncludes": "the test engine refused this one",
+    "derivedObjects": ["$written.0"],
+    "derivedRegistered": "$written.0",
+    "exportDerivedObjects": ["$written.0"],
+    "objectPresent": "$written.0"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "note": "§4/KS-4, the same Kind refusing the key that created the instance: `readmitBy` **overrides** the mode's readmit column, so `caller`'s free supersession does not survive the declaration. Being the actor of record is not the question this Kind asks.",
+  "kind": {
+    "group": "vectors.r5e.io",
+    "kind": "NodeHeld",
+    "version": "v1alpha1",
+    "substrate": "resource",
+    "naming": {
+      "mode": "caller",
+      "readmitBy": "nodeKey"
+    },
+    "description": "A caller-named resource anybody may create and only the node key may supersede.",
+    "schema": {
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predicates": []
+  },
+  "setup": [
+    {
+      "name": "r1",
+      "sign": [
+        1
+      ],
+      "spec": {
+        "body": "first, by anybody"
+      }
+    }
+  ],
+  "instance": {
+    "name": "r1",
+    "sign": [
+      1
+    ],
+    "spec": {
+      "body": "second, by the same key"
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "readmitBy: nodeKey"
+  }
+}

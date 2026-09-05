@@ -1,0 +1,42 @@
+{
+  "note": "§3/KS-3: an `event` refdecl list may be empty, may repeat a Kind, or may name something that is not a `group/version/Kind` path — all three are illegal at definition. This is the third: a member that is not a path names no Kind, so the check the declaration promises could never run.",
+  "kind": "core.r5e.io/v1/KindDefinition",
+  "instance": {
+    "sign": [
+      1
+    ],
+    "spec": {
+      "group": "vectors.r5e.io",
+      "kind": "BadEventList",
+      "version": "v1alpha1",
+      "substrate": "resource",
+      "naming": {
+        "mode": "caller"
+      },
+      "description": "A Kind whose event refdecl names something that is not a Kind path.",
+      "schema": {
+        "required": [
+          "cites"
+        ],
+        "properties": {
+          "cites": {
+            "type": "ref",
+            "ref": {
+              "event": [
+                "core.r5e.io/v1/Endorsement",
+                "not-a-path"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "predicates": []
+    }
+  },
+  "expect": {
+    "outcome": "denied",
+    "stage": "validateStructure",
+    "reasonIncludes": "schema.properties.cites.ref.event must be \"group/version/Kind\", got \"not-a-path\""
+  }
+}

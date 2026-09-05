@@ -1,0 +1,20 @@
+{
+  "note": "§9's third golden report: a chain written **before** this contract, brought forward at its next boot. The two pre-011 events are untouched and carry no `identity` field at all, so `U` is 2 and `S` is below `T`; the two legacy identity not-checked lines print, and they print only here. Everything above seq 2 is §10's transition — the v3 meta-Kind and the changed `CasExpired` as same-identity transitions signed by the node key, then the seeds that chain never had, then the retention Endorsement — and every one of those is signed. Keys and clock are fixed so the report can be frozen.",
+  "fixedKeys": true,
+  "legacyLog": true,
+  "clock": "2026-09-02T00:00:00Z",
+  "report": "reports/legacy-chain.txt",
+  "expect": {
+    "verifier": {
+      "noFindings": true,
+      "lines": {
+        "signatures": "2 legacy unsigned"
+      },
+      "notChecked": [
+        "admissions are not signed: this bundle carries payloads with no identity member (legacy unsigned)",
+        "absence does not establish whether these records predate signatures or omitted them",
+        "actor fingerprints are asserted at admission"
+      ]
+    }
+  }
+}
