@@ -22,15 +22,16 @@ defmodule R5e.Policy do
   | `"generations"` | map of `"group/version/Kind/name"` to the admission seq that resource was read at — see below |
   | `"derivedObjects"` | list of `bytes:sha256:…` addresses the engine wrote during this decision — see below |
 
-  ## The two additive keys, and why they are reports
+  ## Reported and tracked reads
 
-  `generations` (spec/05 §7) and `derivedObjects` (§5) are the kernel's
-  only interest in this metadata beyond copying it, and both are
-  **reports**: an engine that omits one, or reports `%{}` / `[]`, has said
-  it read nothing that can move or wrote nothing. The kernel never infers
-  either — a guess would deny admissions on a generation nobody captured,
-  or claim authorship of bytes nobody named. `R5e.Policy.AllowAll` reports
-  both empty, because a constant neither reads nor writes.
+  `generations` (spec/05 §7) reports the mutable resources an engine read.
+  Reads through `R5e.Policy.Facts` are captured by the kernel and merged
+  into this map before commit, even when the engine omits its report.
+  Conflicting generations or failed Facts reads refuse the decision with
+  `"decision" => "error"`; adapters cannot ignore these failures and allow.
+  Other reads must still be reported by the engine. `derivedObjects` (§5)
+  reports objects it wrote; the kernel never infers authorship of bytes.
+  `R5e.Policy.AllowAll` reports both empty because it reads and writes nothing.
 
   What each is *for* is in the section that defines it; what happens here:
 
@@ -115,12 +116,48 @@ defmodule R5e.Policy do
   """
   @spec decide(map()) :: {:ok, policy_meta} | {:deny, String.t(), policy_meta}
   def decide(request) do
-    case active().authorize(request) do
-      :ok -> {:ok, unknown_meta("allow")}
-      {:ok, meta} when is_map(meta) -> checked(meta, {:ok, meta})
-      {:deny, reason} -> {:deny, reason, unknown_meta("deny")}
-      {:deny, reason, meta} when is_map(meta) -> checked(meta, {:deny, reason, meta})
-      other -> {:deny, malformed(inspect(other, limit: 5)), unknown_meta("error")}
+    {answer, reads} = R5e.Policy.Facts.run(fn -> active().authorize(request) end)
+
+    normalized =
+      case answer do
+        :ok -> {:ok, unknown_meta("allow")}
+        {:ok, meta} when is_map(meta) -> checked(meta, {:ok, meta})
+        {:deny, reason} -> {:deny, reason, unknown_meta("deny")}
+        {:deny, reason, meta} when is_map(meta) -> checked(meta, {:deny, reason, meta})
+        other -> {:deny, malformed(inspect(other, limit: 5)), unknown_meta("error")}
+      end
+
+    tracked(normalized, reads)
+  end
+
+  defp tracked(answer, reads) do
+    meta = elem(answer, tuple_size(answer) - 1)
+    reported = meta["generations"] || %{}
+
+    conflict =
+      if is_map(reported) do
+        Enum.any?(reads.generations, fn {ref, seq} ->
+          Map.has_key?(reported, ref) and reported[ref] != seq
+        end)
+      else
+        map_size(reads.generations) > 0
+      end
+
+    cond do
+      reads.error != nil ->
+        {:deny, malformed("policy facts: " <> reads.error),
+         Map.put(unknown_meta("error"), "generations", reads.generations)}
+
+      conflict ->
+        {:deny, malformed("conflicting policy fact generations"),
+         Map.put(unknown_meta("error"), "generations", reads.generations)}
+
+      map_size(reads.generations) == 0 ->
+        answer
+
+      true ->
+        meta = Map.put(meta, "generations", Map.merge(reported, reads.generations))
+        put_elem(answer, tuple_size(answer) - 1, meta)
     end
   end
 
