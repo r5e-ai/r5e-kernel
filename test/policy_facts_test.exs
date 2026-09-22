@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 defmodule R5e.PolicyFactsTest do
   use ExUnit.Case, async: false
   alias R5e.Policy.Facts
@@ -206,6 +207,225 @@ defmodule R5e.PolicyFactsTest do
       assert meta["generations"] == %{@ref => receipt["seq"]}
       assert {:ok, clean_meta} = R5e.Policy.decide(%{inner: true})
       assert clean_meta["generations"] == %{}
+    end)
+  end
+
+  test "a failed tracked read preserves an adapter's existing decision evidence" do
+    R5e.Vectors.with_fresh_kernel(fn ->
+      seed()
+      Application.put_env(:r5e, :policy, Policy)
+      address = "bytes:" <> R5e.CAS.put("policy evidence")
+
+      evidence = %{
+        "engine" => "test-adapter",
+        "decision" => "allow",
+        "bundleRef" => "facts.test/v1/Bundle/active",
+        "generations" => %{},
+        "derivedObjects" => [address]
+      }
+
+      Process.put(:facts_policy, fn _ ->
+        Facts.fetch(@ref)
+        {:ok, evidence}
+      end)
+
+      assert {:deny, _, meta} = R5e.Policy.decide(%{})
+      assert meta["engine"] == "kernel-policy-facts"
+      assert meta["decision"] == "error"
+      assert meta["upstreamPolicy"] == evidence
+      assert meta["derivedObjects"] == [address]
+    end)
+  end
+
+  test "caught store exits still poison the decision" do
+    R5e.Vectors.with_fresh_kernel(fn ->
+      seed()
+      Application.put_env(:r5e, :policy, Policy)
+
+      Process.put(:facts_policy, fn _ ->
+        store = Process.whereis(R5e.ResourceStore)
+        Process.unregister(R5e.ResourceStore)
+
+        try do
+          try do
+            Facts.fetch(@ref)
+          catch
+            :exit, _ -> :ignored
+          end
+        after
+          Process.register(store, R5e.ResourceStore)
+        end
+
+        :ok
+      end)
+
+      assert {:deny, _, %{"decision" => "error"}} = R5e.Policy.decide(%{})
+    end)
+  end
+
+  test "inner-only reads and errors propagate to the enclosing decision" do
+    R5e.Vectors.with_fresh_kernel(fn ->
+      seed()
+      {:ok, receipt} = admit_rule("allow")
+      Application.put_env(:r5e, :policy, Policy)
+
+      Process.put(:facts_policy, fn
+        %{inner: true} ->
+          Facts.fetch(@ref)
+          :ok
+
+        _ ->
+          R5e.Policy.decide(%{inner: true})
+          :ok
+      end)
+
+      assert {:ok, meta} = R5e.Policy.decide(%{})
+      assert meta["generations"] == %{@ref => receipt["seq"]}
+
+      Process.put(:facts_policy, fn
+        %{inner: true} ->
+          Facts.fetch("missing.test/v1/Rule/absent")
+          :ok
+
+        _ ->
+          R5e.Policy.decide(%{inner: true})
+          :ok
+      end)
+
+      assert {:deny, _, %{"decision" => "error"}} = R5e.Policy.decide(%{})
+    end)
+  end
+
+  test "nested reported conflicts and rescued malformed resolutions cannot be ignored" do
+    R5e.Vectors.with_fresh_kernel(fn ->
+      seed()
+      {:ok, receipt} = admit_rule("allow")
+      Application.put_env(:r5e, :policy, Policy)
+
+      Process.put(:facts_policy, fn
+        %{inner: true} ->
+          Facts.fetch(@ref)
+          {:ok, %{"generations" => %{@ref => receipt["seq"] - 1}}}
+
+        _ ->
+          assert {:deny, _, _} = R5e.Policy.decide(%{inner: true})
+          :ok
+      end)
+
+      assert {:deny, _, %{"decision" => "error"}} = R5e.Policy.decide(%{})
+
+      Process.put(:facts_policy, fn _ ->
+        try do
+          Facts.resolve(%{
+            actor: %{"id" => "actor"},
+            resolved_authority: [],
+            resolved: [%{"class" => "bytes"} | :bad_tail]
+          })
+        rescue
+          _ -> :ignored
+        end
+
+        :ok
+      end)
+
+      assert {:deny, _, %{"decision" => "error"}} = R5e.Policy.decide(%{})
+    end)
+  end
+
+  test "noncanonical callback metadata and denial reasons become serializable errors" do
+    Application.put_env(:r5e, :policy, Policy)
+
+    for answer <- [
+          {:ok, %{"opaque" => self()}},
+          {:ok, %{atom_key: "value"}},
+          {:ok, %{"opaque" => [1 | :tail]}},
+          {:deny, self()}
+        ] do
+      Process.put(:facts_policy, fn _ -> answer end)
+      assert {:deny, reason, %{"decision" => "error"} = meta} = R5e.Policy.decide(%{})
+      assert is_binary(reason)
+      assert is_binary(R5e.Canonical.encode(meta))
+    end
+  end
+
+  test "metadata validation keeps valid evidence and the original denial explanation" do
+    R5e.Vectors.with_fresh_kernel(fn ->
+      seed()
+      Application.put_env(:r5e, :policy, Policy)
+      address = "bytes:" <> R5e.CAS.put("valid evidence")
+
+      Process.put(:facts_policy, fn _ ->
+        Facts.fetch(@ref)
+
+        {:deny, "specific upstream reason",
+         %{
+           "engine" => "adapter",
+           "decision" => "deny",
+           "evaluation" => address,
+           "derivedObjects" => [address, "invalid"]
+         }}
+      end)
+
+      assert {:deny, _, meta} = R5e.Policy.decide(%{})
+      assert meta["derivedObjects"] == [address]
+      assert meta["upstreamPolicy"]["upstreamReason"] == "specific upstream reason"
+      original = meta["upstreamPolicy"]["upstreamPolicy"]
+      assert original["engine"] == "adapter"
+      assert original["evaluation"] == address
+      assert original["decision"] == "deny"
+    end)
+  end
+
+  test "concurrent Facts-only dependencies match the generation at every granted append" do
+    R5e.Vectors.with_fresh_kernel(fn ->
+      seed()
+      {:ok, _} = admit_rule("allow")
+      Application.put_env(:r5e, :policy, Policy)
+
+      policy = fn request ->
+        if request.kind == "Rule" do
+          :ok
+        else
+          {:ok, entry} = Facts.fetch(@ref)
+          if entry["spec"]["title"] == "allow", do: :ok, else: {:deny, "rule denied"}
+        end
+      end
+
+      Process.put(:facts_policy, policy)
+
+      assert {:ok, _} =
+               R5e.TestHelpers.admit("facts.test", "v1", "Thing", "controlled", %{"title" => "t"})
+
+      1..40
+      |> Task.async_stream(
+        fn i ->
+          Process.put(:facts_policy, policy)
+
+          if rem(i, 3) == 0,
+            do: admit_rule(if rem(i, 2) == 0, do: "allow", else: "deny"),
+            else: R5e.TestHelpers.admit("facts.test", "v1", "Thing", "t#{i}", %{"title" => "t"})
+        end,
+        max_concurrency: 8,
+        timeout: 30_000
+      )
+      |> Enum.each(fn {:ok, result} -> assert elem(result, 0) in [:ok, :denied] end)
+
+      R5e.Log.events()
+      |> Enum.reduce(nil, fn event, generation ->
+        {:ok, payload} = R5e.Log.payload(event)
+
+        case {event["kind"], payload["target"]} do
+          {"admission.granted", %{"group" => "facts.test", "kind" => "Rule"}} ->
+            event["seq"]
+
+          {"admission.granted", %{"group" => "facts.test", "kind" => "Thing"}} ->
+            assert payload["policy"]["generations"][@ref] == generation
+            generation
+
+          _ ->
+            generation
+        end
+      end)
     end)
   end
 

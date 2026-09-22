@@ -7,8 +7,10 @@ defmodule R5e.Policy do
   A policy may return metadata about the decision it made. Admission records
   it verbatim under `"policy"` on the event payload and the receipt, so a
   reader of the log can tell which engine decided and — when the engine binds
-  to an admitted policy resource — which policy text it decided under. The
-  metadata is opaque to the kernel: it is copied, never interpreted.
+  to an admitted policy resource — which policy text it decided under.
+  Engine-specific metadata is copied without interpretation. The kernel validates
+  shared receipt fields and merges the resource generations captured by Facts;
+  a failure in those contracts wraps and retains the engine's evidence.
 
   `policy_meta` is a JSON-encodable map with string keys:
 
@@ -116,18 +118,27 @@ defmodule R5e.Policy do
   """
   @spec decide(map()) :: {:ok, policy_meta} | {:deny, String.t(), policy_meta}
   def decide(request) do
-    {answer, reads} = R5e.Policy.Facts.run(fn -> active().authorize(request) end)
+    R5e.Policy.Facts.run(fn -> active().authorize(request) end, fn answer, reads ->
+      normalized =
+        case answer do
+          :ok ->
+            {:ok, unknown_meta("allow")}
 
-    normalized =
-      case answer do
-        :ok -> {:ok, unknown_meta("allow")}
-        {:ok, meta} when is_map(meta) -> checked(meta, {:ok, meta})
-        {:deny, reason} -> {:deny, reason, unknown_meta("deny")}
-        {:deny, reason, meta} when is_map(meta) -> checked(meta, {:deny, reason, meta})
-        other -> {:deny, malformed(inspect(other, limit: 5)), unknown_meta("error")}
-      end
+          {:ok, meta} when is_map(meta) ->
+            checked(meta, {:ok, meta})
 
-    tracked(normalized, reads)
+          {:deny, reason} when is_binary(reason) ->
+            {:deny, reason, unknown_meta("deny")}
+
+          {:deny, reason, meta} when is_binary(reason) and is_map(meta) ->
+            checked(meta, {:deny, reason, meta})
+
+          other ->
+            {:deny, malformed(inspect(other, limit: 5)), unknown_meta("error")}
+        end
+
+      tracked(normalized, reads)
+    end)
   end
 
   defp tracked(answer, reads) do
@@ -145,12 +156,14 @@ defmodule R5e.Policy do
 
     cond do
       reads.error != nil ->
-        {:deny, malformed("policy facts: " <> reads.error),
-         Map.put(unknown_meta("error"), "generations", reads.generations)}
+        {:deny, "kernel policy facts failed: " <> reads.error,
+         facts_error_meta(answer, reads.generations, "factsInvalid")}
 
       conflict ->
-        {:deny, malformed("conflicting policy fact generations"),
-         Map.put(unknown_meta("error"), "generations", reads.generations)}
+        R5e.Policy.Facts.invalidate("conflicting policy fact generations")
+
+        {:deny, "kernel policy facts failed: conflicting generations",
+         facts_error_meta(answer, reads.generations, "conflictingGenerations")}
 
       map_size(reads.generations) == 0 ->
         answer
@@ -161,16 +174,85 @@ defmodule R5e.Policy do
     end
   end
 
+  # A facts failure is a kernel composition failure, not a rewrite of an
+  # evaluation that already happened. Keep its evidence beneath the wrapper.
+  defp facts_error_meta(answer, captured, reason) do
+    meta = elem(answer, tuple_size(answer) - 1)
+    outcome = if elem(answer, 0) == :ok, do: "allow", else: "deny"
+    upstream_reason = if tuple_size(answer) == 3, do: elem(answer, 1), else: nil
+    reported = if is_map(meta["generations"]), do: meta["generations"], else: %{}
+
+    nonconflicting =
+      Map.reject(reported, fn {ref, seq} ->
+        not is_integer(seq) or (Map.has_key?(captured, ref) and captured[ref] != seq)
+      end)
+
+    unknown_meta("error")
+    |> Map.merge(%{
+      "engine" => "kernel-policy-facts",
+      "evaluated" => false,
+      "reason" => reason,
+      "upstreamPolicy" => meta,
+      "upstreamOutcome" => outcome,
+      "upstreamReason" => upstream_reason,
+      "generations" => Map.merge(nonconflicting, captured),
+      "derivedObjects" => Map.get(meta, "derivedObjects", [])
+    })
+  end
+
   # The engine's answer stands unless the form of `derivedObjects` is
   # wrong. Only the form: §5 puts the "are those bytes really there"
   # question in the verifier (amendment C6), and a gate that answered it
   # would be deciding what an engine wrote rather than recording it.
   defp checked(meta, answer) do
-    case derived_defect(meta) do
-      nil -> answer
-      defect -> {:deny, malformed(defect), unknown_meta("error")}
+    case metadata_defect(meta) || derived_defect(meta) do
+      nil ->
+        answer
+
+      defect ->
+        # Keep usable evidence without promoting rejected derived-address claims.
+        safe =
+          try do
+            if metadata_defect(meta), do: raise(ArgumentError, "invalid metadata")
+            R5e.Canonical.encode(meta)
+
+            valid =
+              if is_list(meta["derivedObjects"]),
+                do: Enum.filter(meta["derivedObjects"], &derived_address?/1),
+                else: []
+
+            Map.put(meta, "derivedObjects", valid)
+          rescue
+            _ -> unknown_meta("error")
+          end
+
+        upstream = put_elem(answer, tuple_size(answer) - 1, safe)
+
+        wrapped =
+          facts_error_meta(upstream, %{}, "malformedPolicyMetadata")
+          |> Map.put("metadataDefect", defect)
+
+        {:deny, malformed(defect), wrapped}
     end
   end
+
+  defp metadata_defect(meta) do
+    if json_term?(meta),
+      do: nil,
+      else: "metadata must contain canonical JSON values with string keys"
+  rescue
+    _ -> "metadata must contain canonical JSON values with string keys"
+  end
+
+  defp json_term?(term) when is_map(term),
+    do:
+      Enum.all?(term, fn {key, value} ->
+        is_binary(key) and String.valid?(key) and json_term?(value)
+      end)
+
+  defp json_term?(term) when is_list(term), do: Enum.all?(term, &json_term?/1)
+  defp json_term?(term) when is_binary(term), do: String.valid?(term)
+  defp json_term?(term), do: is_integer(term) or term in [true, false, nil]
 
   defp derived_defect(meta) do
     case Map.fetch(meta, "derivedObjects") do

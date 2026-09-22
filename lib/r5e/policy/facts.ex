@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: AGPL-3.0-only
 defmodule R5e.Policy.Facts do
   @moduledoc """
   Optimistic, tracked resource reads for policy adapters.
@@ -5,7 +6,9 @@ defmodule R5e.Policy.Facts do
   Call `resolve/1` with the admitting request to present its actor, resolved
   authority chains, cited resource entries (`resources`, keyed by ref), and
   immutable admission events (`events`, keyed by ref, with `event` and `payload`).
-  Event payloads retain the admitted actor and spec; they have no mutable
+  Consumers must inspect the event outcome: grants and denials with a recorded
+  spec are supported; redacted denials with nil spec are refused. Event payloads
+  retain the recorded actor and spec; they have no mutable
   resource generation. Bytes-class citations are not hydrated. Call `fetch/1` for each further
   resource hop. Entries retain their admitted `spec` and `admissionSeq`; no
   recursive hydration or application-specific interpretation is performed.
@@ -24,16 +27,34 @@ defmodule R5e.Policy.Facts do
   @key {__MODULE__, :reads}
 
   @doc false
-  def run(fun) do
+  def run(fun, finalize) do
     previous = Process.get(@key)
     Process.put(@key, %{generations: %{}, error: nil})
 
     try do
       answer = fun.()
-      {answer, Process.get(@key)}
+      finalize.(answer, Process.get(@key))
     after
-      if previous == nil, do: Process.delete(@key), else: Process.put(@key, previous)
+      if previous == nil,
+        do: Process.delete(@key),
+        else: Process.put(@key, merge_capture(previous, Process.get(@key)))
     end
+  end
+
+  @doc false
+  def invalidate(reason), do: fail(reason)
+
+  defp merge_capture(parent, child) do
+    Enum.reduce(child.generations, %{parent | error: parent.error || child.error}, fn {ref, seq},
+                                                                                      acc ->
+      case Map.fetch(acc.generations, ref) do
+        {:ok, other} when other != seq ->
+          %{acc | error: acc.error || "conflicting nested generations for #{ref}"}
+
+        _ ->
+          %{acc | generations: Map.put(acc.generations, ref, seq)}
+      end
+    end)
   end
 
   @doc "Present the gate-resolved request and fetch every kind-class citation."
@@ -55,6 +76,14 @@ defmodule R5e.Policy.Facts do
       {:error, reason} -> fail(reason)
       _ -> fail("malformed resolved request")
     end
+  rescue
+    error ->
+      fail("policy fact resolution raised")
+      reraise error, __STACKTRACE__
+  catch
+    kind, reason ->
+      fail("policy fact resolution interrupted")
+      :erlang.raise(kind, reason, __STACKTRACE__)
   end
 
   def resolve(_), do: fail("malformed resolved request")
@@ -75,6 +104,14 @@ defmodule R5e.Policy.Facts do
       {:error, reason} -> fail("#{inspect(ref)}: #{inspect(reason)}")
       _ -> fail("malformed policy fact #{inspect(ref)}")
     end
+  rescue
+    error ->
+      fail("policy fact read raised")
+      reraise error, __STACKTRACE__
+  catch
+    kind, reason ->
+      fail("policy fact read interrupted")
+      :erlang.raise(kind, reason, __STACKTRACE__)
   end
 
   @doc "Read an immutable admission event and its decoded payload from this chain."
@@ -93,6 +130,14 @@ defmodule R5e.Policy.Facts do
     else
       _ -> fail("missing or malformed admission event #{inspect(ref)}")
     end
+  rescue
+    error ->
+      fail("policy fact read raised")
+      reraise error, __STACKTRACE__
+  catch
+    kind, reason ->
+      fail("policy fact read interrupted")
+      :erlang.raise(kind, reason, __STACKTRACE__)
   end
 
   defp citations(manifest) do

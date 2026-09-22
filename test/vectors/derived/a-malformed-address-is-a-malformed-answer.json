@@ -1,28 +1,52 @@
 {
-  "note": "The other side of the line. The kernel does not judge whether an engine's claim is true, but it does insist the claim be a claim: an entry that is not a `bytes:sha256:<64 hex>` string cannot be cited, swept into an export or registered, so it is refused as a malformed policy answer by `R5e.Policy.decide/1` — the same refusal an answer outside the callback contract gets — and the admission is denied at `authorize` with `decision: \"error\"`. Denied rather than dropped: an engine whose report the kernel silently discarded would go on believing it had been recorded.",
+  "note": "The other side of the line. The kernel does not judge whether an engine's claim is true, but it does insist the claim be a claim: an entry that is not a `bytes:sha256:<64 hex>` string cannot be cited, swept into an export or registered, so it is refused as a malformed policy answer by `R5e.Policy.decide/1` \u2014 the same refusal an answer outside the callback contract gets \u2014 and the admission is denied at `authorize` with `decision: \"error\"`. Denied rather than dropped: an engine whose report the kernel silently discarded would go on believing it had been recorded. Kernel issue #3 preserves the usable upstream decision beneath an unevaluated kernel error wrapper instead of discarding all engine evidence; malformed derived-address claims remain excluded.",
   "kind": {
     "group": "vectors.r5e.io",
     "kind": "Governed",
     "version": "v1alpha1",
     "substrate": "resource",
-    "naming": { "mode": "caller" },
+    "naming": {
+      "mode": "caller"
+    },
     "description": "A thing whose admission the deriving test engine decides, and writes a record of.",
     "schema": {
-      "required": ["title"],
-      "properties": { "title": { "type": "string" } },
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
       "additionalProperties": false
     },
     "predicates": []
   },
-  "policyReports": ["sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],
+  "policyReports": [
+    "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
   "instance": {
     "name": "not-recorded",
-    "spec": { "title": "an event payload address is not a derived object" }
+    "spec": {
+      "title": "an event payload address is not a derived object"
+    }
   },
   "expect": {
     "outcome": "denied",
     "stage": "authorize",
     "reasonIncludes": "malformed answer: derivedObjects entries must be bytes:sha256:<hex>",
-    "policy": { "engine": "unknown", "decision": "error", "derivedObjects": [] }
+    "policy": {
+      "engine": "kernel-policy-facts",
+      "decision": "error",
+      "derivedObjects": [],
+      "evaluated": false,
+      "reason": "malformedPolicyMetadata",
+      "upstreamOutcome": "allow",
+      "upstreamPolicy": {
+        "engine": "vector-deriving",
+        "decision": "allow",
+        "derivedObjects": []
+      }
+    }
   }
 }
