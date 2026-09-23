@@ -22,6 +22,7 @@ defmodule R5e.Policy do
   | `"bundleRef"` | `group/version/Kind/name` of that resource, or `nil` |
   | `"matched"` | list of policy id strings that matched |
   | `"generations"` | map of `"group/version/Kind/name"` to the admission seq that resource was read at — see below |
+  | `"eventHeads"` | kernel-owned list of exact Kind/field/canonical-anchor head reads, including nil absence; omitted when unused |
   | `"derivedObjects"` | list of `bytes:sha256:…` addresses the engine wrote during this decision — see below |
 
   ## Reported and tracked reads
@@ -31,6 +32,11 @@ defmodule R5e.Policy do
   into this map before commit, even when the engine omits its report.
   Conflicting generations or failed Facts reads refuse the decision with
   `"decision" => "error"`; adapters cannot ignore these failures and allow.
+  `Facts.head/3` also captures latest granted event heads, including absence,
+  under the reserved `eventHeads` key. Commit rechecks these queries under the
+  append lock using the same generic head semantics as schema sameAnchor reads.
+  Adapters cannot invent or overwrite these reports. No head key is added to
+  receipts that did not read heads.
   Other reads must still be reported by the engine. `derivedObjects` (§5)
   reports objects it wrote; the kernel never infers authorship of bytes.
   `R5e.Policy.AllowAll` reports both empty because it reads and writes nothing.
@@ -154,25 +160,52 @@ defmodule R5e.Policy do
         map_size(reads.generations) > 0
       end
 
-    cond do
-      reads.error != nil ->
-        {:deny, "kernel policy facts failed: " <> reads.error,
-         facts_error_meta(answer, reads.generations, "factsInvalid")}
+    heads = R5e.Policy.Facts.head_metadata(reads.heads)
+    head_conflict = not valid_head_report?(Map.fetch(meta, "eventHeads"), heads)
 
-      conflict ->
-        R5e.Policy.Facts.invalidate("conflicting policy fact generations")
+    result =
+      cond do
+        reads.error != nil ->
+          {:deny, "kernel policy facts failed: " <> reads.error,
+           facts_error_meta(answer, reads.generations, "factsInvalid")}
 
-        {:deny, "kernel policy facts failed: conflicting generations",
-         facts_error_meta(answer, reads.generations, "conflictingGenerations")}
+        conflict ->
+          R5e.Policy.Facts.invalidate("conflicting policy fact generations")
 
-      map_size(reads.generations) == 0 ->
-        answer
+          {:deny, "kernel policy facts failed: conflicting generations",
+           facts_error_meta(answer, reads.generations, "conflictingGenerations")}
 
-      true ->
-        meta = Map.put(meta, "generations", Map.merge(reported, reads.generations))
-        put_elem(answer, tuple_size(answer) - 1, meta)
+        head_conflict ->
+          R5e.Policy.Facts.invalidate("conflicting or untracked policy event heads")
+
+          {:deny, "kernel policy facts failed: conflicting or untracked event heads",
+           facts_error_meta(answer, reads.generations, "conflictingEventHeads")}
+
+        map_size(reads.generations) == 0 ->
+          answer
+
+        true ->
+          meta = Map.put(meta, "generations", Map.merge(reported, reads.generations))
+          put_elem(answer, tuple_size(answer) - 1, meta)
+      end
+
+    if heads == [] do
+      result
+    else
+      index = tuple_size(result) - 1
+      put_elem(result, index, Map.put(elem(result, index), "eventHeads", heads))
     end
   end
+
+  # Only kernel-captured queries may appear at this reserved key. A composing
+  # adapter may retain a subset from a nested decision; the kernel adds every
+  # other captured read and rejects contradictory or invented reports.
+  defp valid_head_report?(:error, _captured), do: true
+
+  defp valid_head_report?({:ok, reported}, captured) when is_list(reported),
+    do: length(reported) == length(Enum.uniq(reported)) and Enum.all?(reported, &(&1 in captured))
+
+  defp valid_head_report?(_, _), do: false
 
   # A facts failure is a kernel composition failure, not a rewrite of an
   # evaluation that already happened. Keep its evidence beneath the wrapper.
@@ -317,3 +350,4 @@ defmodule R5e.Policy.AllowAll do
   @impl true
   def authorize(_request), do: {:ok, @meta}
 end
+

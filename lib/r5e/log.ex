@@ -145,6 +145,44 @@ defmodule R5e.Log do
     end
   end
 
+  @doc "Validated event history for policy facts; read failures never mean absence."
+  def strict_events, do: GenServer.call(__MODULE__, :strict_events)
+
+  @doc "Direct strict history read, also safe inside the append lock."
+  def read_strict_events do
+    with {:ok, bytes} <- File.read(log_path()),
+         :ok <- strict_history_present(bytes),
+         :ok <- valid_framing(bytes),
+         events = RecurseVerify.Chain.decode_log(bytes),
+         :ok <- valid_chain(events) do
+      {:ok, events}
+    else
+      {:error, reason} -> {:error, "cannot read policy event history: #{inspect(reason)}"}
+    end
+  end
+
+  defp strict_history_present("") do
+    case persistent_history_evidence() do
+      [] -> :ok
+      _ -> {:error, "empty log with persistent history evidence"}
+    end
+  end
+
+  defp strict_history_present(_), do: :ok
+
+  @doc "Decode the exact payload bytes only after verifying their recorded address."
+  def strict_payload(event) do
+    address = event["payload"] || ""
+
+    with {:ok, bytes} <- R5e.CAS.get(address),
+         true <- R5e.Canonical.hash_bytes(bytes) == R5e.CAS.object_hash(address),
+         {:ok, decoded} when is_map(decoded) <- Jason.decode(bytes) do
+      {:ok, decoded}
+    else
+      _ -> :error
+    end
+  end
+
   @doc """
   The decoded payload of an event, or `:error` when this deployment no
   longer holds it (§6: the payload is swept with the event). Four readers
@@ -266,6 +304,8 @@ defmodule R5e.Log do
 
   def handle_call(:halted, _from, state), do: {:reply, state.halted, state}
   def handle_call(:resume, _from, state), do: {:reply, :ok, %{state | halted: nil}}
+
+  def handle_call(:strict_events, _from, state), do: {:reply, read_strict_events(), state}
 
   def handle_call(:events, _from, state), do: {:reply, read_events(state.path), state}
 
@@ -489,3 +529,4 @@ defmodule R5e.Log do
       {:reply, {:failed, event, reason, error, __STACKTRACE__}, %{state | halted: reason}}
   end
 end
+

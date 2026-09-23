@@ -17,7 +17,7 @@ defmodule R5e.Commit do
   |---|---|---|
   | `"policy"` | the policy engine and tracked Facts reads, combined as `generations` on its meta (see `R5e.Policy`) | the store entry's `admissionSeq` now |
   | `"kinds"` | `resolve`, one per `kind`-class manifest entry | the same |
-  | `"anchors"` | `resolve`, one per `sameAnchor` manifest entry | `R5e.Resolve.head/4` now |
+  | `"anchors"` | `resolve` sameAnchor entries plus kernel-tracked policy event heads (including absence) | `R5e.Resolve.head/4` now |
 
   ## Why the store, and why that is exact
 
@@ -60,7 +60,7 @@ defmodule R5e.Commit do
     %{
       "policy" => policy_generations(policy),
       "kinds" => kind_generations(manifest),
-      "anchors" => anchors(manifest, request[:spec] || %{}),
+      "anchors" => anchors(manifest, request[:spec] || %{}) ++ policy_heads(policy),
       "expires" => request[:expires],
       # §6: the succession-graph version **as of the first read of the
       # relation** — with the stage that read it, because a mismatch
@@ -193,6 +193,11 @@ defmodule R5e.Commit do
 
   defp policy_generations(_policy), do: %{}
 
+  # Reserved metadata is validated and populated by Policy from Facts capture;
+  # keep absence as nil so concurrent first admissions contend just like heads.
+  defp policy_heads(%{"eventHeads" => heads}) when is_list(heads), do: heads
+  defp policy_heads(_), do: []
+
   defp kind_generations(manifest) do
     for entry <- manifest,
         is_map(entry),
@@ -247,14 +252,21 @@ defmodule R5e.Commit do
   defp stale_anchors([]), do: nil
 
   defp stale_anchors(anchors) do
-    events = granted_events()
+    case granted_events() do
+      {:ok, events} ->
+        Enum.find_value(anchors, fn %{"kind" => kind, "field" => field, "head" => head} = anchor ->
+          case head_now(events, kind, field, anchor["anchor"]) do
+            ^head ->
+              nil
 
-    Enum.find_value(anchors, fn %{"kind" => kind, "field" => field, "head" => head} = anchor ->
-      case head_now(events, kind, field, anchor["anchor"]) do
-        ^head -> nil
-        now -> "the #{kind} head for #{inspect(field)} was #{head}; it is now #{now}"
-      end
-    end)
+            now ->
+              "the #{kind} head for #{inspect(field)} was #{head || "absent"}; it is now #{now || "absent"}"
+          end
+        end)
+
+      {:error, reason} ->
+        reason
+    end
   end
 
   # The current generation of a resource ref, as a string for the reason
@@ -278,15 +290,33 @@ defmodule R5e.Commit do
   # the process that owns it.
   defp head_now(events, kind, field, anchor) do
     case R5e.Resolve.head(events, kind, field, anchor) do
-      nil -> "gone — no admitted #{kind} anchors on that value"
+      nil -> nil
       event -> "event:" <> event["hash"]
     end
   end
 
   defp granted_events do
-    for event <- R5e.Log.read_events(),
-        event["kind"] == "admission.granted",
-        {:ok, payload} <- [R5e.Log.payload(event)],
-        do: {event, payload}
+    with {:ok, events} <- R5e.Log.read_strict_events() do
+      Enum.reduce_while(events, {:ok, []}, fn event, {:ok, pairs} ->
+        if event["kind"] == "admission.granted" do
+          case R5e.Log.strict_payload(event) do
+            {:ok, %{"target" => target, "spec" => spec} = payload}
+            when is_map(target) and is_map(spec) ->
+              {:cont, {:ok, [{event, payload} | pairs]}}
+
+            _ ->
+              {:halt,
+               {:error, "cannot recheck event heads: missing or malformed granted payload"}}
+          end
+        else
+          {:cont, {:ok, pairs}}
+        end
+      end)
+      |> case do
+        {:ok, pairs} -> {:ok, Enum.reverse(pairs)}
+        error -> error
+      end
+    end
   end
 end
+
