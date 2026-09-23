@@ -15,7 +15,7 @@ defmodule R5e.Commit do
 
   | capture | read by | compared against |
   |---|---|---|
-  | `"policy"` | the policy engine, reported as `generations` on its meta (see `R5e.Policy`) | the store entry's `admissionSeq` now |
+  | `"policy"` | the policy engine and tracked Facts reads, combined as `generations` on its meta (see `R5e.Policy`) | the store entry's `admissionSeq` now |
   | `"kinds"` | `resolve`, one per `kind`-class manifest entry | the same |
   | `"anchors"` | `resolve`, one per `sameAnchor` manifest entry | `R5e.Resolve.head/4` now |
 
